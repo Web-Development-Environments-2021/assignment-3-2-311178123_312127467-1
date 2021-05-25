@@ -89,6 +89,37 @@ const server = app.listen(port, () => {
   console.log(`Server listen on port ${port}`);
 });
 
+
+
+// TEST API 
+// const league_utils = require("./routes/utils/league_utils");
+// test = async (req, res, next) => {
+//   try {
+//     const league_details = await league_utils.getLeagueDetails();
+//     console.log(league_details)
+//   } catch (error) {
+//     console.log(error)
+//   }
+// };
+
+// TEST SQL SERVER
+// const sql = require("./routes/utils/DButils");
+// test = async (req, res, next) => {
+//   try {
+//     // parameters exists
+//     // valid parameters
+//     // username exists
+//     console.log("qeuring")
+//     const users = await sql.execQuery(
+//       "SELECT e.EmployeesId, e.Name, e.Location FROM dbo.Employees as e"
+//     );
+//     console.log(users)
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+// test()
 // process.on("SIGINT", function () {
 //   if (server) {
 //     server.close(() => console.log("server closed"));
