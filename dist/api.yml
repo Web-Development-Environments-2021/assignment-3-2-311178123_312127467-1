@@ -1,246 +1,943 @@
 openapi: 3.0.0
-info:
-  title: api
-  description: API for  project
-  version: 1.0.0
-tags:
-  - name: Users
-  - name: Auth
-  - name: League
-  - name: Players
-  - name: Teams
-  - name: Games
-paths:
-  /Register:
+
+
+paths: 
+  /user/register:
     post:
-      tags:
-        - Auth
-      summary: Add new user
-      description: A new user from the client is added to the server
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/User"
-      responses:
-        "201":
-          description: A new user has been added
-        "400":
-          description: wrong input parameters
-  /Login:
-    post:
-      tags:
-        - Auth
-      summary: Login an exist user
-      description: An exist user login to the system
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/LoginScheme"
-      responses:
-        "200":
-          description: >
-            User was found in the DB and authenitcated successfully.
-            The session ID is returned in a cookie named `session`. 
-            You should include this cookie in subsequent requests
-          # headers:
-          #   Set-Cookie:
-          #     schema:
-          #       type: string
-          #       example: session=87s97sdhgf279293f8w0e9
-            # Note that the Set-Cookie header and securitySchemes are not connected in any way, and the Set-Header definition is for documentation purposes only.
-        "401":
-          description: Authentication failed
-  /logout:
-    post:
-      tags:
-        - Auth
-      summary: logout a user from the system and delete his cookie
-      responses:
-        "200":
-          description: "the user has ben successfully logged out"
-  /league/getDetails:
-    get:
-      tags:
-        - league
-      summary: Return the details about the current league
-      responses:
-        "200":
-          description: data about the current league returned
+        tags:
+        - "user"
+        summary: "Adds a new user"
+        description: "Save user in DB"
+        operationId: "UserRegister" 
+        requestBody:
           content:
-            application/json:
+            application/json:  
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/League"
-        "400":
-          description: wrong input parameters
-  /users/favoritePlayers:
-    get:
+                type: object
+                $ref: "#/components/schemas/User"
+        responses:
+          "405":
+            description: "Username already exists" 
+          "404":
+            description: "URL not found"
+          "500":
+            description: "Users DB not reachable"
+          "200":
+            description: "Registration was sucessfull"
+            
+  /user/login:
+    post:
+        tags:
+        - "user"
+        summary: "Logs user into the system"
+        description: ""
+        operationId: "UserLogin" 
+        requestBody:
+          content:
+            application/json:  
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserLogin"
+        responses:
+          "401":
+            description: "Bad Password or username" 
+          "404":
+            description: "URL not found"
+          "500":
+            description: "Users DB not reachable"
+          "200":
+            description: "Login was sucessful"  
+            
+  
+  /user/{userId}/logout:
+     get:
       tags:
-        - Users
-        - Players
-      summary: Return the favorite players that were saved by user
+        - "user"
+      summary: "Log the user from the system"
+      description: ""
+      operationId: "UserLogOut" 
       parameters:
+      - name: "userId"
+        in: "path"
+        description: "ID of user who wants to log out"
+        required: true
+        schema:
+          type: "integer"
+          minimum: 0
+          example: 1117
+          
       responses:
+        "404":
+          description: "Bad username" 
+        "500":
+          description: "Users DB not reachable"
         "200":
-          description: data about the user's favorites players returned
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/PlayerPreview"
-        "401":
-          description: user is not authorized
-    post:
-      summary: save player in the favorites list of a user
+           description: "Login Successfull. The session id <sessionid>   returned in the header"
+           content:  
+             application/json:    
+              schema:            
+                $ref: "#/components/schemas/ArrayOfRounds"
+            
+  /user/{userId}/favGames:
+     get:
       tags:
-        - Users
-        - Players
+        - "favGames"
+      summary: "Retrieve the favorite games for the user <userId>"
+      description: ""
+      operationId: "getFavGamesForUser" 
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "ID of user who want to view his favorite games"
+        required: true
+        schema:
+          type: "integer"
+          minimum: 0
+          example: 1
+          
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid ID supplied"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                $ref: "#/components/schemas/ArrayOfRounds"
+                
+  /user/addfavGame:
+    post:
+      tags:
+        - "addfavGame"
+      summary: "add the favorite game to the list of the user's favorite games"
+      description: "used in the user's personal page"
+      operationId: "addFavGameForUser" 
       requestBody:
         content:
-          application/json:
+          application/json:  
             schema:
               type: object
               properties:
-                playerId:
-                  type: string
-                  description: player's id which the user saved
-                  example: 85
+                round_id:
+                  type: "integer"
+                  example: 23
+          
       responses:
-        "201":
-          description: The player successfully saved as favorite
-        "401":
-          description: user is not authorized
-  /teams/teamFullDetails/{teamId}:
-    get:
-      summary: get full deatils about a team
-      description: useful for team page
-      tags:
-        - Teams
-      parameters:
-        - in: path
-          name: teamId
-          description: team's id
-          required: true
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: data about the team
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Team"
         "404":
-          description: teamId is not exists
+          description: "URL not found"
+        "400":
+          description: "Invalid ID supplied"
+        "200":
+          description: "round was added succesfully"
+          
+  /user/{userId}/favTeams:
+    get:
+      tags:
+        - "favTeams"
+      summary: "Retrieve the favorite teams for the user <userId>"
+      description: ""
+      operationId: "getFavTeamsForUser" 
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "ID of user who wants to view his favorite teams"
+        required: true
+        schema:
+          type: "integer"
+          minimum: 0
+          example: 1
+          
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid ID supplied"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                $ref: "#/components/schemas/ArrayOfTeams"
+                
+  /user/addfavTeam:
+    post:
+      tags:
+        - "addfavTeam"
+      summary: "add the favorite team to the list of the user's favorite teams"
+      description: "used in the user's personal page"
+      operationId: "addFavTeamForUser" 
+      requestBody:
+        content:
+          application/json:  
+            schema:
+              type: object
+              properties:
+                round_id:
+                  type: "integer"
+                  example: 42
+          
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid ID supplied"
+        "200":
+          description: "round was added succesfully"
+          
+  /user/{userId}/favPlayers:
+    get:
+      tags:
+        - "favPlayers"
+      summary: "Retrieve the favorite players for the user <userId>"
+      description: ""
+      operationId: "getFavPlayersForUser" 
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "ID of user who want to view his favorite players"
+        required: true
+        schema:
+          type: "integer"
+          minimum: 0
+          example: 1
+          
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid ID supplied"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                $ref: "#/components/schemas/ArrayOfPlayers"
+       
+  /user/addfavPlayer:
+    post:
+      tags:
+        - "addfavPlayer"
+      summary: "add the favorite player to the list of the user's favorite players"
+      description: "used in the user's personal page"
+      operationId: "addFavPlayerForUser" 
+      requestBody:
+        content:
+          application/json:  
+            schema:
+              type: object
+              properties:
+                player_id:
+                  type: "integer"
+                  example: 10
+          
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid ID supplied"
+        "200":
+          description: "player was added succesfully"
+
+  /pictures/homepage:
+    get:
+      tags:
+        - "pictures"
+      summary: "Retrieve the picture for the homepage"
+      description: ""
+      operationId: "GetMainpagePicture" 
+   
+      responses:
+        "404":
+          description: "URL not found"
+        "200":
+          description: "OK"
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+  
+
+  
+  
+  /league/{leagueName}:
+    get:
+      tags:
+        - "league"
+      summary: "Get information about the league by using the league name"
+      operationId: "getLeagueByName" 
+      parameters:
+      - name: "leagueName"
+        in: "path"
+        description: "Name of league to return"
+        required: true
+        schema:
+          type: "string"
+          example: "Superliga"
+            
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid Name supplied"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                $ref: "#/components/schemas/League"
+                
+                
+  /season/{seasonId}:
+    get:
+      tags:
+        - "season"
+      summary: "Get information about the season by using the season ID"
+      operationId: "getSeasonById" 
+      parameters:
+      - name: "seasonId"
+        in: "path"
+        description: "ID of season to return"
+        required: true
+        schema:
+          type: "integer"
+          minimum: 1
+          example: 13
+            
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid ID supplied"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                $ref: "#/components/schemas/Season"
+        
+  /season/stage/{seasonId}:
+    get:
+      tags:
+        - "season"
+      summary: "Get information about the stage by using the season ID"
+      operationId: "getStageBySeasonId" 
+      parameters:
+      - name: "seasonId"
+        in: "path"
+        description: "ID of season to which the stage belongs to"
+        required: true
+        schema:
+          type: "integer"
+          minimum: 1
+          example: 13
+            
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid ID supplied"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                $ref: "#/components/schemas/Stage"
+                
+  /season/round/{seasonId}:
+    get:
+      tags:
+        - "season"
+      summary: "Get information about the round by using the season ID"
+      operationId: "getRoundBySeasonId" 
+      parameters:
+      - name: "seasonId"
+        in: "path"
+        description: "ID of season to which the round belongs to"
+        required: true
+        schema:
+          type: "integer"
+          minimum: 1
+          example: 3
+            
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid ID supplied"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                $ref: "#/components/schemas/Round"
+                
+  /stage/{stageId}:
+    get:
+      tags:
+        - "stage"
+      summary: "Get information about the stage by using the Stage id"
+      operationId: "getStageByStageId" 
+      parameters:
+      - name: "stageId"
+        in: "path"
+        description: "ID of stage to return"
+        required: true
+        schema:
+          type: "integer"
+          minimum: 1
+          example: 11142
+            
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid ID supplied"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                $ref: "#/components/schemas/Stage"
+  
+  /player/{playerId}:
+    get:
+      tags:
+        - "player"
+      description: "used for player card in personal page"
+      summary: "Get information about the player by using the player id"
+      operationId: "getPlayerByStageId" 
+      parameters:
+      - name: "playerId"
+        in: "path"
+        description: "ID of player to return"
+        required: true
+        schema:
+          type: "integer"
+          minimum: 1
+          example: 172104
+            
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid ID supplied"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                $ref: "#/components/schemas/Player"
+                
+                
+  /coach/{coachId}:
+    get:
+      tags:
+        - "coach"
+      description: "used for coach card in personal page"
+      summary: "Get information about the coach by using the coach id"
+      operationId: "getCoachByStageId" 
+      parameters:
+      - name: "coachId"
+        in: "path"
+        description: "ID of coach to return"
+        required: true
+        schema:
+          type: "integer"
+          minimum: 1
+          example: 1467946
+            
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid ID supplied"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                $ref: "#/components/schemas/Coach"
+                
+  /round/{roundId}:
+    get:
+      tags:
+        - "round"
+      summary: "Get information about the round by using the round id"
+      operationId: "getRoundById" 
+      parameters:
+      - name: "roundId"
+        in: "path"
+        description: "ID of round to return"
+        required: true
+        schema:
+          type: "integer"
+          minimum: 1
+          example: 11142
+            
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid ID supplied"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                $ref: "#/components/schemas/Round"
+                
+  /team/{teamId}:
+    get:
+      tags:
+        - "team"
+      summary: "Get information about the team by using the team id"
+      description: "used in the team's personal page"
+      operationId: "getTeamById" 
+      parameters:
+      - name: "teamId"
+        in: "path"
+        description: "ID of team to return"
+        required: true
+        schema:
+          type: "integer"
+          minimum: 1
+          example: 72
+            
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid ID supplied"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                $ref: "#/components/schemas/Team"
+                
+  /team/{team_name}:
+    get:
+      tags:
+        - "team"
+      summary: "Get information about the team by using the team name"
+      description: "used in the team's personal page"
+      operationId: "getTeamByName" 
+      parameters:
+      - name: "team_name"
+        in: "path"
+        description: "Name of team to return"
+        required: true
+        schema:
+          type: "string"
+          example: "Celtic"
+            
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid name supplied"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                $ref: "#/components/schemas/Team"
+                
+  /currentStageGames:
+    get:
+      tags:
+        - "currentStageGames"
+      summary: "Get the latest games for the current stage"
+      description: "for the current stage page"
+            
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid name supplied"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                $ref: "#/components/schemas/ArrayOfRounds"
+
 components:
   schemas:
-    User:
+    User:    # Schema name
       type: object
       properties:
         username:
-          maxLength: 8
-          minLength: 3
-          type: string
-          description: username conatins between 3 to 8 letters only
-          example: ladygaga
+          type: "string"
+          example: "Johnc"   
         firstname:
-          type: string
-          description: user's first name
-          example: Stefani
+          type: "string"
+          example: "John"  
         lastname:
-          type: string
-          description: user's last name
-          example: Germanotta
+          type: "string"
+          example: "Cena"
         country:
-          type: string
-          description: user's country
-          example: USA
+          type: "string"
+          example: "Algeria"
         password:
-          maxLength: 10
-          minLength: 5
-          type: string
-          description:
-            password conatins between 5 to 10 chars, at least one of them
-            is a number and a special char
-          format: password
-          example: lady@56
+          type: "string"
+          example: "1234John"
         email:
-          pattern: email
-          type: string
-          description: user's email
-          example: ladygaga@gmail.com
-        image-url:
-          pattern: URL
-          type: string
-          description: URL for the user's image
-          example: https://cloudinary.com/
-      description: Model containing user info
-    LoginScheme:
+          type: "string"
+          example: "johnc@example.com"
+        profileurl:
+          type: "string"
+          example: "https:\\profile-john.com"
+          
+    UserLogin:
       type: object
       properties:
         username:
-          type: string
-          minLength: 3
-          maxLength: 8
-          description: username conatins letters only
-          example: naorbe
+          type: "string"
+          example: "Eve"  
         password:
-          type: string
-          minLength: 5
-          maxLength: 10
-          format: password
-          description: password conatins at least one number and one special char
-          example: naor@55
-    League:
-      type: object
-      properties:
-        league_name:
-          type: string
-          description: league name
-          example: Superliga
-        current_season_name:
-          type: string
-          description: current season name
-          example: "2020/2021"
-        current_stage_name:
-          type: string
-          description: current stage name
-          example: Championship Round
-    PlayerPreview:
-      type: object
-      properties:
-        name:
-          type: string
-          description: player's name
-          example: Sten Michael Grytebust
-        image:
-          type: string
-          description: player's image
-          format: URL
-          example: https://cdn.sportmonks.com/images/soccer/players/11/84587.png
-        position:
-          type: integer
-          description: player's position in team
-          example: 1
-        team_name:
-          type: string
-          description: player's team name
-          example: København
+          type: "string"
+          example: "Eve123!!"
+          
     Team:
       type: object
       properties:
+        id:
+            type: "integer"
+            format: "int64"
+            example: 939
         name:
-          type: string
-          description: team name
-          example: København
-        players:
+            type: "string"
+            example: "Barcelona"
+        short_code:
+            type: "string"
+            example: "FCB"
+        country_id:
+            type: "integer"
+            format: "int64"
+            example: 320
+        national_team:
+            type: "boolean"
+            example: false
+        founded:
+            type: "integer"
+            format: "int64"
+            example: 1999
+        logo_path:
+            type: "string"
+            example: "https://cdn.sportmonks.com/images//soccer/teams/11/939.png"
+        season_name:
+            type: "string"
+            example: "2020/2021"
+        squad:
           type: array
           items:
             type: object
-            $ref: "#/components/schemas/PlayerPreview"
+            allOf:
+              - $ref: "#/components/schemas/Team"
+        coach:
+            $ref: "#/components/schemas/Coach"
+        latest:
+          type: array
+          items:
+            type: object
+            allOf:
+              - $ref: "#/components/schemas/Round"
+        upcoming:
+          type: array
+          items:
+            type: object
+            allOf:
+              - $ref: "#/components/schemas/Round"
+              
+    Season:
+      type: object
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+          example: 17141  
+        name:
+          type: "string"
+          example: "2020/2021"
+        league_id:
+          type: "integer"
+          format: "int64"
+          example: 2021  
+        is_current_season:
+          type: "boolean"
+          example: true
+        current_round_id:
+          type: "integer"
+          format: "int64"
+          example: 194969  
+        current_stage_id:
+          type: "integer"
+          format: "int64"
+          example: 77447501  
+          
+    League:
+      type: object
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+          example: 271  
+        active:
+          type: "boolean"
+          example: "true"
+        type:
+          type: "string"
+          example: "domestic"  
+        legacy_id:
+          type: "integer"
+          format: "int64"
+          example: 43  
+        country_id:
+          type: "integer"
+          format: "int64"
+          example: 320  
+        logo_path: 
+          type: "string"
+          example: "https://cdn.sportmonks.com/images/soccer/leagues/271.png"
+        name:
+          type: "string"
+          example: "Superliga"
+        is_cup:
+          type: "boolean"
+          example: "false"
+        current_season_id:
+          type: "integer"
+          format: "int64"
+          example: 17328  
+        current_round_id:
+          type: "integer"
+          format: "int64"
+          example: 199447
+        current_stage_id:
+          type: "integer"
+          format: "int64"
+          example: 77447994            
+        live_standings:
+          type: "boolean"
+          example: "true"
+        coverage:
+          type: object
+          properties:
+            predictions:
+              type: "boolean"
+              example: "true"  
+            topscorer_goals:
+              type: "boolean"
+              example: "true"
+            topscorer_assists:
+              type: "boolean"
+              example: "true"
+            topscorer_cards:
+              type: "boolean"
+              example: "true"  
+         
+    Player:
+      type: object
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+          example: 172104  
+        team_id:
+          type: "integer"
+          format: "int64"
+          example: 53  
+        country_id:
+          type: "integer"
+          format: "int64"
+          example: 1161  
+        position:
+          type: "string"
+          example: "Midfielder" 
+        fullname:
+          type: "string"
+          example: "James Forest"
+        firstname:
+          type: "string"
+          example: "James"
+        lastname:
+          type: "string"
+          example: "Forest"
+        nationality:
+          type: "string"
+          example: "Scotland"  
+        birthplace:
+          type: "string"
+          example: "Prestwick" 
+        birthdate:
+          type: "string"
+          example: "07/07/1991"  
+        height:
+          type: "string"
+          example: "175 cm"  
+        weight:
+          type: "string"
+          example: "90 kg"
+        team:
+          type: "string"
+          example: "Celtic"
+        goals:
+          type: "integer"
+          format: "int64"
+          example: 6  
+        redcard:
+          type: "integer"
+          format: "int64"
+          example: 0  
+        redcards:
+          type: "integer"
+          format: "int64"
+          example: 2          
+        assists:
+          type: "integer"
+          format: "int64"
+          example: 6
+        image_path:
+          type: "string"
+          example: "https://cdn.sportmonks.com/images/soccer/players/8/172104.png"
+    
+    Coach:
+      type: object
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+          example: 1467946  
+        team_id:
+          type: "integer"
+          format: "int64"
+          example: 53  
+        country_id:
+          type: "integer"
+          format: "int64"
+          example: 491  
+        fullname:
+          type: "string"
+          example: "Neil Lennon"
+        firstname:
+          type: "string"
+          example: "Neil"
+        lastname:
+          type: "string"
+          example: "Lennon"
+        nationality:
+          type: "string"
+          example: "Northern Ireland"  
+        birthplace:
+          type: "string"
+          example: "Lurgan" 
+        birthdate:
+          type: "string"
+          example: "25/06/1971"  
+        image_path:
+          type: "string"
+          example: "https://cdn.sportmonks.com/images/soccer/players/10/1467946.png"
+          
+    Stage:
+      type: object
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+          example: 77447500  
+        name:
+          type: "string"
+          example: "2nd Phase"
+        type:
+          type: "string"
+          example: "Group Stage"
+        league_id:
+          type: "integer"
+          format: "int64"
+          example: 501
+        season_id:
+          type: "integer"
+          format: "int64"
+          example: 17141
+        sort_order:
+          type: "integer"
+          format: "int64"
+          example: 1
+        has_standings:
+          type: "boolean"
+          example: false
+      
+    Round:
+        type: object
+        properties:
+          id:
+            type: "integer"
+            format: "int64"
+            example: 194968  
+          name:
+            type: "integer"
+            format: "int64"
+            example: 1    
+          league_id:
+            type: "integer"
+            format: "int64"
+            example: 501
+          season_id:
+            type: "integer"
+            format: "int64"
+            example: 77447501
+          start:
+            type: "string"
+            example: "2020-08-01"
+          end:
+            type: "string"
+            example: "2020-08-03"
+          date_time:
+            type: "string"
+            example: "2020-08-01 11:30:00"
+          localteam_name:
+            type: "string"
+            example: "Midtjylland" 
+          visitorteam_name:
+            type: "string"
+            example: "København" 
+          localteam_score:
+            type: "integer"
+            format: "int64"
+            example: 1  
+          visitorteam_score:
+            type: "integer"
+            format: "int64"
+            example: 0  
+            
+    ArrayOfRounds:
+      type: array
+      items:
+        type: object
+        allOf:
+          - $ref: "#/components/schemas/Round"
+    
+    ArrayOfTeams:
+      type: array
+      items:
+        type: object
+        allOf:
+          - $ref: "#/components/schemas/Team"
+          
+    ArrayOfPlayers:
+      type: array
+      items:
+        type: object
+        allOf:
+          - $ref: "#/components/schemas/Player"
+          
+    Headers:
+      type: object
+      properties:
+        Set-Cookie:
+          type: "string"
+          example: "sessionid: 12%qRQa%#a"
