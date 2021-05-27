@@ -6,9 +6,11 @@ GO
 -- Create the table in the specified schema
 CREATE TABLE dbo.Users
 (
-    userid INT NOT NULL PRIMARY KEY, -- primary key column
-    username [NVARCHAR](50) NOT NULL,
-    password [NVARCHAR](50) NOT NULL
+    username [NVARCHAR](50) NOT NULL PRIMARY KEY,
+    password [NVARCHAR](50) NOT NULL,
+    
+
+
     -- specify more columns here
 );
 GO

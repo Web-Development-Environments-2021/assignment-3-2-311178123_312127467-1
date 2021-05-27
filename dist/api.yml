@@ -5,7 +5,7 @@ paths:
   /user/register:
     post:
         tags:
-        - "user"
+        - "Authenticaiton"
         summary: "Adds a new user"
         description: "Save user in DB"
         operationId: "UserRegister" 
@@ -28,7 +28,7 @@ paths:
   /user/login:
     post:
         tags:
-        - "user"
+        - "Authenticaiton"
         summary: "Logs user into the system"
         description: ""
         operationId: "UserLogin" 
@@ -52,7 +52,7 @@ paths:
   /user/{userId}/logout:
      get:
       tags:
-        - "user"
+        - "Authenticaiton"
       summary: "Log the user from the system"
       description: ""
       operationId: "UserLogOut" 
@@ -81,7 +81,7 @@ paths:
   /user/{userId}/favGames:
      get:
       tags:
-        - "favGames"
+        - "User"
       summary: "Retrieve the favorite games for the user <userId>"
       description: ""
       operationId: "getFavGamesForUser" 
@@ -110,7 +110,7 @@ paths:
   /user/addfavGame:
     post:
       tags:
-        - "addfavGame"
+        - "User"
       summary: "add the favorite game to the list of the user's favorite games"
       description: "used in the user's personal page"
       operationId: "addFavGameForUser" 
@@ -135,7 +135,7 @@ paths:
   /user/{userId}/favTeams:
     get:
       tags:
-        - "favTeams"
+        - "User"
       summary: "Retrieve the favorite teams for the user <userId>"
       description: ""
       operationId: "getFavTeamsForUser" 
@@ -164,7 +164,7 @@ paths:
   /user/addfavTeam:
     post:
       tags:
-        - "addfavTeam"
+        - "User"
       summary: "add the favorite team to the list of the user's favorite teams"
       description: "used in the user's personal page"
       operationId: "addFavTeamForUser" 
@@ -189,7 +189,7 @@ paths:
   /user/{userId}/favPlayers:
     get:
       tags:
-        - "favPlayers"
+        - "User"
       summary: "Retrieve the favorite players for the user <userId>"
       description: ""
       operationId: "getFavPlayersForUser" 
@@ -218,7 +218,7 @@ paths:
   /user/addfavPlayer:
     post:
       tags:
-        - "addfavPlayer"
+        - "User"
       summary: "add the favorite player to the list of the user's favorite players"
       description: "used in the user's personal page"
       operationId: "addFavPlayerForUser" 
@@ -243,7 +243,7 @@ paths:
   /pictures/homepage:
     get:
       tags:
-        - "pictures"
+        - "Homepage"
       summary: "Retrieve the picture for the homepage"
       description: ""
       operationId: "GetMainpagePicture" 
@@ -265,7 +265,7 @@ paths:
   /league/{leagueName}:
     get:
       tags:
-        - "league"
+        - "League"
       summary: "Get information about the league by using the league name"
       operationId: "getLeagueByName" 
       parameters:
@@ -293,7 +293,7 @@ paths:
   /season/{seasonId}:
     get:
       tags:
-        - "season"
+        - "Season"
       summary: "Get information about the season by using the season ID"
       operationId: "getSeasonById" 
       parameters:
@@ -321,7 +321,7 @@ paths:
   /season/stage/{seasonId}:
     get:
       tags:
-        - "season"
+        - "Season"
       summary: "Get information about the stage by using the season ID"
       operationId: "getStageBySeasonId" 
       parameters:
@@ -349,7 +349,7 @@ paths:
   /season/round/{seasonId}:
     get:
       tags:
-        - "season"
+        - "Season"
       summary: "Get information about the round by using the season ID"
       operationId: "getRoundBySeasonId" 
       parameters:
@@ -377,7 +377,7 @@ paths:
   /stage/{stageId}:
     get:
       tags:
-        - "stage"
+        - "Stage"
       summary: "Get information about the stage by using the Stage id"
       operationId: "getStageByStageId" 
       parameters:
@@ -405,7 +405,7 @@ paths:
   /player/{playerId}:
     get:
       tags:
-        - "player"
+        - "Player"
       description: "used for player card in personal page"
       summary: "Get information about the player by using the player id"
       operationId: "getPlayerByStageId" 
@@ -435,7 +435,7 @@ paths:
   /coach/{coachId}:
     get:
       tags:
-        - "coach"
+        - "Coach"
       description: "used for coach card in personal page"
       summary: "Get information about the coach by using the coach id"
       operationId: "getCoachByStageId" 
@@ -464,7 +464,7 @@ paths:
   /round/{roundId}:
     get:
       tags:
-        - "round"
+        - "Round"
       summary: "Get information about the round by using the round id"
       operationId: "getRoundById" 
       parameters:
@@ -492,7 +492,7 @@ paths:
   /team/{teamId}:
     get:
       tags:
-        - "team"
+        - "Team"
       summary: "Get information about the team by using the team id"
       description: "used in the team's personal page"
       operationId: "getTeamById" 
@@ -521,7 +521,7 @@ paths:
   /team/{team_name}:
     get:
       tags:
-        - "team"
+        - "Team"
       summary: "Get information about the team by using the team name"
       description: "used in the team's personal page"
       operationId: "getTeamByName" 
@@ -549,7 +549,7 @@ paths:
   /currentStageGames:
     get:
       tags:
-        - "currentStageGames"
+        - "Stage"
       summary: "Get the latest games for the current stage"
       description: "for the current stage page"
             

@@ -103,7 +103,7 @@ const server = app.listen(port, () => {
 //   }
 // };
 
-// TEST SQL SERVER
+// // TEST SQL SERVER
 // const sql = require("./routes/utils/DButils");
 // test = async (req, res, next) => {
 //   try {
