@@ -258,36 +258,6 @@ paths:
               schema:
                 type: string
                 format: binary
-  
-
-  
-  
-  /league/{leagueName}:
-    get:
-      tags:
-        - "League"
-      summary: "Get information about the league by using the league name"
-      operationId: "getLeagueByName" 
-      parameters:
-      - name: "leagueName"
-        in: "path"
-        description: "Name of league to return"
-        required: true
-        schema:
-          type: "string"
-          example: "Superliga"
-            
-      responses:
-        "404":
-          description: "URL not found"
-        "400":
-          description: "Invalid Name supplied"
-        "200":
-          description: "successful operation"
-          content:  
-            application/json:    
-              schema:            
-                $ref: "#/components/schemas/League"
                 
                 
   /season/{seasonId}:

@@ -11,6 +11,8 @@ async function getLeagueDetails() {
       },
     }
   );
+
+
   const stage = await axios.get(
     `https://soccer.sportmonks.com/api/v2.0/stages/${league.data.data.current_stage_id}`,
     {
