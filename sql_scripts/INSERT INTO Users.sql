@@ -1,14 +1,4 @@
-INSERT INTO Users
-   ([username],[password],[firstname],[lastname],
-   [country],[email],[imageurl])
-   
-VALUES
-   ('eden6', 'red', 'eden','yav','iraq','ede@.com',
-   'dsfsfs.com'),
-     ('guy1', '123', 'guy','shimi','iraq','guy@.com',
-   'examp.com')
 
-GO
 -- Query the total count of employees
 SELECT * FROM dbo.Users;
 -- Query all employee information

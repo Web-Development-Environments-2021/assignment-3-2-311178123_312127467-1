@@ -5,8 +5,8 @@ GO
 CREATE TABLE dbo.UsersFavoriteTeams
 (
     
-    username [NVARCHAR](50) NOT NULL,
+    userid [NVARCHAR](50) NOT NULL,
     teamid [INT] NOT NULL
-    PRIMARY KEY(username, teamid)
+    PRIMARY KEY(userid, teamid)
 );
 GO

@@ -10,8 +10,8 @@ DROP TABLE dbo.UsersFavoritePlayers
 -- acting as a foregin key to the main users table.
 CREATE TABLE dbo.Users
 (
-    
-    username [NVARCHAR](50) NOT NULL PRIMARY KEY,
+    userid INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    username [NVARCHAR](50) NOT NULL,
     password [NVARCHAR](50) NOT NULL,
     firstname [NVARCHAR](50) NOT NULL,
     lastname [NVARCHAR](50) NOT NULL,
@@ -23,9 +23,9 @@ CREATE TABLE dbo.Users
 CREATE TABLE dbo.UsersFavoritePlayers
 (
     
-    username [NVARCHAR](50) NOT NULL,
+    userid INT NOT NULL,
     playerid [INT] NOT NULL
-    PRIMARY KEY(username, playerid)
+    PRIMARY KEY(userid, playerid)
 );
 
 
