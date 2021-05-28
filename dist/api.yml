@@ -258,6 +258,24 @@ paths:
               schema:
                 type: string
                 format: binary
+  
+  /league/getDetails:
+    get:
+      tags:
+        - "League"
+      summary: "Get information about the superliga league "
+      operationId: "getLeagueByName"     
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid id supplied"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                $ref: "#/components/schemas/League"
                 
                 
   /season/{seasonId}:
@@ -652,64 +670,67 @@ components:
     League:
       type: object
       properties:
-        id:
-          type: "integer"
-          format: "int64"
-          example: 271  
-        active:
-          type: "boolean"
-          example: "true"
-        type:
-          type: "string"
-          example: "domestic"  
-        legacy_id:
-          type: "integer"
-          format: "int64"
-          example: 43  
-        country_id:
-          type: "integer"
-          format: "int64"
-          example: 320  
-        logo_path: 
-          type: "string"
-          example: "https://cdn.sportmonks.com/images/soccer/leagues/271.png"
-        name:
-          type: "string"
+        league_name:
+          type: "String"
           example: "Superliga"
-        is_cup:
-          type: "boolean"
-          example: "false"
-        current_season_id:
-          type: "integer"
-          format: "int64"
-          example: 17328  
-        current_round_id:
-          type: "integer"
-          format: "int64"
-          example: 199447
-        current_stage_id:
-          type: "integer"
-          format: "int64"
-          example: 77447994            
-        live_standings:
-          type: "boolean"
-          example: "true"
-        coverage:
+        current_season_name:
+          type: "String"
+          example: "2020/2021"
+        current_stage_name:
+          type: "String"
+          example: "Europa League Play-offs - Final"
+        next_game:
           type: object
-          properties:
-            predictions:
-              type: "boolean"
-              example: "true"  
-            topscorer_goals:
-              type: "boolean"
-              example: "true"
-            topscorer_assists:
-              type: "boolean"
-              example: "true"
-            topscorer_cards:
-              type: "boolean"
-              example: "true"  
-         
+          $ref: "#/components/schemas/Game"
+
+    Game:
+      type: object
+      properties:
+        game_date:
+          type: "String"
+          example: "04/02/2020"
+        game_time:
+          type: "String"
+          example: "17:00:00"
+        home_team:
+          type: "String"
+          example: "FC Barcelona"
+        away_team:
+          type: "String"
+          example: "Macabi Haifa"
+        stadium:
+          type: "String"
+          example: "Kiryat Eliezer"
+        game_events:
+          type: array
+          items:
+            type: object
+            allOf:
+            - $ref: "#/components/schemas/GameEvent"
+    
+    GameEvent:
+      type: object
+      properties:
+        game_date:
+          type: "String"
+          example: "07/12/2021"
+        game_time:
+          type: "String"
+          example: "14:30:00"
+        home_team:
+          type: "String"
+          example: "Real Madrid"
+        away_team:
+          type: "String"
+          example: "Hapoel Beersheba"
+        event_game_time:
+          type: "integer"
+          format: "int64"
+          example: 65  
+        event:
+          type: "String"
+          example: "Red card"
+
     Player:
       type: object
       properties:
@@ -904,7 +925,7 @@ components:
         type: object
         allOf:
           - $ref: "#/components/schemas/Player"
-          
+      
     Headers:
       type: object
       properties:
