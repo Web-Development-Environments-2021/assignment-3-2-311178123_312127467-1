@@ -2,7 +2,7 @@ openapi: 3.0.0
 
 
 paths: 
-  /user/register:
+  /users/register:
     post:
         tags:
         - "Authenticaiton"
@@ -25,7 +25,7 @@ paths:
           "200":
             description: "Registration was sucessfull"
             
-  /user/login:
+  /users/login:
     post:
         tags:
         - "Authenticaiton"
@@ -49,22 +49,13 @@ paths:
             description: "Login was sucessful"  
             
   
-  /user/{userId}/logout:
+  /users/logout:
      get:
       tags:
         - "Authenticaiton"
       summary: "Log the user from the system"
       description: ""
       operationId: "UserLogOut" 
-      parameters:
-      - name: "userId"
-        in: "path"
-        description: "ID of user who wants to log out"
-        required: true
-        schema:
-          type: "integer"
-          minimum: 0
-          example: 1117
           
       responses:
         "404":
@@ -78,7 +69,7 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfRounds"
             
-  /user/{userId}/favoriteGames:
+  /users/favoriteGames:
      get:
       tags:
         - "User"
@@ -86,14 +77,6 @@ paths:
       description: ""
       operationId: "getFavGamesForUser" 
       parameters:
-      - name: "userId"
-        in: "path"
-        description: "ID of user who want to view his favorite games"
-        required: true
-        schema:
-          type: "integer"
-          minimum: 0
-          example: 1
           
       responses:
         "404":
@@ -107,7 +90,7 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfRounds"
                 
-  /user/addFavoriteGame:
+  /users/addFavoriteGame:
     post:
       tags:
         - "User"
@@ -132,22 +115,13 @@ paths:
         "200":
           description: "round was added succesfully"
           
-  /user/{userId}/favoriteTeams:
+  /users/favoriteTeams:
     get:
       tags:
         - "User"
       summary: "Retrieve the favorite teams for the user <userId>"
       description: ""
       operationId: "getFavTeamsForUser" 
-      parameters:
-      - name: "userId"
-        in: "path"
-        description: "ID of user who wants to view his favorite teams"
-        required: true
-        schema:
-          type: "integer"
-          minimum: 0
-          example: 1
           
       responses:
         "404":
@@ -161,7 +135,7 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfTeams"
                 
-  /user/addFavoriteTeam:
+  /users/addFavoriteTeam:
     post:
       tags:
         - "User"
@@ -186,22 +160,13 @@ paths:
         "200":
           description: "round was added succesfully"
           
-  /user/{userId}/favoritePlayers:
+  /users/favoritePlayers:
     get:
       tags:
         - "User"
       summary: "Retrieve the favorite players for the user <userId>"
       description: ""
       operationId: "getFavPlayersForUser" 
-      parameters:
-      - name: "userId"
-        in: "path"
-        description: "ID of user who want to view his favorite players"
-        required: true
-        schema:
-          type: "integer"
-          minimum: 0
-          example: 1
           
       responses:
         "404":
@@ -215,7 +180,7 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfPlayers"
        
-  /user/addFavoritePlayer:
+  /users/addFavoritePlayer:
     post:
       tags:
         - "User"
