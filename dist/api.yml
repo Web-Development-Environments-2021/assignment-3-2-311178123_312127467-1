@@ -78,7 +78,7 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfRounds"
             
-  /user/{userId}/favGames:
+  /user/{userId}/favoriteGames:
      get:
       tags:
         - "User"
@@ -107,7 +107,7 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfRounds"
                 
-  /user/addfavGame:
+  /user/addFavoriteGame:
     post:
       tags:
         - "User"
@@ -132,7 +132,7 @@ paths:
         "200":
           description: "round was added succesfully"
           
-  /user/{userId}/favTeams:
+  /user/{userId}/favoriteTeams:
     get:
       tags:
         - "User"
@@ -161,7 +161,7 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfTeams"
                 
-  /user/addfavTeam:
+  /user/addFavoriteTeam:
     post:
       tags:
         - "User"
@@ -186,7 +186,7 @@ paths:
         "200":
           description: "round was added succesfully"
           
-  /user/{userId}/favPlayers:
+  /user/{userId}/favoritePlayers:
     get:
       tags:
         - "User"
@@ -215,7 +215,7 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfPlayers"
        
-  /user/addfavPlayer:
+  /user/addFavoritePlayer:
     post:
       tags:
         - "User"
