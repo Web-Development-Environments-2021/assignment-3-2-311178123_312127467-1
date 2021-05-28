@@ -713,7 +713,7 @@ components:
       properties:
         game_date:
           type: "String"
-          example: "07/12/2021"
+          example: "2020-08-03"
         game_time:
           type: "String"
           example: "14:30:00"
