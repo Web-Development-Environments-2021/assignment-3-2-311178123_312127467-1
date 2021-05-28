@@ -537,7 +537,7 @@ paths:
   /currentStageGames:
     get:
       tags:
-        - "Stage"
+        - "Games"
       summary: "Get the latest games for the current stage"
       description: "for the current stage page"
             
@@ -551,7 +551,7 @@ paths:
           content:  
             application/json:    
               schema:            
-                $ref: "#/components/schemas/ArrayOfRounds"
+                $ref: "#/components/schemas/ArrayOfGames"
 
 components:
   schemas:
@@ -925,7 +925,14 @@ components:
         type: object
         allOf:
           - $ref: "#/components/schemas/Player"
-      
+    
+    ArrayOfGames:
+      type: array
+      items:
+        type: object
+        allOf:
+          - $ref: "#/components/schemas/Game"
+
     Headers:
       type: object
       properties:
