@@ -4,9 +4,7 @@ IF OBJECT_ID('dbo.Users', 'U') IS NOT NULL
 DROP TABLE dbo.Users
 IF OBJECT_ID('dbo.UsersFavoritePlayers', 'U') IS NOT NULL
 DROP TABLE dbo.UsersFavoritePlayers
-IF OBJECT_ID('dbo.UsersFavoriteTeams', 'U') IS NOT NULL
-DROP TABLE dbo.UsersFavoriteTeams
-GO
+
 -- Create all the Users details with all the user's personal data.
 -- The favorite teams and players will be in a different tables with the user name
 -- acting as a foregin key to the main users table.
@@ -29,15 +27,6 @@ CREATE TABLE dbo.UsersFavoritePlayers
     playerid [INT] NOT NULL
     PRIMARY KEY(username, playerid)
 );
-
-CREATE TABLE dbo.UsersFavoriteTeams
-(
-    
-    username [NVARCHAR](50) NOT NULL,
-    teamid [INT] NOT NULL
-    PRIMARY KEY(username, teamid)
-);
-GO
 
 
 
