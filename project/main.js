@@ -103,24 +103,24 @@ const server = app.listen(port, () => {
 //   }
 // };
 
-// TEST SQL SERVER
-const sql = require("./routes/utils/DButils");
-test = async (req, res, next) => {
-  try {
-    // parameters exists
-    // valid parameters
-    // username exists
-    console.log("qeuring")
-    const users = await sql.execQuery(
-      "SELECT e.EmployeesId, e.Name, e.Location FROM dbo.Employees as e"
-    );
-    console.log(users)
-  } catch (error) {
-    console.log(error);
-  }
-};
+// // TEST SQL SERVER
+// const sql = require("./routes/utils/DButils");
+// test = async (req, res, next) => {
+//   try {
+//     // parameters exists
+//     // valid parameters
+//     // username exists
+//     console.log("qeuring")
+//     const users = await sql.execQuery(
+//       "SELECT e.EmployeesId, e.Name, e.Location FROM dbo.Employees as e"
+//     );
+//     console.log(users)
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
-test()
+// test()
 // process.on("SIGINT", function () {
 //   if (server) {
 //     server.close(() => console.log("server closed"));
