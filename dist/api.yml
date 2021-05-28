@@ -688,7 +688,7 @@ components:
       properties:
         game_date:
           type: "String"
-          example: "04/02/2020"
+          example: "2021-10-28"
         game_time:
           type: "String"
           example: "17:00:00"
