@@ -2,7 +2,8 @@
 -- Drop the table if it already exists
 IF OBJECT_ID('dbo.Games', 'U') IS NOT NULL
 DROP TABLE dbo.Games
-
+IF OBJECT_ID('dbo.GamesEvents', 'U') IS NOT NULL
+DROP TABLE dbo.GamesEvents
 -- Create table for the all the games
 CREATE TABLE dbo.Games
 (
@@ -24,8 +25,8 @@ CREATE TABLE dbo.GamesEvents
     HomeTeam [NVARCHAR](50) NOT NULL,
     AwayTeam [NVARCHAR](50) NOT NULL,
     EventGameTime [INT] NOT NULL,
-    EventDescrib [NVARCHAR](50) NOT NULL,
-    PRIMARY KEY (GameDate,GameTime, HomeTeam, AwayTeam)
+    Event [NVARCHAR](50) NOT NULL,
+    PRIMARY KEY (GameDate,GameTime, HomeTeam, AwayTeam, EventGameTime)
 
 );
 
