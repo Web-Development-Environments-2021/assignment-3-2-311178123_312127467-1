@@ -66,7 +66,6 @@ function extractRelevantTeamData(teams_info) {
         let coach = coach_utils.extractCoachData(team_info.data.data.coach.data);
         let upcoming_games = game_utils.getUpcomingGames(team_info.data.data.id);
         let latest_games = game_utils.getLatestGames(team_info.data.data.id);
-        let
         const { name} = team_info.data.data.name;
         return {
         name: name,
