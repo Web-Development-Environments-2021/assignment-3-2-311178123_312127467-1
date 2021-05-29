@@ -2,12 +2,24 @@ const axios = require("axios");
 const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 const coach_utils = require("./coach_utils");
 const game_utils = require("./games_utils");
+const players_utils = require("./players_utils");
 
+/*
+The method will query the sports api for the team's name and return the id
+*/
+async function getTeamIdByName(team_name){
+  const team_data = await axios.get(`${api_domain}/teams/search/${team_name}`, {
+    params: {
+      api_token: process.env.api_token,
+    },
+  })
+
+  return team_data.data.data[0].id;
+}
 
 /*
 The method will query the sports api for the teams information
 */
-
 async function getGamesInfo(team_id) {
   let upcoming = getUpcomingTeamGames(team_id)
   let latest = getLatestTeamGames(team_id)
@@ -37,7 +49,7 @@ async function getGamesInfo(team_id) {
 }
 
 async function getTeamsInfo(teams_ids_list) {
-    // Guy - Need to add more queries with include (see getPlayerIdsByTeam in players_urils for ref) 
+    let teams_data = []
     let promises = [];
     teams_ids_list.map((id) =>
       promises.push(
@@ -59,9 +71,8 @@ mentioned in the api
 */
 
 async function extractRelevantTeamData(teams_info) {
-    // Guy - Need to extract all the relavent info and add more queries to the sport api
-    // for the coach etc...
-    // For example
+
+   let teams_data = []
 
     return await Promise.all(teams_info.map(async (team_info) => {
         let coach = coach_utils.extractCoachData(team_info.data.data.coach.data);
@@ -79,4 +90,6 @@ async function extractRelevantTeamData(teams_info) {
 }
 
 
+
 exports.getTeamsInfo = getTeamsInfo;
+exports.getTeamIdByName = getTeamIdByName;

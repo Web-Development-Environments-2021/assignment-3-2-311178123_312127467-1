@@ -6,15 +6,14 @@ const coach_utils = require("./utils/coach_utils");
 const teams_utils = require("./utils/teams_utils");
 
 
+async function getTeamData(team_id){
+    let team_details = [];
 
-router.get("/:teamId", async (req, res, next) => {
-  let team_details = [];
-  try {
     // const team_players = await players_utils.getPlayersByTeam(
-    //   req.params.teamId
+    //   team_id
     // );
     const team_info = await teams_utils.getTeamsInfo(
-      [req.params.teamId]
+      [team_id]
     );
     const past_games = team_info[0]['Latest_Games']
     const future_games = team_info[0]['Upcoming_Games']
@@ -27,19 +26,24 @@ router.get("/:teamId", async (req, res, next) => {
     team_details.push(past_games);
     team_details.push(future_games);
 
+    return team_details
+}
+
+
+router.get("/id/:teamId", async (req, res, next) => {
+  try {
+    const team_details = await getTeamData(req.params.teamId)
+
     res.send(team_details);
   } catch (error) {
     next(error);
   }
 });
 
-router.get("/teamFullDetails/:teamname", async (req, res, next) => {
-  let team_details = [];
+router.get("/name/:teamname", async (req, res, next) => {
   try {
-    const team_details = await players_utils.getPlayersByTeam(
-      req.params.teamId
-    );
-    //we should keep implementing team page.....
+    const team_id = await teams_utils.getTeamIdByName(req.params.teamname)
+    const team_details = await getTeamData(team_id)
     res.send(team_details);
   } catch (error) {
     next(error);
