@@ -25,7 +25,8 @@ mentioned in the api
 */
 function extractRelevantTeamData(teams_info) {
     // Guy - Need to extract all the relavent info and add more queries to the sport api
-    // for the coach etc...
+    // for the coach (with include see getPlayerIdsByTeam in players_urils for ref) etc...
+    // For example
 return teams_info.map((teams_info) => {
     const { name} = teams_info.data.data;
     return {
