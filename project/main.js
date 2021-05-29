@@ -83,7 +83,7 @@ app.use(auth);
 
 app.use(function (err, req, res, next) {
   console.error(err);
-  res.status(err.status || 500).send(err.message);
+  res.status(err.status || 404).send(err.message);
 });
 
 const server = app.listen(port, () => {
