@@ -50,7 +50,7 @@ async function getTeamsInfo(teams_ids_list) {
       )
     );
     let teams_info = await Promise.all(promises);
-    return extractRelevantTeamData(teams_info);
+    return await extractRelevantTeamData(teams_info);
 }
 
 /*
@@ -58,14 +58,15 @@ The method will extract all the relavent data about the team as it is
 mentioned in the api
 */
 
-function extractRelevantTeamData(teams_info) {
+async function extractRelevantTeamData(teams_info) {
     // Guy - Need to extract all the relavent info and add more queries to the sport api
     // for the coach etc...
     // For example
-    return teams_info.map((team_info) => {
+
+    return await Promise.all(teams_info.map(async (team_info) => {
         let coach = coach_utils.extractCoachData(team_info.data.data.coach.data);
-        let upcoming_games = game_utils.getUpcomingGames(team_info.data.data.id);
-        let latest_games = game_utils.getLatestGames(team_info.data.data.id);
+        let upcoming_games = await game_utils.getUpcomingGames(team_info.data.data.id);
+        let latest_games = await game_utils.getLatestGames(team_info.data.data.id);
         const { name} = team_info.data.data.name;
         return {
         name: name,
@@ -73,7 +74,8 @@ function extractRelevantTeamData(teams_info) {
         Latest_Games: latest_games,
         Upcoming_Games: upcoming_games
         };
-    });
+    }));
+
 }
 
 
