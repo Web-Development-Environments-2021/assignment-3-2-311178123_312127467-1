@@ -12,13 +12,13 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "morgan": "^1.10.0",
-    "mssql": "^7.1.0"
+    "mssql": "^7.1.0",
+    "path": "^0.12.7"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon .\\project\\main.js"
-
   },
   "author": "",
   "license": "ISC"

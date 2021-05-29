@@ -59,7 +59,7 @@ function extractRelevantPlayerData(players_info) {
       nationality: nationality,
       birthdate: birthdate,
       birthcountry: birthcountry,
-      common_name: common_name
+      common_name: common_name,
       weight: weight,
       height: height
     };
