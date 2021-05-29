@@ -40,13 +40,20 @@ paths:
                 $ref: "#/components/schemas/UserLogin"
         responses:
           "401":
-            description: "Bad Password or username" 
+            description: "Username or Password incorrect" 
           "404":
             description: "URL not found"
           "500":
             description: "Users DB not reachable"
           "200":
-            description: "Login was sucessful"  
+            description: >
+              Successfully authenticated.
+              The session ID is returned in a cookie named `JSESSIONID`. You need to include this cookie in subsequent requests.
+            headers: 
+              Set-Cookie:
+                schema: 
+                  type: string
+                  example: JSESSIONID=abcde12345; Path=/; HttpOnly
             
   
   /logout:
@@ -91,33 +98,33 @@ paths:
             application/json:    
               schema:            
                 $ref: "#/components/schemas/ArrayOfRounds"
-                
-  /users/favoriteGames:
-    post:
-      tags:
-        - "User"
-      summary: "add the favorite game to the list of the user's favorite games"
-      description: "used in the user's personal page"
-      operationId: "addFavGameForUser" 
-      requestBody:
-        content:
-          application/json:  
-            schema:
-              type: object
-              properties:
-                round_id:
-                  type: "integer"
-                  example: 23
-          
-      responses:
-        "404":
-          description: "URL not found"
-        "401":
-          description: "Unauthorized, please login first" 
-        "400":
-          description: "Invalid ID supplied"
-        "200":
-          description: "round was added succesfully"
+  /users/addFavoriteGames:
+           
+      post:
+        tags:
+          - "User"
+        summary: "add the favorite game to the list of the user's favorite games"
+        description: "used in the user's personal page"
+        operationId: "addFavGameForUser" 
+        requestBody:
+          content:
+            application/json:  
+              schema:
+                type: object
+                properties:
+                  round_id:
+                    type: "integer"
+                    example: 23
+            
+        responses:
+          "404":
+            description: "URL not found"
+          "401":
+            description: "Unauthorized, please login first" 
+          "400":
+            description: "Invalid ID supplied"
+          "200":
+            description: "round was added succesfully"
           
   /users/favoriteTeams:
     get:
@@ -141,7 +148,7 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfTeams"
                 
-  /users/favoriteTeams:
+  /users/addFavoriteTeams:
     post:
       tags:
         - "User"
@@ -190,7 +197,7 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfPlayers"
        
-  /users/favoritePlayers:
+  /users/addFavoritePlayers:
     post:
       tags:
         - "User"
@@ -205,7 +212,7 @@ paths:
               properties:
                 player_id:
                   type: "integer"
-                  example: 10
+                  example: 172104
           
       responses:
         "404":
@@ -909,10 +916,3 @@ components:
         type: object
         allOf:
           - $ref: "#/components/schemas/Game"
-
-    Headers:
-      type: object
-      properties:
-        Set-Cookie:
-          type: "string"
-          example: "sessionid: 12%qRQa%#a"
