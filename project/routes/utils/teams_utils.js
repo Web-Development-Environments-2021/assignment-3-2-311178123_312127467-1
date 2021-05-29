@@ -5,6 +5,7 @@ const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 The method will query the sports api for the teams information
 */
 async function getTeamsInfo(teams_ids_list) {
+    // Guy - Need to add more queries with include (see getPlayerIdsByTeam in players_urils for ref) 
     let promises = [];
     teams_ids_list.map((id) =>
       promises.push(
@@ -25,7 +26,7 @@ mentioned in the api
 */
 function extractRelevantTeamData(teams_info) {
     // Guy - Need to extract all the relavent info and add more queries to the sport api
-    // for the coach (with include see getPlayerIdsByTeam in players_urils for ref) etc...
+    // for the coach etc...
     // For example
 return teams_info.map((teams_info) => {
     const { name} = teams_info.data.data;
