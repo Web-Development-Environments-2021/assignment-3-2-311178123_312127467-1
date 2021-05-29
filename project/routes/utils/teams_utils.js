@@ -4,6 +4,63 @@ const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 /*
 The method will query the sports api for the teams information
 */
+
+async function getLatestTeamGames(team_id) {
+  let latest_games = [];
+  const team = await axios.get(`${api_domain}/teams/${team_id}`, {
+    params: {
+      include: "latest",
+      api_token: process.env.api_token,
+    },
+  });
+  team.data.latest.data.map((game) =>
+    latest_games.push(game.id)
+  );
+  return latest_games;
+}
+
+async function getUpcomingTeamGames(team_id) {
+  let upcoming_games = [];
+  const team = await axios.get(`${api_domain}/teams/${team_id}`, {
+    params: {
+      include: "upcoming",
+      api_token: process.env.api_token,
+    },
+  });
+  team.data.upcoming.data.map((game) =>
+    upcoming_games.push(game.id)
+  );
+  return upcoming_games;
+}
+
+async function getGamesInfo(team_id) {
+  let upcoming = getUpcomingTeamGames(team_id)
+  let latest = getLatestTeamGames(team_id)
+  let promises_upcoming = [];
+  let promises_latest = [];
+  upcoming.map((id) =>
+    promises_upcoming.push(
+      axios.get(`${api_domain}/teams/${team_id}/upcoming/${id}`, {
+        params: {
+          api_token: process.env.api_token,
+        },
+      })
+    )
+  );
+  latest.map((id) =>
+    promises_latest.push(
+      axios.get(`${api_domain}/teams/${team_id}/latest/${id}`, {
+        params: {
+          api_token: process.env.api_token,
+        },
+      })
+    )
+  );
+  let latest_info = await Promise.all(promises_latest);
+  let upcoming_info = await Promise.all(promises_upcoming);
+  return extractRelevantPlayerData(latest_info),extractRelevantPlayerData(upcoming_info);
+}
+
 async function getTeamsInfo(teams_ids_list) {
     // Guy - Need to add more queries with include (see getPlayerIdsByTeam in players_urils for ref) 
     let promises = [];
