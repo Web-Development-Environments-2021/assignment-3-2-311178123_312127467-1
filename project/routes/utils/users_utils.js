@@ -34,7 +34,7 @@ Get the favorite teams from the users DB
 */
 async function getFavoriteTeams(user_id) {
   const player_ids = await DButils.execQuery(
-    `select playerid from UsersFavoriteTeams where userid='${user_id}'`
+    `select teamid from UsersFavoriteTeams where userid='${user_id}'`
   );
   return player_ids;
 }

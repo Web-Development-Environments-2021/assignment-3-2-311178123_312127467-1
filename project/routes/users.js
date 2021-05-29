@@ -3,6 +3,7 @@ var router = express.Router();
 const DButils = require("./utils/DButils");
 const users_utils = require("./utils/users_utils");
 const players_utils = require("./utils/players_utils");
+const teams_utils = require("./utils/teams_utils.js");
 
 /**
  * Authenticate all incoming requests by middleware
@@ -50,15 +51,12 @@ router.post("/addFavoritePlayers", async (req, res, next) => {
   }
 });
 
-
-
 /**
  * This path returns the favorites players that were saved by the logged-in user
  */
 router.get("/favoritePlayers", async (req, res, next) => {
   try {
     const userid = req.session.userid;
-    let favorite_players = {};
     const player_ids = await users_utils.getFavoritePlayers(userid);
     let player_ids_array = [];
     player_ids.map((element) => player_ids_array.push(element.playerid)); //extracting the players ids into array
@@ -68,5 +66,22 @@ router.get("/favoritePlayers", async (req, res, next) => {
     next(error);
   }
 });
+
+/**
+ * This path returns the favorites teams that were saved by the logged-in user
+ */
+ router.get("/favoriteTeams", async (req, res, next) => {
+  try {
+    const userid = req.session.userid;
+    const teams_ids = await users_utils.getFavoriteTeams(userid);
+    let teams_ids_array = [];
+    teams_ids.map((element) => teams_ids_array.push(element.teamid)); //extracting the players ids into array
+    const results = await teams_utils.getTeamsInfo(teams_ids_array);
+    res.status(200).send(results);
+  } catch (error) {
+    next(error);
+  }
+});
+
 
 module.exports = router;
