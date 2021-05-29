@@ -12,8 +12,8 @@ router.post("/register", async (req, res, next) => {
       "SELECT username FROM Users"
     );
 
-    if (users.find((x) => x.username === req.body.username))
-      throw { status: 409, message: "Username taken" };
+    if (users.length != 0 && users.find((x) => x.username === req.body.username))
+      throw { status: 405, message: "Username taken" };
 
     //hash the password
     let hash_password = bcrypt.hashSync(
@@ -24,12 +24,12 @@ router.post("/register", async (req, res, next) => {
 
     // add the new username
     await DButils.execQuery(
-      `INSERT INTO dbo.Users (userid, username, password, firstname, lastname, country, email, imageurl) VALUES ('${req.body.username}', '${hash_password}',
-      '${userid}',${req.body.firstname}','${req.body.lastname}','${req.body.country}','${req.body.email}','${req.body.imagurl})`
+      `INSERT INTO dbo.Users (username, password, firstname, lastname, country, email, imageurl) VALUES ('${req.body.username}', '${req.body.password}',
+      '${req.body.firstname}','${req.body.lastname}','${req.body.country}','${req.body.email}','${req.body.imagurl}')`
     );
     res.status(201).send("user created");
   } catch (error) {
-    next(error);
+    res.status(500).send(error.message);
   }
 });
 

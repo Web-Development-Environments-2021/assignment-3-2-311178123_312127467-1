@@ -92,7 +92,7 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfRounds"
                 
-  /users/addFavoriteGame:
+  /users/favoriteGames:
     post:
       tags:
         - "User"
@@ -141,7 +141,7 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfTeams"
                 
-  /users/addFavoriteTeam:
+  /users/favoriteTeams:
     post:
       tags:
         - "User"
@@ -190,7 +190,7 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfPlayers"
        
-  /users/addFavoritePlayer:
+  /users/favoritePlayers:
     post:
       tags:
         - "User"
@@ -562,10 +562,10 @@ components:
       properties:
         username:
           type: "string"
-          example: "Eve"  
+          example: "Johnc"  
         password:
           type: "string"
-          example: "Eve123!!"
+          example: "1234John"
           
     Team:
       type: object

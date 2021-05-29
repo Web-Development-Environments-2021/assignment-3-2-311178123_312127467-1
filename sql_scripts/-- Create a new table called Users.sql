@@ -12,7 +12,7 @@ CREATE TABLE dbo.Users
 (
     userid INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     username [NVARCHAR](50) NOT NULL,
-    password [NVARCHAR](50) NOT NULL,
+    password [NVARCHAR](100) NOT NULL,
     firstname [NVARCHAR](50) NOT NULL,
     lastname [NVARCHAR](50) NOT NULL,
     country [NVARCHAR](50) NOT NULL,
