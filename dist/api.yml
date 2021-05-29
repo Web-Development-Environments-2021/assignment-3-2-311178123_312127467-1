@@ -81,6 +81,8 @@ paths:
       responses:
         "404":
           description: "URL not found"
+        "401":
+          description: "Unauthorized, please login first"
         "400":
           description: "Invalid ID supplied"
         "200":
@@ -110,6 +112,8 @@ paths:
       responses:
         "404":
           description: "URL not found"
+        "401":
+          description: "Unauthorized, please login first" 
         "400":
           description: "Invalid ID supplied"
         "200":
@@ -126,6 +130,8 @@ paths:
       responses:
         "404":
           description: "URL not found"
+        "401":
+          description: "Unauthorized, please login first"
         "400":
           description: "Invalid ID supplied"
         "200":
@@ -155,6 +161,8 @@ paths:
       responses:
         "404":
           description: "URL not found"
+        "401":
+          description: "Unauthorized, please login first"
         "400":
           description: "Invalid ID supplied"
         "200":
@@ -171,6 +179,8 @@ paths:
       responses:
         "404":
           description: "URL not found"
+        "401":
+          description: "Unauthorized, please login first"
         "400":
           description: "Invalid ID supplied"
         "200":
@@ -200,6 +210,8 @@ paths:
       responses:
         "404":
           description: "URL not found"
+        "401":
+          description: "Unauthorized, please login first"
         "400":
           description: "Invalid ID supplied"
         "200":
