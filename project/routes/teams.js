@@ -13,8 +13,8 @@ router.get("/teamFullDetails/:teamId", async (req, res, next) => {
     const team_players = await players_utils.getPlayersByTeam(
       req.params.teamId
     );
-    const team_coach = await coach_utils.getCoachByTeam(
-      req.params.teamId
+    const team_coach = await teams_utils.getTeamsInfo(
+      [req.params.teamId]
     );
     const team_upcoming_games, team_latest_games = await teams_utils.getGamesInfo(
       req.params.teamId
