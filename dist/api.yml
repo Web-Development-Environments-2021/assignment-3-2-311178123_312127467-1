@@ -541,7 +541,7 @@ components:
         email:
           type: "string"
           example: "johnc@example.com"
-        profileurl:
+        imageurl:
           type: "string"
           example: "https:\\profile-john.com"
           
