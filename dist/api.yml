@@ -518,7 +518,7 @@ paths:
               schema:            
                 $ref: "#/components/schemas/Team"
                 
-  /currentStageGames:
+  /games/currentStageGames:
     get:
       tags:
         - "Games"
