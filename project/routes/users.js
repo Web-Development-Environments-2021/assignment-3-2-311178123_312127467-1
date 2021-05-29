@@ -37,6 +37,22 @@ router.post("/addFavoritePlayers", async (req, res, next) => {
 });
 
 /**
+ * This path gets body with teamId and save this team in the favorites list of the logged-in user
+ */
+ router.post("/addFavoriteTeams", async (req, res, next) => {
+  try {
+    const user_id = req.session.userid;
+    const team_id = req.body.team_id;
+    await users_utils.MarkTeamAsFavorite(user_id, team_id);
+    res.status(201).send("The team successfully saved as favorite");
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+
+/**
  * This path returns the favorites players that were saved by the logged-in user
  */
 router.get("/favoritePlayers", async (req, res, next) => {
@@ -45,7 +61,7 @@ router.get("/favoritePlayers", async (req, res, next) => {
     let favorite_players = {};
     const player_ids = await users_utils.getFavoritePlayers(userid);
     let player_ids_array = [];
-    player_ids.map((element) => player_ids_array.push(element.player_id)); //extracting the players ids into array
+    player_ids.map((element) => player_ids_array.push(element.playerid)); //extracting the players ids into array
     const results = await players_utils.getPlayersInfo(player_ids_array);
     res.status(200).send(results);
   } catch (error) {

@@ -3,6 +3,11 @@ const DButils = require(".\\DButils");
 const app_utils = require(".\\app_utils");
 const LEAGUE_ID = 271;
 
+/*
+The method will get the next game scheduled for the current stage.
+The next game will be the one closest to now (in the future)
+Return: Object with all the game columns info
+*/
 async function getNextGame(){
   const now = app_utils.formatDateTime(new Date())
   const next_games = await DButils.execQuery(`SELECT * From Games WHERE GameDateTime >  '${now}' ORDER BY GameDateTime`)

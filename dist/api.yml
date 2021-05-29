@@ -98,8 +98,8 @@ paths:
             application/json:    
               schema:            
                 $ref: "#/components/schemas/ArrayOfRounds"
+
   /users/addFavoriteGames:
-           
       post:
         tags:
           - "User"
@@ -161,9 +161,9 @@ paths:
             schema:
               type: object
               properties:
-                round_id:
+                team_id:
                   type: "integer"
-                  example: 42
+                  example: 939
           
       responses:
         "404":
