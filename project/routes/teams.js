@@ -7,7 +7,7 @@ const teams_utils = require("./utils/teams_utils");
 
 
 
-router.get("/teamFullDetails/:teamId", async (req, res, next) => {
+router.get("/:teamId", async (req, res, next) => {
   let team_details = [];
   try {
     const team_players = await players_utils.getPlayersByTeam(
@@ -26,7 +26,7 @@ router.get("/teamFullDetails/:teamId", async (req, res, next) => {
     team_details.push(team_players);
     team_details.push(past_games);
     team_details.push(future_games);
-    
+
     res.send(team_details);
   } catch (error) {
     next(error);
