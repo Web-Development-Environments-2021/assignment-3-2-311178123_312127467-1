@@ -374,7 +374,7 @@ paths:
               schema:            
                 $ref: "#/components/schemas/Stage"
   
-  /player/{playerId}:
+  /players/id/{playerId}:
     get:
       tags:
         - "Player"
@@ -403,7 +403,34 @@ paths:
               schema:            
                 $ref: "#/components/schemas/Player"
                 
-                
+  /players/name/{player_name}:
+    get:
+      tags:
+        - "Player"
+      description: "used for player card in personal page"
+      summary: "Get information about the player by using the player fullname"
+      operationId: "getPlayerByName" 
+      parameters:
+      - name: "player_name"
+        in: "path"
+        description: "Full name of player to return"
+        required: true
+        schema:
+          type: "String"
+          example: "James Morrison"
+            
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid ID supplied"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                $ref: "#/components/schemas/Player"
+
   /coach/{coachId}:
     get:
       tags:
