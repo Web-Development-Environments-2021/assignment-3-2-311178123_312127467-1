@@ -59,7 +59,7 @@ async function getGamesInfo(team_id) {
   );
   let latest_info = await Promise.all(promises_latest);
   let upcoming_info = await Promise.all(promises_upcoming);
-  return extractRelevantPlayerData(latest_info),extractRelevantPlayerData(upcoming_info);
+  return [extractRelevantPlayerData(latest_info),extractRelevantPlayerData(upcoming_info)];
 }
 
 async function getTeamsInfo(teams_ids_list) {
