@@ -2,6 +2,15 @@ const axios = require("axios");
 const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 
 
+function extractCoachData(coach_info){
+  const { fullname, image_path, nationality } = coach_info.data;
+  return {
+    name: fullname,
+    image: image_path,
+    nationality: nationality,
+  };
+}
+
 function getCoachInfo(coachId){
   coach_info = axios.get(`${api_domain}/coaches/${coachId}`, {
     params: {
@@ -9,12 +18,7 @@ function getCoachInfo(coachId){
     },
   })
   return (coach_info) => {
-    const { fullname, image_path, nationality } = coach_info.data;
-    return {
-      name: fullname,
-      image: image_path,
-      nationality: nationality,
-    };
+    extractCoachData(coach_info);
   };
 }
 
@@ -47,3 +51,7 @@ async function getCoachByTeam(team_id) {
   let coach_info = await getCoachInfo(coachId);
   return coach_info;
 }
+
+exports.extractCoachData = extractCoachData;
+
+

@@ -1,5 +1,6 @@
 const axios = require("axios");
 const api_domain = "https://soccer.sportmonks.com/api/v2.0";
+const coach_utils = require("./coach_utils");
 
 /*
 The method will query the sports api for the teams information
@@ -69,7 +70,7 @@ async function getTeamsInfo(teams_ids_list) {
         axios.get(`${api_domain}/teams/${id}`, {
           params: {
             api_token: process.env.api_token,
-            // include: squad, coach....
+            include: "coach"
           },
         })
       )
@@ -86,12 +87,14 @@ function extractRelevantTeamData(teams_info) {
     // Guy - Need to extract all the relavent info and add more queries to the sport api
     // for the coach etc...
     // For example
-return teams_info.map((teams_info) => {
-    const { name} = teams_info.data.data;
-    return {
-    name: name,
-    };
-});
+    return teams_info.map((team_info) => {
+        let coach = coach_utils.extractCoachData(team_info.data.coach.data)
+        const { name} = team_info.data.data.name;
+        return {
+        name: name,
+        coach: coach
+        };
+    });
 }
 
 
