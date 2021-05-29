@@ -8,11 +8,11 @@ const players_utils = require("./utils/players_utils");
  * Authenticate all incoming requests by middleware
  */
 router.use(async function (req, res, next) {
-  if (req.session && req.session.user_id) {
-    DButils.execQuery("SELECT username FROM Users")
+  if (req.session && req.session.userid) {
+    DButils.execQuery("SELECT userid FROM Users")
       .then((users) => {
-        if (users.find((x) => x.user_id === req.session.user_id)) {
-          req.user_id = req.session.user_id;
+        if (users.find((x) => x.userid === req.session.userid)) {
+          req.userid = req.session.userid;
           next();
         }
       })
@@ -25,10 +25,10 @@ router.use(async function (req, res, next) {
 /**
  * This path gets body with playerId and save this player in the favorites list of the logged-in user
  */
-router.post("/favoritePlayers", async (req, res, next) => {
+router.post("/addFavoritePlayers", async (req, res, next) => {
   try {
-    const user_id = req.session.user_id;
-    const player_id = req.body.playerId;
+    const user_id = req.session.userid;
+    const player_id = req.body.player_id;
     await users_utils.markPlayerAsFavorite(user_id, player_id);
     res.status(201).send("The player successfully saved as favorite");
   } catch (error) {
@@ -41,9 +41,9 @@ router.post("/favoritePlayers", async (req, res, next) => {
  */
 router.get("/favoritePlayers", async (req, res, next) => {
   try {
-    const user_id = req.session.user_id;
+    const userid = req.session.userid;
     let favorite_players = {};
-    const player_ids = await users_utils.getFavoritePlayers(user_id);
+    const player_ids = await users_utils.getFavoritePlayers(userid);
     let player_ids_array = [];
     player_ids.map((element) => player_ids_array.push(element.player_id)); //extracting the players ids into array
     const results = await players_utils.getPlayersInfo(player_ids_array);
