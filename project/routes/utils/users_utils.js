@@ -18,6 +18,15 @@ async function MarkTeamAsFavorite(user_id, team_id) {
   );
 }
 
+/*
+Add the favorite games to the users DB
+*/
+async function MarkGameAsFavorite(user_id, game_data) {
+  await DButils.execQuery(
+    `insert into UsersFavoriteGames values ('${user_id}','${game_data.GameDateTime}',
+    '${game_data.HomeTeam}', '${game_data.AwayTeam}')`
+  );
+}
 
 /*
 Get the favorite players from the users DB
@@ -28,6 +37,17 @@ async function getFavoritePlayers(user_id) {
   );
   return player_ids;
 }
+
+/*
+Get the favorite games from the users DB
+*/
+async function getFavoriteGames(user_id) {
+  const games = await DButils.execQuery(
+    `select * from UsersFavoriteGames where userid='${user_id}'`
+  );
+  return games;
+}
+
 
 /*
 Get the favorite teams from the users DB
@@ -41,6 +61,8 @@ async function getFavoriteTeams(user_id) {
 
 exports.markPlayerAsFavorite = markPlayerAsFavorite;
 exports.MarkTeamAsFavorite = MarkTeamAsFavorite;
+exports.MarkGameAsFavorite = MarkGameAsFavorite;
 
 exports.getFavoritePlayers = getFavoritePlayers;
 exports.getFavoriteTeams = getFavoriteTeams;
+exports.getFavoriteGames = getFavoriteGames;

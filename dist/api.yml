@@ -97,7 +97,7 @@ paths:
           content:  
             application/json:    
               schema:            
-                $ref: "#/components/schemas/ArrayOfRounds"
+                $ref: "#/components/schemas/ArrayOfGames"
 
   /users/addFavoriteGames:
       post:
@@ -112,7 +112,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  round_id:
+                  game_id:
                     type: "integer"
                     example: 23
             
@@ -713,7 +713,7 @@ components:
           example: 65  
         event:
           type: "String"
-          example: "Red card"
+          example: "Red card for Messi"
 
     Player:
       type: object

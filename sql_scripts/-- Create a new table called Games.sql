@@ -7,24 +7,23 @@ DROP TABLE dbo.GamesEvents
 -- Create table for the all the games
 CREATE TABLE dbo.Games
 (
+    gameid INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     GameDateTime DATETIME NOT NULL,
     HomeTeam [NVARCHAR](50) NOT NULL,
     AwayTeam [NVARCHAR](50) NOT NULL,
     Stadium [NVARCHAR](50) NOT NULL,
     Result [NVARCHAR](50),
-    PRIMARY KEY (GameDateTime, HomeTeam, AwayTeam)
+  
 );
 
 -- Create table for the all the game's events
 -- The Event Game time is an int representing minutes from 0
 CREATE TABLE dbo.GamesEvents
 (
-    GameDateTime DATETIME NOT NULL,
-    HomeTeam [NVARCHAR](50) NOT NULL,
-    AwayTeam [NVARCHAR](50) NOT NULL,
+    gameid INT NOT NULL,
     EventGameTime [INT] NOT NULL,
     Event [NVARCHAR](50) NOT NULL,
-    PRIMARY KEY (GameDateTime, HomeTeam, AwayTeam, EventGameTime)
+    PRIMARY KEY (EventGameTime, gameid)
 
 );
 
