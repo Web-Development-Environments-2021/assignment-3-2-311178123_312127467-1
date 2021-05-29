@@ -1,6 +1,7 @@
 const axios = require("axios");
 const DButils = require(".\\DButils");
 const app_utils = require(".\\app_utils");
+const game_utils = require(".\\games_utils");
 const LEAGUE_ID = 271;
 
 /*
@@ -8,13 +9,6 @@ The method will get the next game scheduled for the current stage.
 The next game will be the one closest to now (in the future)
 Return: Object with all the game columns info
 */
-async function getNextGame(){
-  const now = app_utils.formatDateTime(new Date())
-  const next_games = await DButils.execQuery(`SELECT * From Games WHERE GameDateTime >  '${now}' ORDER BY GameDateTime`)
-  let next_game = next_games[0]
-  next_game['GameDateTime'] = app_utils.formatDateTime(next_game['GameDateTime'])
-  return next_game
-}
 
 async function getLeagueDetails() {
   
@@ -40,7 +34,7 @@ async function getLeagueDetails() {
     }
   );  
 
-  const next_game = await getNextGame();
+  const next_game = await game_utils.getNextGame();
 
   return {
     league_name: league.data.data.name,

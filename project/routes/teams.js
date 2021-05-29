@@ -13,15 +13,20 @@ router.get("/teamFullDetails/:teamId", async (req, res, next) => {
     const team_players = await players_utils.getPlayersByTeam(
       req.params.teamId
     );
-    const team_coach = await teams_utils.getTeamsInfo(
+    const team_info = await teams_utils.getTeamsInfo(
       [req.params.teamId]
     );
-    const team_games = await teams_utils.getGamesInfo(
-      req.params.teamId
-    ); 
-    const past_games = teams_games[0]
-    const future_games = teams_games[1]
+    const past_games = team_info['Latest_Games']
+    const future_games = team_info['Upcoming_Games']
+    const name = team_info['name']
+    const team_coach = team_info['coach']
 
+    team_details.push(name);
+    team_details.push(team_coach);
+    team_details.push(team_players);
+    team_details.push(past_games);
+    team_details.push(future_games);
+    
     res.send(team_details);
   } catch (error) {
     next(error);
