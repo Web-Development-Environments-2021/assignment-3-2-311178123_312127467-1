@@ -3,7 +3,7 @@ const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 
 
 function extractCoachData(coach_info){
-  const { fullname, image_path, nationality } = coach_info.data;
+  const { fullname, image_path, nationality } = coach_info;
   return {
     name: fullname,
     image: image_path,

@@ -1,5 +1,8 @@
 const axios = require("axios");
 const api_domain = "https://soccer.sportmonks.com/api/v2.0";
+const app_utils = require(".\\app_utils");
+const DButils = require(".\\DButils");
+
 // const TEAM_ID = "85";
 
 async function getFavoriteGames(user_id) {
@@ -36,8 +39,8 @@ async function getLatestGames(team_id){
 
 async function getUpcomingGames(team_id){
   const now = app_utils.formatDateTime(new Date())
-  const upcoming_games = await DButils.execQuery(`SELECT * From Games WHERE (AwayTeamID = '${team_id}' OR
-  HomeTeamID = '${team_id}') AND GameDateTime >  '${now}' ORDER BY GameDateTime`)
+  const upcoming_games = await DButils.execQuery(`SELECT * From Games WHERE (AwayTeamID = ${team_id} OR
+  HomeTeamID = ${team_id}) AND GameDateTime >  '${now}' ORDER BY GameDateTime`)
   upcoming_games.map((game) =>
       game['GameDateTime'] = app_utils.formatDateTime(game['GameDateTime'])
     )

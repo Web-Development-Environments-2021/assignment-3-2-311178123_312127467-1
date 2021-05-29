@@ -63,9 +63,9 @@ function extractRelevantTeamData(teams_info) {
     // for the coach etc...
     // For example
     return teams_info.map((team_info) => {
-        let coach = coach_utils.extractCoachData(team_info.data.coach.data);
-        let upcoming_games = game_utils.getUpcomingTeamGames(team_info.id);
-        let latest_games = game_utils.getLatestTeamGames(team_info.id);
+        let coach = coach_utils.extractCoachData(team_info.data.data.coach.data);
+        let upcoming_games = game_utils.getUpcomingGames(team_info.data.data.id);
+        let latest_games = game_utils.getLatestGames(team_info.data.data.id);
         let
         const { name} = team_info.data.data.name;
         return {
