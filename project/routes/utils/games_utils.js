@@ -28,23 +28,27 @@ async function getNextGame(){
 }
 
 async function getLatestGames(team_id){
+  let games = []
   const now = app_utils.formatDateTime(new Date())
   const latest_games = await DButils.execQuery(`SELECT * From Games WHERE (AwayTeamID = '${team_id}' OR
   HomeTeamID = '${team_id}') AND GameDateTime <  '${now}' ORDER BY GameDateTime`)
-  latest_games.map((game) =>
+  latest_games.map((game) =>{
       game['GameDateTime'] = app_utils.formatDateTime(game['GameDateTime'])
-    )
-  return latest_games
+      games.push(game)
+  });
+  return games
 }
 
 async function getUpcomingGames(team_id){
+  let games = []
   const now = app_utils.formatDateTime(new Date())
   const upcoming_games = await DButils.execQuery(`SELECT * From Games WHERE (AwayTeamID = ${team_id} OR
-  HomeTeamID = ${team_id}) AND GameDateTime >  '${now}' ORDER BY GameDateTime`)
-  upcoming_games.map((game) =>
+  HomeTeamID = ${team_id}) AND GameDateTime >  '${now}' ORDER BY GameDateTime`);
+  upcoming_games.map((game) =>{
       game['GameDateTime'] = app_utils.formatDateTime(game['GameDateTime'])
-    )
-  return upcoming_games
+      games.push(game)
+  });
+  return games
 }
 
 exports.getLatestGames = getLatestGames;
