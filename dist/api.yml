@@ -21,7 +21,7 @@ paths:
           "404":
             description: "URL not found"
           "500":
-            description: "Users DB not reachable"
+            description: "Internal Server error"
           "200":
             description: "Registration was sucessfull"
             
@@ -44,7 +44,7 @@ paths:
           "404":
             description: "URL not found"
           "500":
-            description: "Users DB not reachable"
+            description: "Internal Server error"
           "200":
             description: >
               Successfully authenticated.
@@ -68,7 +68,7 @@ paths:
         "404":
           description: "Bad username" 
         "500":
-          description: "Users DB not reachable"
+          description: "Internal Server error"
         "200":
            description: "Login Successfull. The session id <sessionid>   returned in the header"
            content:  
@@ -91,9 +91,9 @@ paths:
         "401":
           description: "Unauthorized, please login first"
         "400":
-          description: "Invalid ID supplied"
+          description: "Invalid Userid"
         "200":
-          description: "successful operation"
+          description: "Game was added to favorite"
           content:  
             application/json:    
               schema:            
@@ -112,19 +112,26 @@ paths:
               schema:
                 type: object
                 properties:
-                  game_id:
+                  game_date:
+                    type: "String"
+                    example: "2021-08-01 19:00:00"
+                  home_team_id:
                     type: "integer"
-                    example: 23
-            
+                    example: 939
+                  away_team_id:
+                    type: "integer"
+                    example: 85
+                  
+
         responses:
           "404":
             description: "URL not found"
           "401":
             description: "Unauthorized, please login first" 
           "400":
-            description: "Invalid ID supplied"
+            description: "Invalid Date or Teams supplied"
           "200":
-            description: "round was added succesfully"
+            description: "Game was added succesfully"
           
   /users/favoriteTeams:
     get:
@@ -140,7 +147,7 @@ paths:
         "401":
           description: "Unauthorized, please login first"
         "400":
-          description: "Invalid ID supplied"
+          description: "Invalid Userid"
         "200":
           description: "successful operation"
           content:  
@@ -171,9 +178,9 @@ paths:
         "401":
           description: "Unauthorized, please login first"
         "400":
-          description: "Invalid ID supplied"
+          description: "Invalid Userid"
         "200":
-          description: "round was added succesfully"
+          description: "Team was added succesfully"
           
   /users/favoritePlayers:
     get:
@@ -189,7 +196,7 @@ paths:
         "401":
           description: "Unauthorized, please login first"
         "400":
-          description: "Invalid ID supplied"
+          description: "Invalid Userid"
         "200":
           description: "successful operation"
           content:  
@@ -220,7 +227,7 @@ paths:
         "401":
           description: "Unauthorized, please login first"
         "400":
-          description: "Invalid ID supplied"
+          description: "Invalid Userid"
         "200":
           description: "player was added succesfully"
 
@@ -252,8 +259,6 @@ paths:
       responses:
         "404":
           description: "URL not found"
-        "400":
-          description: "Invalid id supplied"
         "200":
           description: "successful operation"
           content:  
@@ -282,7 +287,7 @@ paths:
         "404":
           description: "URL not found"
         "400":
-          description: "Invalid ID supplied"
+          description: "Invalid season id"
         "200":
           description: "successful operation"
           content:  
@@ -310,7 +315,7 @@ paths:
         "404":
           description: "URL not found"
         "400":
-          description: "Invalid ID supplied"
+          description: "Invalid season id"
         "200":
           description: "successful operation"
           content:  
@@ -338,7 +343,7 @@ paths:
         "404":
           description: "URL not found"
         "400":
-          description: "Invalid ID supplied"
+          description: "Invalid season id"
         "200":
           description: "successful operation"
           content:  
@@ -366,7 +371,7 @@ paths:
         "404":
           description: "URL not found"
         "400":
-          description: "Invalid ID supplied"
+          description: "Invalid season id"
         "200":
           description: "successful operation"
           content:  
@@ -395,7 +400,7 @@ paths:
         "404":
           description: "URL not found"
         "400":
-          description: "Invalid ID supplied"
+          description: "Invalid player id"
         "200":
           description: "successful operation"
           content:  
@@ -423,7 +428,7 @@ paths:
         "404":
           description: "URL not found"
         "400":
-          description: "Invalid ID supplied"
+          description: "Invalid player name"
         "200":
           description: "successful operation"
           content:  
@@ -452,7 +457,7 @@ paths:
         "404":
           description: "URL not found"
         "400":
-          description: "Invalid ID supplied"
+          description: "Invalid coach id"
         "200":
           description: "successful operation"
           content:  
@@ -460,33 +465,6 @@ paths:
               schema:            
                 $ref: "#/components/schemas/Coach"
                 
-  /round/{roundId}:
-    get:
-      tags:
-        - "Round"
-      summary: "Get information about the round by using the round id"
-      operationId: "getRoundById" 
-      parameters:
-      - name: "roundId"
-        in: "path"
-        description: "ID of round to return"
-        required: true
-        schema:
-          type: "integer"
-          minimum: 1
-          example: 11142
-            
-      responses:
-        "404":
-          description: "URL not found"
-        "400":
-          description: "Invalid ID supplied"
-        "200":
-          description: "successful operation"
-          content:  
-            application/json:    
-              schema:            
-                $ref: "#/components/schemas/Round"
                 
   /teams/id/{teamId}:
     get:
@@ -509,7 +487,7 @@ paths:
         "404":
           description: "URL not found"
         "400":
-          description: "Invalid ID supplied"
+          description: "Invalid team id"
         "200":
           description: "successful operation"
           content:  
@@ -537,7 +515,7 @@ paths:
         "404":
           description: "URL not found"
         "400":
-          description: "Invalid name supplied"
+          description: "Invalid team name"
         "200":
           description: "successful operation"
           content:  
@@ -555,8 +533,7 @@ paths:
       responses:
         "404":
           description: "URL not found"
-        "400":
-          description: "Invalid name supplied"
+
         "200":
           description: "successful operation"
           content:  
@@ -705,13 +682,25 @@ components:
           example: "17:00:00"
         home_team:
           type: "String"
-          example: "FC Barcelona"
+          example: "Midtjylland"
+        home_team_id:
+          type: "integer"
+          example: 939
         away_team:
           type: "String"
-          example: "Macabi Haifa"
+          example: "København"
+        away_team_id:
+          type: "integer"
+          example: 85
         stadium:
           type: "String"
           example: "Kiryat Eliezer"
+        referee:
+          type: object
+          $ref: "#/components/schemas/Referee"
+        results:
+          type: "String"
+          example: "3-1"
         game_events:
           type: array
           items:
@@ -719,21 +708,16 @@ components:
             allOf:
             - $ref: "#/components/schemas/GameEvent"
     
+    Referee:
+      type: object
+      properties:
+        name:
+          type: "String"
+          example: "Denis Shalayev"
+
     GameEvent:
       type: object
       properties:
-        game_date:
-          type: "String"
-          example: "2020-08-03"
-        game_time:
-          type: "String"
-          example: "14:30:00"
-        home_team:
-          type: "String"
-          example: "Real Madrid"
-        away_team:
-          type: "String"
-          example: "Hapoel Beersheba"
         event_game_time:
           type: "integer"
           format: "int64"
