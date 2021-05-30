@@ -106,7 +106,7 @@ router.get("/favoriteGames", async (req, res, next) => {
   try {
     const userid = req.session.userid;
     //delete user's marked past games
-    games_utils.removePastGames();
+    await games_utils.removePastGames();
     const game_ids = await users_utils.getFavoriteGames(userid);
     let games_ids_array = [];
     game_ids.map((element) => games_ids_array.push(element.gameid)); 

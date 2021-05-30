@@ -13,7 +13,7 @@ VALUES
    '0-1','Daiyrbek Abdyldayev'),
    ('2021-01-20 19:00:00', 'Midtjylland',939, 'Toronto',111, 'MCH Arena', 
    '0-0','Denis Shalayev'),
-   ('2021-01-13 19:00:00', 'Toronto',111, 'Beijing Renhe',85, 'BMO Field', 
+   ('2021-01-23 20:00:00', 'Toronto',111, 'Beijing Renhe',85, 'BMO Field', 
    '0-0','Daiyrbek Abdyldayev'),
    ('2021-02-03 19:00:00', 'Toronto',111, 'Beijing Renhe',111, 'BMO Field', 
    '1-2','Zainiddin Alimov'),

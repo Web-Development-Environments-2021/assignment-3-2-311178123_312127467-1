@@ -51,11 +51,16 @@ async function getUpcomingGames(team_id){
   return games
 }
 
-async function getPastGames(){
+async function getAllPastGames(){
   const games = []
   const now = app_utils.formatDateTime(new Date())
-  const past_games = await DButils.execQuery(`SELECT Games.GameDateTime, Games.HomeTeam, Games.AwayTeam, Games.Stadium, Games.Result, GamesEvents.Event Games.Referee From Games WHERE 
-  GameDateTime < '${now}' JOIN GamesEvents on Games.gameid = GamesEvents.gameid ORDER BY GameDateTime  `);
+  const past_games = await DButils.execQuery(`SELECT Games.gameid as gameid, Games.GameDateTime, Games.HomeTeam, Games.AwayTeam, 
+  Games.Stadium, Games.Result , Events.GameEvents, Games.Referee 
+  FROM Games LEFT JOIN (Select gameid, 
+  string_agg(concat(EventGameTime, ':', [Event]), ', ') as 
+  GameEvents From GamesEvents GROUP BY gameid) as Events 
+  ON Games.gameid = Events.gameid
+  WHERE GameDateTime <'${now}' ORDER BY GameDateTime `);
   past_games.map((game) =>{
       game['GameDateTime'] = app_utils.formatDateTime(game['GameDateTime'])
       games.push(game)
@@ -64,21 +69,34 @@ async function getPastGames(){
 }
 
 async function removePastGames(){
-  const past_games = await getPastGames();
+  const past_games = await getAllPastGames();
   past_games.map(async (game) =>{
-    await DButils.execQuery(`DELETE * From UsersFavoriteGames WHERE 
-    gameid = '${game.gameid}' `);
+    await DButils.execQuery(`DELETE From UsersFavoriteGames WHERE 
+    gameid = '${game.gameid}'`);
   });
-
-  return games
 }
 
 async function getGamesInfo(game_ids){
+  let promises = []
+  let fav_games = []
+  game_ids.map((gameid) =>  
+    promises.push(DButils.execQuery(`SELECT * From Games WHERE gameid = ${gameid}`)))
+
+  fav_games= await Promise.all(promises)
+  return fav_games.map((game) => {
+    return game[0]
+  })
+}
+
+async function getAllUpcomingGames(){
   const games = []
-  await game_ids.map((gameid) =>{
-    let game = DButils.execQuery(`SELECT * From Games WHERE gameid = ${gameid}`);
-    game['GameDateTime'] = app_utils.formatDateTime(game['GameDateTime'])
-    games.push(game);
+  const now = app_utils.formatDateTime(new Date())
+  const past_games = await DButils.execQuery(`SELECT Games.GameDateTime, Games.HomeTeam, Games.AwayTeam, 
+  Games.Stadium, Games.Referee From Games 
+  ON Games.gameid = GamesEvents.gameid WHERE GameDateTime >'${now}' ORDER BY GameDateTime `);
+  past_games.map((game) =>{
+      game['GameDateTime'] = app_utils.formatDateTime(game['GameDateTime'])
+      games.push(game)
   });
   return games
 }
@@ -88,4 +106,5 @@ exports.getUpcomingGames = getUpcomingGames;
 exports.getFavoriteGames = getFavoriteGames;
 exports.getNextGame = getNextGame;
 exports.removePastGames = removePastGames;
-exports.getGameInfo = getGamesInfo;
+exports.getGamesInfo = getGamesInfo;
+exports.getAllUpcomingGames = getAllUpcomingGames;
