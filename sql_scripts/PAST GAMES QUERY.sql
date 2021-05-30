@@ -1,0 +1,1 @@
+SELECT * from Games JOIN  (Select gameid, STRING_AGG(CONVERT(NVARCHAR(max), ISNULL(Event,'N/A')), ',') as Events From GamesEvents GROUP BY gameid) as Events ON Games.gameid = Events.gameid
