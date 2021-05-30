@@ -12,7 +12,7 @@ async function markPlayerAsFavorite(user_id, player_id) {
 /*
 Add the favorite teams to the users DB
 */
-async function MarkTeamAsFavorite(user_id, team_id) {
+async function markTeamAsFavorite(user_id, team_id) {
   await DButils.execQuery(
     `insert into UsersFavoriteTeams values ('${user_id}',${team_id})`
   );
@@ -21,7 +21,7 @@ async function MarkTeamAsFavorite(user_id, team_id) {
 /*
 Add the favorite games to the users DB
 */
-async function MarkGameAsFavorite(user_id, game_data) {
+async function markGameAsFavorite(user_id, game_data) {
   await DButils.execQuery(
     `insert into UsersFavoriteGames values ('${user_id}','${game_data.GameDateTime}',
     '${game_data.HomeTeam}', '${game_data.AwayTeam}')`
@@ -60,8 +60,8 @@ async function getFavoriteTeams(user_id) {
 }
 
 exports.markPlayerAsFavorite = markPlayerAsFavorite;
-exports.MarkTeamAsFavorite = MarkTeamAsFavorite;
-exports.MarkGameAsFavorite = MarkGameAsFavorite;
+exports.markTeamAsFavorite = markTeamAsFavorite;
+exports.markGameAsFavorite = markGameAsFavorite;
 
 exports.getFavoritePlayers = getFavoritePlayers;
 exports.getFavoriteTeams = getFavoriteTeams;

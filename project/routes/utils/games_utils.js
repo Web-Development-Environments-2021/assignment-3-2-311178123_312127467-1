@@ -73,8 +73,19 @@ async function removePastGames(){
   return games
 }
 
+async function getGamesInfo(game_ids){
+  const games = []
+  await game_ids.map((gameid) =>{
+    let game = DButils.execQuery(`SELECT * From Games WHERE gameid = ${gameid}`);
+    game['GameDateTime'] = app_utils.formatDateTime(game['GameDateTime'])
+    games.push(game);
+  });
+  return games
+}
+
 exports.getLatestGames = getLatestGames;
 exports.getUpcomingGames = getUpcomingGames;
 exports.getFavoriteGames = getFavoriteGames;
 exports.getNextGame = getNextGame;
 exports.removePastGames = removePastGames;
+exports.getGameInfo = getGamesInfo;
