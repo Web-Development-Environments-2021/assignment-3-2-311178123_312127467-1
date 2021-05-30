@@ -65,33 +65,25 @@ paths:
       operationId: "UserLogOut" 
           
       responses:
-        "404":
-          description: "Bad username" 
         "500":
           description: "Internal Server error"
         "200":
-           description: "Login Successfull. The session id <sessionid>   returned in the header"
-           content:  
-             application/json:    
-              schema:            
-                $ref: "#/components/schemas/ArrayOfRounds"
+           description: "Logout Successfull"
+
             
   /users/favoriteGames:
      get:
       tags:
         - "User"
-      summary: "Retrieve the favorite games for the user <userId>"
+      summary: "Retrieve the favorite games for the logged in user"
       description: ""
       operationId: "getFavGamesForUser" 
-      
-          
+  
       responses:
         "404":
           description: "URL not found"
         "401":
           description: "Unauthorized, please login first"
-        "400":
-          description: "Invalid Userid"
         "200":
           description: "Game was added to favorite"
           content:  
@@ -120,8 +112,7 @@ paths:
                     example: 939
                   away_team_id:
                     type: "integer"
-                    example: 85
-                  
+                    example: 85      
 
         responses:
           "404":
@@ -137,7 +128,7 @@ paths:
     get:
       tags:
         - "User"
-      summary: "Retrieve the favorite teams for the user <userId>"
+      summary: "Retrieve the favorite teams for the logged in user"
       description: ""
       operationId: "getFavTeamsForUser" 
           
@@ -146,8 +137,6 @@ paths:
           description: "URL not found"
         "401":
           description: "Unauthorized, please login first"
-        "400":
-          description: "Invalid Userid"
         "200":
           description: "successful operation"
           content:  
@@ -178,7 +167,7 @@ paths:
         "401":
           description: "Unauthorized, please login first"
         "400":
-          description: "Invalid Userid"
+          description: "Invalid team id"
         "200":
           description: "Team was added succesfully"
           
@@ -186,7 +175,7 @@ paths:
     get:
       tags:
         - "User"
-      summary: "Retrieve the favorite players for the user <userId>"
+      summary: "Retrieve the favorite players for the logged in user"
       description: ""
       operationId: "getFavPlayersForUser" 
           
@@ -195,8 +184,6 @@ paths:
           description: "URL not found"
         "401":
           description: "Unauthorized, please login first"
-        "400":
-          description: "Invalid Userid"
         "200":
           description: "successful operation"
           content:  
@@ -227,28 +214,9 @@ paths:
         "401":
           description: "Unauthorized, please login first"
         "400":
-          description: "Invalid Userid"
+          description: "Invalid player id"
         "200":
           description: "player was added succesfully"
-
-  /pictures/homepage:
-    get:
-      tags:
-        - "Homepage"
-      summary: "Retrieve the picture for the homepage"
-      description: ""
-      operationId: "GetMainpagePicture" 
-   
-      responses:
-        "404":
-          description: "URL not found"
-        "200":
-          description: "OK"
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
   
   /league/getDetails:
     get:
@@ -322,34 +290,6 @@ paths:
             application/json:    
               schema:            
                 $ref: "#/components/schemas/Stage"
-                
-  /season/round/{seasonId}:
-    get:
-      tags:
-        - "Season"
-      summary: "Get information about the round by using the season ID"
-      operationId: "getRoundBySeasonId" 
-      parameters:
-      - name: "seasonId"
-        in: "path"
-        description: "ID of season to which the round belongs to"
-        required: true
-        schema:
-          type: "integer"
-          minimum: 1
-          example: 3
-            
-      responses:
-        "404":
-          description: "URL not found"
-        "400":
-          description: "Invalid season id"
-        "200":
-          description: "successful operation"
-          content:  
-            application/json:    
-              schema:            
-                $ref: "#/components/schemas/Round"
                 
   /stage/{stageId}:
     get:
