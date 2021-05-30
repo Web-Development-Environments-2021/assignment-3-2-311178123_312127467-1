@@ -21,10 +21,9 @@ async function markTeamAsFavorite(user_id, team_id) {
 /*
 Add the favorite games to the users DB
 */
-async function markGameAsFavorite(user_id, game_data) {
+async function markGameAsFavorite(user_id, game_id) {
   await DButils.execQuery(
-    `insert into UsersFavoriteGames values ('${user_id}','${game_data.GameDateTime}',
-    '${game_data.HomeTeam}', '${game_data.AwayTeam}')`
+    `insert into UsersFavoriteGames values ('${user_id}','${game_id}')`
   );
 }
 
