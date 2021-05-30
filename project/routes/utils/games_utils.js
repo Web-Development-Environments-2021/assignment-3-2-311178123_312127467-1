@@ -65,7 +65,7 @@ async function getPastGames(){
 
 async function removePastGames(){
   const past_games = await getPastGames();
-  past_games.map((game) =>{
+  past_games.map(async (game) =>{
     await DButils.execQuery(`DELETE * From UsersFavoriteGames WHERE 
     gameid = '${game.gameid}' `);
   });
@@ -77,3 +77,4 @@ exports.getLatestGames = getLatestGames;
 exports.getUpcomingGames = getUpcomingGames;
 exports.getFavoriteGames = getFavoriteGames;
 exports.getNextGame = getNextGame;
+exports.removePastGames = removePastGames;

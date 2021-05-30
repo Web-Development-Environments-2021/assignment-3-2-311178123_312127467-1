@@ -4,6 +4,8 @@ const DButils = require("./utils/DButils");
 const users_utils = require("./utils/users_utils");
 const players_utils = require("./utils/players_utils");
 const teams_utils = require("./utils/teams_utils.js");
+const games_utils = require("./utils/games_utils.js");
+
 
 /**
  * Authenticate all incoming requests by middleware
@@ -74,6 +76,20 @@ router.get("/favoritePlayers", async (req, res, next) => {
   try {
     const userid = req.session.userid;
     const teams_ids = await users_utils.getFavoriteTeams(userid);
+    let teams_ids_array = [];
+    teams_ids.map((element) => teams_ids_array.push(element.teamid)); //extracting the players ids into array
+    const results = await teams_utils.getTeamsInfo(teams_ids_array);
+    res.status(200).send(results);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/favoriteGames", async (req, res, next) => {
+  try {
+    const userid = req.session.userid;
+    games_utils.removePastGames();
+    // const game_ids = await users_utils.getFavoriteGames(userid);
     let teams_ids_array = [];
     teams_ids.map((element) => teams_ids_array.push(element.teamid)); //extracting the players ids into array
     const results = await teams_utils.getTeamsInfo(teams_ids_array);
