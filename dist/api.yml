@@ -104,15 +104,9 @@ paths:
               schema:
                 type: object
                 properties:
-                  game_date:
-                    type: "String"
-                    example: "2021-08-01 19:00:00"
-                  home_team_id:
+                  game_id:          
                     type: "integer"
-                    example: 939
-                  away_team_id:
-                    type: "integer"
-                    example: 85      
+                    example: 1   
 
         responses:
           "404":
