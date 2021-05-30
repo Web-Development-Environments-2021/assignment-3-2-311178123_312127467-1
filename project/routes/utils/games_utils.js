@@ -51,6 +51,28 @@ async function getUpcomingGames(team_id){
   return games
 }
 
+async function getPastGames(){
+  const games = []
+  const now = app_utils.formatDateTime(new Date())
+  const past_games = await DButils.execQuery(`SELECT Games.GameDateTime, Games.HomeTeam, Games.AwayTeam, Games.Stadium, Games.Result, GamesEvents.Event Games.Referee From Games WHERE 
+  GameDateTime < '${now}' JOIN GamesEvents on Games.gameid = GamesEvents.gameid ORDER BY GameDateTime  `);
+  past_games.map((game) =>{
+      game['GameDateTime'] = app_utils.formatDateTime(game['GameDateTime'])
+      games.push(game)
+  });
+  return games
+}
+
+async function removePastGames(){
+  const past_games = await getPastGames();
+  past_games.map((game) =>{
+    await DButils.execQuery(`DELETE * From UsersFavoriteGames WHERE 
+    gameid = '${game.gameid}' `);
+  });
+
+  return games
+}
+
 exports.getLatestGames = getLatestGames;
 exports.getUpcomingGames = getUpcomingGames;
 exports.getFavoriteGames = getFavoriteGames;
