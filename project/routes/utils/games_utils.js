@@ -82,6 +82,7 @@ async function getGamesInfo(game_ids){
 
   fav_games= await Promise.all(promises)
   return fav_games.map((game) => {
+    game[0]['GameDateTime'] = app_utils.formatDateTime(game[0]['GameDateTime'])
     return game[0]
   })
 }
