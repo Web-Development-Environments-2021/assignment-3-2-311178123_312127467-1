@@ -624,9 +624,9 @@ components:
         results:
           type: "String"
           example: "3-1"
-        game_events:
+        event_log:
           type: object
-          $ref: "#/components/schemas/ArrayOfGames"
+          $ref: "#/components/schemas/EventLog"
     
     Referee:
       type: object
@@ -638,6 +638,12 @@ components:
     GameEvent:
       type: object
       properties:
+        event_date:
+          type: "String"
+          example: "2021-01-13"
+        event_time:
+          type: "String"
+          example: "20:05:00"
         event_game_time:
           type: "integer"
           format: "int64"
@@ -760,7 +766,15 @@ components:
         has_standings:
           type: "boolean"
           example: false
- 
+
+    EventLog:
+      type: array
+      items:
+        type: object
+        allOf:
+          - $ref: "#/components/schemas/GameEvent"
+
+
     ArrayOfTeams:
       type: array
       items:
