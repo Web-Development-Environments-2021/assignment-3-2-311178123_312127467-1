@@ -1,7 +1,5 @@
 //#region global imports
 const DButils = require("./routes/utils/DButils");
-const axios = require("axios");
-const bcrypt = require("bcryptjs");
 require("dotenv").config();
 //#endregion
 //#region express configures
@@ -86,7 +84,7 @@ app.use(auth);
 
 app.use(function (err, req, res, next) {
   console.error(err);
-  res.status(err.status || 404).send(err.message);
+  res.status(err.status || 500).send(err.message);
 });
 
 const server = app.listen(port, () => {
