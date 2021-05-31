@@ -13,3 +13,10 @@ The method will exctract the date from a datetime object
 exports.extractDateFromDatetime = function extractDateFromDatetime(dateObj){
     return dateObj.toISOString().split("T")[0];
 }
+
+/*
+The method will exctract the time from a datetime object
+*/
+exports.extractTimeFromISO = function extractDateFromDatetime(dateObj){
+    return dateObj.toISOString().split("T")[0];
+}
