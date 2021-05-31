@@ -220,17 +220,70 @@ paths:
         - "Games"
       summary: "Add a game to the current stage"
       description: "used for the league representitve to add games to the league"
-      operationId: "addgame"     
+      operationId: "addgame"
+      requestBody:
+        content:
+          application/json:  
+            schema:
+              type: object
+              $ref: "#/components/schemas/Game"
       responses:
         "404":
           description: "URL not found"
-
         "200":
           description: "successful operation"
-          content:  
-            application/json:    
-              schema:            
-                $ref: "#/components/schemas/Game"
+  
+  /games/addScore:
+    put:
+      tags:
+        - "Games"
+      summary: "Add a score to a game"
+      description: "used for the league representitve to score to games that were played"
+      operationId: "addScore"      
+      requestBody:
+        content:
+          application/json:  
+            schema:
+              type: object
+              properties:
+                game_id:
+                  type: "integer"
+                  example: 1
+                score:
+                  type: "string"
+                  example: "2-1"
+      responses:
+        "404":
+          description: "URL not found"
+        "200":
+          description: "successful operation"
+        
+  /games/addEvent:
+    put:
+      tags:
+        - "Games"
+      summary: "Add an event to a game"
+      description: "Add event to a played game"
+      operationId: "addEvent"      
+      requestBody:
+        content:
+          application/json:  
+            schema:
+              type: object
+              properties:
+                game_id:
+                  type: "integer"
+                  example: 1
+                event:
+                  type: object
+                  $ref: "#/components/schemas/GameEvent"
+
+      responses:
+        "404":
+          description: "URL not found"
+        "200":
+          description: "successful operation"
+
 
   /league/getDetails:
     get:
@@ -613,6 +666,15 @@ components:
           $ref: "#/components/schemas/Game"
 
     Game:
+      required:
+        - game_date
+        - game_time
+        - home_team
+        - home_team_id
+        - away_team
+        - away_team_id
+        - stadium
+
       type: object
       properties:
         game_date:
@@ -792,24 +854,24 @@ components:
         allOf:
           - $ref: "#/components/schemas/GameEvent"
 
-    Game:
-      type: object
-      properties:
-        Date:
-          type: "string"
-          example: "20/02/2020"
-        Time:
-          type: "string"
-          example: "17:30:00"
-        HomeTeam:
-          type: "string"
-          example: "Barcelona"
-        AwayTeam:
-          type: "string"
-          example: "Real Madrid"
-        Stadium:
-          type: "string"
-          example: "sami ofer"
+    # Game:
+    #   type: object
+    #   properties:
+    #     Date:
+    #       type: "string"
+    #       example: "20/02/2020"
+    #     Time:
+    #       type: "string"
+    #       example: "17:30:00"
+    #     HomeTeam:
+    #       type: "string"
+    #       example: "Barcelona"
+    #     AwayTeam:
+    #       type: "string"
+    #       example: "Real Madrid"
+    #     Stadium:
+    #       type: "string"
+    #       example: "sami ofer"
 
     ArrayOfTeams:
       type: array
