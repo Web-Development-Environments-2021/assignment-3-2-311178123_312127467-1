@@ -214,7 +214,7 @@ paths:
         "200":
           description: "player was added succesfully"
   
-  /games/addgame:
+  /games/addGame:
     post:
       tags:
         - "Games"
