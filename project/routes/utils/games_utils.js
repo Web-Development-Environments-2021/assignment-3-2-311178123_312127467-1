@@ -103,7 +103,18 @@ The method will get a score and a game_id and will update the game with the rele
 The game should be a past game. The validtion is implemented in the client side.
 */
 async function addScoreToGame(game_id,score){
-  await DButils.execQuery(`UPDATE Games SET Result='${score}' WHERE gameid = ${game_id}`);
+  await DButils.execQuery(`Update Games SET Result = '${score}' WHERE gameid = ${game_id}`);
+}
+
+/*
+The method will get an event and a game_id and will update the game with the given event.
+The game should be a past game. The validtion is implemented in the client side.
+*/
+async function addEventToGame(game_id,event){
+  await DButils.execQuery(`INSERT INTO GamesEvents 
+  ([gameid], [EventDate], [EventTime], [EventGameTime], [Event]) 
+  Values (${game_id}, '${event.event_date}', '${event.event_time}',
+  ${event.event_game_time},'${event.event}')`);
 }
 
 
@@ -116,3 +127,4 @@ exports.getAllPastGames = getAllPastGames;
 exports.getAllUpcomingGames = getAllUpcomingGames;
 exports.addFutureGame = addFutureGame;
 exports.addScoreToGame = addScoreToGame
+exports.addEventToGame = addEventToGame

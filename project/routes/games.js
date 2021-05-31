@@ -54,11 +54,11 @@ router.get("/currentStageGames", async (req, res, next) => {
 
   router.put("/addEvent", async (req, res, next) => {
     try {
-
+      
       const game_id =  req.body.game_id
       const event = req.body.event;
-    
-      res.status(201).send("The game was successfully added");
+      games_utils.addEventToGame(game_id, event)
+      res.status(201).send("The game was updated");
       } catch (error) {
       next(error);
     }
