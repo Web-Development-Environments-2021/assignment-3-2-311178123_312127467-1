@@ -60,9 +60,12 @@ router.post("/addFavoritePlayers", async (req, res, next) => {
   try {
     const user_id = req.session.userid;
     const game_id = req.body.game_id;
-    // TODO CHECK IF GAME IS A FUTURE GAME
-    await users_utils.markGameAsFavorite(user_id, game_id);
-    res.status(201).send("The game successfully saved as favorite");
+    if(users_utils.isGameInFuture(game_id)){
+      await users_utils.markGameAsFavorite(user_id, game_id);
+      res.status(201).send("The game successfully saved as favorite");}
+    else
+      res.status(403).send("Can only add future games to favorite games list");
+
   } catch (error) {
     next(error);
   }

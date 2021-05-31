@@ -58,6 +58,17 @@ async function getFavoriteTeams(user_id) {
   return player_ids;
 }
 
+
+async function isGameInFuture(game_id) {
+  const now = app_utils.formatDateTime(new Date())
+  const game_date = await DButils.execQuery(
+    `select GameDateTime from Games where gameid='${game_id}'`);
+  game_date = app_utils.formatDateTime(game_date)
+  if(game_date>now)
+    return true
+  return false
+}
+
 exports.markPlayerAsFavorite = markPlayerAsFavorite;
 exports.markTeamAsFavorite = markTeamAsFavorite;
 exports.markGameAsFavorite = markGameAsFavorite;
@@ -65,3 +76,4 @@ exports.markGameAsFavorite = markGameAsFavorite;
 exports.getFavoritePlayers = getFavoritePlayers;
 exports.getFavoriteTeams = getFavoriteTeams;
 exports.getFavoriteGames = getFavoriteGames;
+exports.isGameInFuture = isGameInFuture;
