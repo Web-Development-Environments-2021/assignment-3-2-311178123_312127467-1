@@ -219,7 +219,7 @@ paths:
       tags:
         - "Games"
       summary: "Add a game to the current stage"
-      description: "used for the league representitve to add games to the league"
+      description: "used for the league representitve to add games to the league. Only future games can be added. For Future games no results and eventlog should be given"
       operationId: "addgame"
       requestBody:
         content:
@@ -227,7 +227,10 @@ paths:
             schema:
               type: object
               $ref: "#/components/schemas/Game"
+
       responses:
+        "500":
+          description: "Internal Server error"
         "404":
           description: "URL not found"
         "200":
@@ -238,7 +241,7 @@ paths:
       tags:
         - "Games"
       summary: "Add a score to a game"
-      description: "used for the league representitve to score to games that were played"
+      description: "used for the league representitve to add score to games that were played"
       operationId: "addScore"      
       requestBody:
         content:
@@ -253,6 +256,8 @@ paths:
                   type: "string"
                   example: "2-1"
       responses:
+        "500":
+          description: "Internal Server error"
         "404":
           description: "URL not found"
         "200":
@@ -263,7 +268,7 @@ paths:
       tags:
         - "Games"
       summary: "Add an event to a game"
-      description: "Add event to a played game"
+      description: "used for the league representitve to add events to games that were played"
       operationId: "addEvent"      
       requestBody:
         content:
@@ -279,6 +284,8 @@ paths:
                   $ref: "#/components/schemas/GameEvent"
 
       responses:
+        "500":
+            description: "Internal Server error"
         "404":
           description: "URL not found"
         "200":
@@ -300,64 +307,9 @@ paths:
             application/json:    
               schema:            
                 $ref: "#/components/schemas/League"
-                
-                
-  /season/{seasonId}:
-    get:
-      tags:
-        - "Season"
-      summary: "Get information about the season by using the season ID"
-      operationId: "getSeasonById" 
-      parameters:
-      - name: "seasonId"
-        in: "path"
-        description: "ID of season to return"
-        required: true
-        schema:
-          type: "integer"
-          minimum: 1
-          example: 13
+
             
-      responses:
-        "404":
-          description: "URL not found"
-        "400":
-          description: "Invalid season id"
-        "200":
-          description: "successful operation"
-          content:  
-            application/json:    
-              schema:            
-                $ref: "#/components/schemas/Season"
         
-  /season/stage/{seasonId}:
-    get:
-      tags:
-        - "Season"
-      summary: "Get information about the stage by using the season ID"
-      operationId: "getStageBySeasonId" 
-      parameters:
-      - name: "seasonId"
-        in: "path"
-        description: "ID of season to which the stage belongs to"
-        required: true
-        schema:
-          type: "integer"
-          minimum: 1
-          example: 13
-            
-      responses:
-        "404":
-          description: "URL not found"
-        "400":
-          description: "Invalid season id"
-        "200":
-          description: "successful operation"
-          content:  
-            application/json:    
-              schema:            
-                $ref: "#/components/schemas/Stage"
-                
   /stage/{stageId}:
     get:
       tags:
@@ -716,6 +668,7 @@ components:
           example: "Denis Shalayev"
 
     GameEvent:
+      description: "An Event in a game. Options are: Red Card, Yellow Card, Foul, Offside, Goal, Injury, Subsitution"
       type: object
       properties:
         event_date:
@@ -848,30 +801,12 @@ components:
           example: false
 
     EventLog:
+      description: "The Eventlog - contains array of all the events in the game. Used only in past games"
       type: array
       items:
         type: object
         allOf:
           - $ref: "#/components/schemas/GameEvent"
-
-    # Game:
-    #   type: object
-    #   properties:
-    #     Date:
-    #       type: "string"
-    #       example: "20/02/2020"
-    #     Time:
-    #       type: "string"
-    #       example: "17:30:00"
-    #     HomeTeam:
-    #       type: "string"
-    #       example: "Barcelona"
-    #     AwayTeam:
-    #       type: "string"
-    #       example: "Real Madrid"
-    #     Stadium:
-    #       type: "string"
-    #       example: "sami ofer"
 
     ArrayOfTeams:
       type: array
