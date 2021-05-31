@@ -10,6 +10,6 @@ exports.formatDateTime = function formatDateTime(dateObj){
 /*
 The method will exctract the date from a datetime object
 */
-exports.ectractDateFromDatetime = function ectractDateFromDatetime(dateObj){
+exports.extractDateFromDatetime = function extractDateFromDatetime(dateObj){
     return dateObj.toISOString().split("T")[0];
 }
