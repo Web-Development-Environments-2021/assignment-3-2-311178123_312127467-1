@@ -6,3 +6,10 @@ exports.formatDateTime = function formatDateTime(dateObj){
     const time = `${dateObj.getHours()}:${dateObj.getMinutes()}:${dateObj.getSeconds()}`
     return `${date} ${time}`
 }
+
+/*
+The method will exctract the date from a datetime object
+*/
+exports.ectractDateFromDatetime = function ectractDateFromDatetime(dateObj){
+    return dateObj.toISOString().split("T")[0];
+}
