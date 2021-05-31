@@ -15,6 +15,22 @@ router.get("/currentStageGames", async (req, res, next) => {
       next(error);
     }
   });
+
+  router.post("/addGame", async (req, res, next) => {
+    try {
+
+      const userid =  req.session.userid
+      const past_games = await games_utils.getAllPastGames();
+      const future_games = await games_utils.getAllUpcomingGames();
+      const result = {
+        latest: past_games,
+        upcoming: future_games
+      }
+      res.send(result);
+    } catch (error) {
+      next(error);
+    }
+  });
   
 
   module.exports = router;
