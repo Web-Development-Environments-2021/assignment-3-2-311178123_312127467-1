@@ -7,8 +7,9 @@ DROP TABLE dbo.GamesEvents
 CREATE TABLE dbo.GamesEvents
 (
     gameid INT NOT NULL,
+    EventDate DATE NOT NULL,
+    EventTime TIME NOT NULL,
     EventGameTime [INT] NOT NULL,
     Event [NVARCHAR](50) NOT NULL,
     PRIMARY KEY (EventGameTime, gameid)
-
 );
