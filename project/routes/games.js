@@ -19,6 +19,7 @@ router.get("/currentStageGames", async (req, res, next) => {
   router.post("/addGame", async (req, res, next) => {
     try {
 
+      // Check if the user is a leagure representive
       const userid =  req.session.userid
       const game_date = req.body.game_date;
       // TODO MAKE SURE THE GAME IS FUTURE IN ORDER TO ADD
@@ -44,9 +45,8 @@ router.get("/currentStageGames", async (req, res, next) => {
 
       const game_id =  req.body.game_id
       const game_score = req.body.score;
-     
-
-      res.status(201).send("The game was successfully added");
+      games_utils.addScoreToGame(game_id, game_score);
+      res.status(201).send("The game was updated");
       } catch (error) {
       next(error);
     }

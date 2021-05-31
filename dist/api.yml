@@ -234,7 +234,7 @@ paths:
         "404":
           description: "URL not found"
         "200":
-          description: "successful operation"
+          description: "The game was updated"
   
   /games/addScore:
     put:
@@ -261,7 +261,7 @@ paths:
         "404":
           description: "URL not found"
         "200":
-          description: "successful operation"
+          description: "The game was updated"
         
   /games/addEvent:
     put:
@@ -289,7 +289,7 @@ paths:
         "404":
           description: "URL not found"
         "200":
-          description: "successful operation"
+          description: "The game was updated"
 
 
   /league/getDetails:

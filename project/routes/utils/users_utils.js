@@ -59,6 +59,9 @@ async function getFavoriteTeams(user_id) {
 }
 
 
+/*
+Returns True if the game is not yet played (future game) and False otherwise (past games)
+*/
 async function isGameInFuture(game_id) {
   const now = app_utils.formatDateTime(new Date())
   const game_date = await DButils.execQuery(

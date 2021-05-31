@@ -85,6 +85,10 @@ async function getAllUpcomingGames(){
   return games
 }
 
+/*
+The method will get all the data of a game and will add it to the games DB
+The Game should be a past game
+*/
 async function addFutureGame(game_date,game_time, HomeTeam, HomeTeamID,AwayTeam,
   AwayTeamID,stadium){
   await DButils.execQuery(`INSERT INTO Games
@@ -92,6 +96,14 @@ async function addFutureGame(game_date,game_time, HomeTeam, HomeTeamID,AwayTeam,
     [AwayTeamID], [Stadium])
   VALUES ('${game_date} ${game_time}', '${HomeTeam}',${HomeTeamID},'${AwayTeam}',${AwayTeamID}
    ,'${stadium}')`);
+}
+
+/*
+The method will get a score and a game_id and will update the game with the relevent score.
+The game should be a past game. The validtion is implemented in the client side.
+*/
+async function addScoreToGame(game_id,score){
+  await DButils.execQuery(`UPDATE Games SET Result='${score}' WHERE gameid = ${game_id}`);
 }
 
 
@@ -103,3 +115,4 @@ exports.getGamesInfo = getGamesInfo;
 exports.getAllPastGames = getAllPastGames;
 exports.getAllUpcomingGames = getAllUpcomingGames;
 exports.addFutureGame = addFutureGame;
+exports.addScoreToGame = addScoreToGame
