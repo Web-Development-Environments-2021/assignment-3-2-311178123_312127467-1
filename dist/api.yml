@@ -111,6 +111,8 @@ paths:
         responses:
           "404":
             description: "URL not found"
+          "403":
+            description: "Can only add future games to favorite games list"
           "401":
             description: "Unauthorized, please login first" 
           "400":
