@@ -372,35 +372,6 @@ paths:
             application/json:    
               schema:            
                 $ref: "#/components/schemas/Player"
-
-  /coach/{coachId}:
-    get:
-      tags:
-        - "Coach"
-      description: "used for coach card in personal page"
-      summary: "Get information about the coach by using the coach id"
-      operationId: "getCoachByStageId" 
-      parameters:
-      - name: "coachId"
-        in: "path"
-        description: "ID of coach to return"
-        required: true
-        schema:
-          type: "integer"
-          minimum: 1
-          example: 1467946
-            
-      responses:
-        "404":
-          description: "URL not found"
-        "400":
-          description: "Invalid coach id"
-        "200":
-          description: "successful operation"
-          content:  
-            application/json:    
-              schema:            
-                $ref: "#/components/schemas/Coach"
                 
                 
   /teams/id/{teamId}:
