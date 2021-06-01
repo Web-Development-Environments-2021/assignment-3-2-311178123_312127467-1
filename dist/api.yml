@@ -321,7 +321,7 @@ paths:
       tags:
         - "Player"
       description: "used for player card in personal page"
-      summary: "Get information about the player by using the player id"
+      summary: "Get the full information about the player by using the player id"
       operationId: "getPlayerByStageId" 
       parameters:
       - name: "playerId"
@@ -350,7 +350,7 @@ paths:
       tags:
         - "Player"
       description: "used for player card in personal page"
-      summary: "Get information about the player by using the player fullname"
+      summary: "Get the full information about the player by using the player fullname"
       operationId: "getPlayerByName" 
       parameters:
       - name: "player_name"
@@ -372,7 +372,49 @@ paths:
             application/json:    
               schema:            
                 $ref: "#/components/schemas/Player"
-                
+  
+  /players/search/{player_name}:
+    get:
+      tags:
+        - "Player"
+      description: "Used for the search page."
+      summary: "Get part of the player's information by using the player fullname"
+      parameters:
+      - name: "player_name"
+        in: "path"
+        description: "Full name of player to return"
+        schema:
+          type: "String"
+          example: "Rune Frantsen"
+            
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid player name"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:
+                type: object
+                properties:            
+                  fullname:
+                    type: "String"
+                    example: "Rune Frantsen"
+                  team_name: 
+                    type: "Horsens"
+                    example: "Rune Frantsen"
+                  team_id:
+                    type: "integer"
+                    example: 211
+                  image:
+                    type: "string"
+                    example: "https://cdn.sportmonks.com/images/soccer/players/11/85419.png"
+                  position_id:
+                    type: "integer"
+                    example: 2
+                        
                 
   /teams/id/{teamId}:
     get:

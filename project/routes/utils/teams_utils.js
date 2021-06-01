@@ -49,7 +49,6 @@ async function getGamesInfo(team_id) {
 }
 
 async function getTeamsInfo(teams_ids_list) {
-    let teams_data = []
     let promises = [];
     teams_ids_list.map((id) =>
       promises.push(
@@ -72,7 +71,6 @@ mentioned in the api
 
 async function extractRelevantTeamData(teams_info) {
 
-   let teams_data = []
 
     return await Promise.all(teams_info.map(async (team_info) => {
         let coach = coach_utils.extractCoachData(team_info.data.data.coach.data);
