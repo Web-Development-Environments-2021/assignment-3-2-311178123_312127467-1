@@ -234,7 +234,7 @@ paths:
         "404":
           description: "URL not found"
         "401":
-          description: "Privilege Error: Only league representives can add games"
+          description: ""Privilege Error: The following action is only permitted to league representives"
         "200":
           description: "The game was updated"
   
@@ -263,7 +263,7 @@ paths:
         "404":
           description: "URL not found"
         "401":
-          description: "Privilege Error: Only league representives can add scores to games"
+          description: ""Privilege Error: The following action is only permitted to league representives"
         "200":
           description: "The game was updated"
         
@@ -272,7 +272,8 @@ paths:
       tags:
         - "Games"
       summary: "Add an event to a game"
-      description: "used for the league representitve to add events to games that were played"
+      description: "used for the league representitve to add events to games that were played. If the event alreay exist it will be updates with the new event description, else
+      it will be created as a new event"
       operationId: "addEvent"      
       requestBody:
         content:
@@ -293,7 +294,7 @@ paths:
         "404":
           description: "URL not found"
         "401":
-          description: "Privilege Error: Only league representives can add events to games"
+          description: "Privilege Error: The following action is only permitted to league representives"
         "200":
           description: "The game was updated"
 
