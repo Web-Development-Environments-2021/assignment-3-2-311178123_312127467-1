@@ -30,7 +30,6 @@ router.get("/search/:player_name", async (req, res, next) => {
     let player_info = await players_utils.getPlayersInfo([player_id])
     // Only one player will return the in array
     player_info = player_info[0];
-    // let player_info = require("./utils/data_examples/player.json")
     player_info = {
       fullname: player_info.name,
       team_name: player_info.team_name,
