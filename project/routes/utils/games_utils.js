@@ -109,12 +109,28 @@ async function addScoreToGame(game_id,score){
 /*
 The method will get an event and a game_id and will update the game with the given event.
 The game should be a past game. The validtion is implemented in the client side.
+If the event exist it will be updated with the new value
 */
 async function addEventToGame(game_id,event){
-  await DButils.execQuery(`INSERT INTO GamesEvents 
-  ([gameid], [EventDate], [EventTime], [EventGameTime], [Event]) 
-  Values (${game_id}, '${event.event_date}', '${event.event_time}',
-  ${event.event_game_time},'${event.event}')`);
+  await DButils.execQuery(`SELECT * FROM GamesEvents WHERE gameid = ${game_id} AND EventDate = '${event.event_date}' AND EventTime = '${event.event_time}' 
+  AND EventGameTime =  ${event.event_game_time}`)
+      /*
+        Check if the event already exist. Event is represented by Gameid, Date, Time, GameTime.
+        If Yes -> Update it
+        Else -> Create a new event
+      */
+      .then((game_ids) => {
+        if (game_ids.length > 0){
+           DButils.execQuery(`Update GamesEvents SET Event = '${event.event}' WHERE gameid = ${game_id}
+           AND EventDate = '${event.event_date}' AND EventTime = '${event.event_time}' 
+          AND EventGameTime =  ${event.event_game_time}`);
+        } else {
+          DButils.execQuery(`INSERT INTO GamesEvents 
+          ([gameid], [EventDate], [EventTime], [EventGameTime], [Event]) 
+          Values (${game_id}, '${event.event_date}', '${event.event_time}',
+          ${event.event_game_time},'${event.event}')`);
+        }
+        })
 }
 
 
