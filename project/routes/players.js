@@ -28,7 +28,7 @@ router.get("/search/:player_name", async (req, res, next) => {
   try {
     const player_id = await players_utils.getPlayerIdByName(req.params.player_name)
     let player_info = await players_utils.getPlayersInfo([player_id])
-    // Only one player will return the in array
+    // Only one player will return the in array - the player matching the id
     player_info = player_info[0];
     player_info = {
       fullname: player_info.name,
