@@ -11,8 +11,11 @@ async function getPlayerIdByName(player_name){
       api_token: process.env.api_token,
     },
   })
-
-  return player_data.data.data[0].player_id;
+  let players_ids = []
+  player_data.data.data.map(player => {
+    if (player.fullname == player_name)
+      players_ids.push(player.player_id)})
+  return players_ids;
 }
 
 /*
@@ -54,7 +57,7 @@ async function getPlayersInfo(players_ids_list) {
       axios.get(`${api_domain}/players/${id}`, {
         params: {
           api_token: process.env.api_token,
-          include: "team",
+          include: "team, position",
         },
       })
     )
@@ -76,7 +79,8 @@ function extractFullPlayerData(players_info) {
     return {
       name: fullname,
       image: image_path,
-      position: position_id,
+      position_id: position_id,
+      position: player_info.data.data.position.data.name,
       team_name: name,
       team_id: id,
       nationality: nationality,

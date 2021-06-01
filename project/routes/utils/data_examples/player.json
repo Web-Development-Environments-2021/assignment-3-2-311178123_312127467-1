@@ -1,4 +1,5 @@
-{
+[
+  {
     "name": "Rune Frantsen",
     "image": "https://cdn.sportmonks.com/images/soccer/players/11/85419.png",
     "position": 2,
@@ -11,3 +12,4 @@
     "weight": null,
     "height": null
   }
+]

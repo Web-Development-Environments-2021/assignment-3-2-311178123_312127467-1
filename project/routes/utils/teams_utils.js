@@ -18,36 +18,22 @@ async function getTeamIdByName(team_name){
 }
 
 /*
-The method will query the sports api for the teams information
+The method query the SportMonk API for part of the team's information.
+Will return {team_name, logo_path}
 */
-async function getGamesInfo(team_id) {
-  let upcoming = getUpcomingTeamGames(team_id)
-  let latest = getLatestTeamGames(team_id)
-  let promises_upcoming = [];
-  let promises_latest = [];
-  upcoming.map((id) =>
-    promises_upcoming.push(
-      axios.get(`${api_domain}/teams/${team_id}/upcoming/${id}`, {
-        params: {
-          api_token: process.env.api_token,
-        },
-      })
-    )
-  );
-  latest.map((id) =>
-    promises_latest.push(
-      axios.get(`${api_domain}/teams/${team_id}/latest/${id}`, {
-        params: {
-          api_token: process.env.api_token,
-        },
-      })
-    )
-  );
-  let latest_info = await Promise.all(promises_latest);
-  let upcoming_info = await Promise.all(promises_upcoming);
-  return [extractRelevantPlayerData(latest_info),extractRelevantPlayerData(upcoming_info)];
+async function getPreviwTeamData(team_id) {
+  const team_data = await axios.get(`${api_domain}/teams/${team_id}`, {
+    params: {
+      api_token: process.env.api_token,
+    },
+  })
+  return {team_name: team_data.data.data.name, logo_path: team_data.data.data.logo_path};
 }
 
+/*
+The method query the SportMonk API for the team's full detials and will return all the team information
+as stated in the team page.
+*/
 async function getTeamsInfo(teams_ids_list) {
     let promises = [];
     teams_ids_list.map((id) =>
@@ -68,14 +54,12 @@ async function getTeamsInfo(teams_ids_list) {
 The method will extract all the relavent data about the team as it is 
 mentioned in the api
 */
-
 async function extractRelevantTeamData(teams_info) {
-
 
     return await Promise.all(teams_info.map(async (team_info) => {
         let coach = coach_utils.extractCoachData(team_info.data.data.coach.data);
-        let upcoming_games = await game_utils.getUpcomingGames(team_info.data.data.id);
-        let latest_games = await game_utils.getLatestGames(team_info.data.data.id);
+        let upcoming_games = await game_utils.getTeamUpcomingGames(team_info.data.data.id);
+        let latest_games = await game_utils.getTeamLatestGames(team_info.data.data.id);
         const name = team_info.data.data.name;
         return {
         name: name,
@@ -91,3 +75,4 @@ async function extractRelevantTeamData(teams_info) {
 
 exports.getTeamsInfo = getTeamsInfo;
 exports.getTeamIdByName = getTeamIdByName;
+exports.getPreviwTeamData = getPreviwTeamData

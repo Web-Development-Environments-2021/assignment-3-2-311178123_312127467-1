@@ -7,9 +7,9 @@ const teams_utils = require("./utils/teams_utils");
 async function getTeamData(team_id){
     let team_details = [];
 
-    // const team_players = await players_utils.getPlayersByTeam(
-    //   team_id
-    // );
+    const team_players = await players_utils.getPlayersByTeam(
+      team_id
+    );
     const team_info = await teams_utils.getTeamsInfo(
       [team_id]
     );
@@ -20,7 +20,7 @@ async function getTeamData(team_id){
 
     team_details.push(name);
     team_details.push(team_coach);
-    // team_details.push(team_players);
+    team_details.push(team_players);
     team_details.push(past_games);
     team_details.push(future_games);
 
@@ -42,6 +42,16 @@ router.get("/name/:teamname", async (req, res, next) => {
   try {
     const team_id = await teams_utils.getTeamIdByName(req.params.teamname)
     const team_details = await getTeamData(team_id)
+    res.send(team_details);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/search/:teamname", async (req, res, next) => {
+  try {
+    const team_id = await teams_utils.getTeamIdByName(req.params.teamname)
+    const team_details = await teams_utils.getPreviwTeamData(team_id)
     res.send(team_details);
   } catch (error) {
     next(error);
