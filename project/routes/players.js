@@ -34,7 +34,7 @@ router.get("/search/:player_name", async (req, res, next) => {
       fullname: player_info.name,
       team_name: player_info.team_name,
       team_id: player_info.team_id,
-      image: player_info.image,
+      image_path: player_info.image,
       position_id: player_info.position
     }
     res.send(player_info);
