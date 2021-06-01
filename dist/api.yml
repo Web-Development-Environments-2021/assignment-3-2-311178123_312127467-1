@@ -315,35 +315,6 @@ paths:
               schema:            
                 $ref: "#/components/schemas/League"
 
-            
-        
-  /stage/{stageId}:
-    get:
-      tags:
-        - "Stage"
-      summary: "Get information about the stage by using the Stage id"
-      operationId: "getStageByStageId" 
-      parameters:
-      - name: "stageId"
-        in: "path"
-        description: "ID of stage to return"
-        required: true
-        schema:
-          type: "integer"
-          minimum: 1
-          example: 11142
-            
-      responses:
-        "404":
-          description: "URL not found"
-        "400":
-          description: "Invalid season id"
-        "200":
-          description: "successful operation"
-          content:  
-            application/json:    
-              schema:            
-                $ref: "#/components/schemas/Stage"
   
   /players/id/{playerId}:
     get:
