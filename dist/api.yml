@@ -234,7 +234,7 @@ paths:
         "404":
           description: "URL not found"
         "401":
-          description: "Only league representives can add games"
+          description: "Privilege Error: Only league representives can add games"
         "200":
           description: "The game was updated"
   
@@ -263,7 +263,7 @@ paths:
         "404":
           description: "URL not found"
         "401":
-          description: "Only league representives can add scores to games"
+          description: "Privilege Error: Only league representives can add scores to games"
         "200":
           description: "The game was updated"
         
@@ -293,7 +293,7 @@ paths:
         "404":
           description: "URL not found"
         "401":
-          description: "Only league representives can add events to games"
+          description: "Privilege Error: Only league representives can add events to games"
         "200":
           description: "The game was updated"
 

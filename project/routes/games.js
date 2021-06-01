@@ -2,6 +2,8 @@ var express = require("express");
 var router = express.Router();
 const games_utils = require("./utils/games_utils");
 
+
+
 router.get("/currentStageGames", async (req, res, next) => {
     try {
       const past_games = await games_utils.getAllPastGames();
@@ -15,6 +17,26 @@ router.get("/currentStageGames", async (req, res, next) => {
       next(error);
     }
   });
+
+
+
+  /**
+ * Check if the user is a league representive by middleware
+ */
+router.use(async function (req, res, next) {
+  if (req.session && req.session.userid) {
+    DButils.execQuery("SELECT userid FROM LeagueRepsUsers")
+      .then((users) => {
+        if (users.find((x) => x.userid === req.session.userid)) {
+          req.userid = req.session.userid;
+          next();
+        }
+      })
+      .catch((err) => next(err));
+  } else {
+    res.sendStatus(401);
+  }
+});
 
   router.post("/addGame", async (req, res, next) => {
     try {
