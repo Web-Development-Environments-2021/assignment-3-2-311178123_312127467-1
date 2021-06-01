@@ -1,7 +1,7 @@
 const axios = require("axios");
 const api_domain = "https://soccer.sportmonks.com/api/v2.0";
-const app_utils = require(".\\app_utils");
-const DButils = require(".\\DButils");
+const app_utils = require("./app_utils");
+const DButils = require("./DButils");
 
 // const TEAM_ID = "85";
 
