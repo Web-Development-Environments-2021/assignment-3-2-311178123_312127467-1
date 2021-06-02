@@ -2,7 +2,7 @@ const axios = require("axios");
 const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 const coach_utils = require("./coach_utils");
 const game_utils = require("./games_utils");
-const players_utils = require("./players_utils");
+const league_utils = require("./league_utils");
 
 /*
 The method will query the sports api for the team's name and return the id
@@ -71,8 +71,23 @@ async function extractRelevantTeamData(teams_info) {
 
 }
 
+/*
+The method will query the API to see if the teams are part of the Superliga league.
+*/
+async function checkTeamLeagueByTeamId(team_id){
+
+  const team_info = await axios.get(`${api_domain}/teams/${team_id}`, {
+          params: {
+            api_token: process.env.api_token,
+            include: "league"
+          },
+        })
+  return  league_utils.checkIfLeagueIsSuperLiga(team_info.data.data.league.data.id)
+}
+
 
 
 exports.getTeamsInfo = getTeamsInfo;
 exports.getTeamIdByName = getTeamIdByName;
 exports.getPreviwTeamData = getPreviwTeamData
+exports.checkTeamLeagueByTeamId = checkTeamLeagueByTeamId

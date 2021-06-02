@@ -1,7 +1,5 @@
 const axios = require("axios");
-const DButils = require(".\\DButils");
-const app_utils = require(".\\app_utils");
-const game_utils = require(".\\games_utils");
+const game_utils = require("./games_utils");
 const LEAGUE_ID = 271;
 
 /*
@@ -9,11 +7,8 @@ The method will get the next game scheduled for the current stage.
 The next game will be the one closest to now (in the future)
 Return: Object with all the game columns info
 */
-
 async function getLeagueDetails() {
   
-
-
   const league = await axios.get(
     `https://soccer.sportmonks.com/api/v2.0/leagues/${LEAGUE_ID}`,
     {
@@ -44,4 +39,12 @@ async function getLeagueDetails() {
   };
 }
 
+
+
+
+function checkIfLeagueIsSuperLiga(league_id){
+  return league_id == LEAGUE_ID
+}
+exports.LEAGUE_ID = LEAGUE_ID
 exports.getLeagueDetails = getLeagueDetails;
+exports.checkIfLeagueIsSuperLiga = checkIfLeagueIsSuperLiga

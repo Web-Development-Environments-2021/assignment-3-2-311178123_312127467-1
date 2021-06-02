@@ -2,6 +2,7 @@ const axios = require("axios");
 const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 const app_utils = require("./app_utils");
 const DButils = require("./DButils");
+const teams_utils = require("./teams_utils");
 
 // const TEAM_ID = "85";
 
@@ -125,11 +126,11 @@ The Game should be a past game
 */
 async function addFutureGame(game_date,game_time, HomeTeam, HomeTeamID,AwayTeam,
   AwayTeamID,stadium){
-  await DButils.execQuery(`INSERT INTO Games
-  ([GameDateTime],[HomeTeam],[HomeTeamID],[AwayTeam],
-    [AwayTeamID], [Stadium])
-  VALUES ('${game_date} ${game_time}', '${HomeTeam}',${HomeTeamID},'${AwayTeam}',${AwayTeamID}
-   ,'${stadium}')`);
+    await DButils.execQuery(`INSERT INTO Games
+    ([GameDateTime],[HomeTeam],[HomeTeamID],[AwayTeam],
+      [AwayTeamID], [Stadium])
+    VALUES ('${game_date} ${game_time}', '${HomeTeam}',${HomeTeamID},'${AwayTeam}',${AwayTeamID}
+    ,'${stadium}')`);
 }
 
 /*
@@ -167,6 +168,19 @@ async function addEventToGame(game_id,event){
         })
 }
 
+/*
+The method will query the DB to see if the teams have a game in the datetime that was given
+*/
+async function checkIfMathcExists(game_time,home_team_id, away_team_id){
+  let result = await DButils.execQuery(`SELECT gameid FROM Games Where GameDateTime = '${game_time}' AND
+  (HomeTeamID = ${home_team_id} AND AwayTeamID = ${away_team_id}) OR
+  (HomeTeamID = ${away_team_id} AND AwayTeamID = ${home_team_id})`)
+  if(result.length > 0)
+    return true
+
+  return false
+}
+
 
 exports.getTeamLatestGames = getTeamLatestGames;
 exports.getTeamUpcomingGames = getTeamUpcomingGames;
@@ -178,3 +192,4 @@ exports.getAllUpcomingGames = getAllUpcomingGames;
 exports.addFutureGame = addFutureGame;
 exports.addScoreToGame = addScoreToGame
 exports.addEventToGame = addEventToGame
+exports.checkIfMathcExists = checkIfMathcExists

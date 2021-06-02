@@ -219,7 +219,9 @@ paths:
       tags:
         - "Games"
       summary: "Add a game to the current stage"
-      description: "used for the league representitve to add games to the Superliga league. Only teams from the Superliga can be added.
+      description: "used for the league representitve to add games to the Superliga league. 
+        If the teams ids are not known, do not send them.
+       Only teams from the Superliga can be added.
       Only future games can be added. For Future games no results and eventlog should not be given"
       operationId: "addgame"
       requestBody:
@@ -227,15 +229,19 @@ paths:
           application/json:  
             schema:
               type: object
-              $ref: "#/components/schemas/Game"
+              $ref: "#/components/schemas/FutureGame"
 
       responses:
         "500":
           description: "Internal Server error"
+        "405":
+          description: "The teams already have a match in that date & time"
+        "406":
+          description: "Bad game input. Please check the date or teams"
         "404":
           description: "URL not found"
         "401":
-          description: ""Privilege Error: The following action is only permitted to league representives"
+          description: "Privilege Error: The following action is only permitted to league representives Or you have not Logged in first"
         "200":
           description: "The game was updated"
   
@@ -553,6 +559,7 @@ paths:
                 $ref: "#/components/schemas/ArrayOfGames"
 
 components:
+
   schemas:
     User:    # Schema name
       type: object
@@ -668,6 +675,34 @@ components:
         next_game:
           type: object
           $ref: "#/components/schemas/Game"
+    
+    FutureGame:
+      type: object
+      properties:
+        game_date:
+          type: "String"
+          example: "2021-10-28"
+        game_time:
+          type: "String"
+          example: "17:00:00"
+        home_team:
+          type: "String"
+          example: "Midtjylland"
+        home_team_id:
+          type: "integer"
+          example: 939
+        away_team:
+          type: "String"
+          example: "Horsens"
+        away_team_id:
+          type: "integer"
+          example: 211
+        stadium:
+          type: "String"
+          example: "MCH Arena"
+        referee:
+          type: object
+          $ref: "#/components/schemas/Referee"
 
     Game:
       required:
@@ -693,13 +728,13 @@ components:
           example: 939
         away_team:
           type: "String"
-          example: "København"
+          example: "Horsens"
         away_team_id:
           type: "integer"
-          example: 85
+          example: 211
         stadium:
           type: "String"
-          example: "Kiryat Eliezer"
+          example: "MCH Arena"
         referee:
           type: object
           $ref: "#/components/schemas/Referee"
