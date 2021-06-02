@@ -219,7 +219,8 @@ paths:
       tags:
         - "Games"
       summary: "Add a game to the current stage"
-      description: "used for the league representitve to add games to the league. Only future games can be added. For Future games no results and eventlog should be given"
+      description: "used for the league representitve to add games to the Superliga league. Only teams from the Superliga can be added.
+      Only future games can be added. For Future games no results and eventlog should not be given"
       operationId: "addgame"
       requestBody:
         content:
@@ -673,9 +674,7 @@ components:
         - game_date
         - game_time
         - home_team
-        - home_team_id
         - away_team
-        - away_team_id
         - stadium
 
       type: object
