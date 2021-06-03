@@ -411,7 +411,7 @@ paths:
                   allOf:
                      - $ref: "#/components/schemas/PlayerPreview"
                     
-  /players/search/{player_name}/{player_position_id}:
+  /players/search/{player_name}/positionId/{player_position_id}:
     get:
       tags:
         - "Player"
@@ -427,7 +427,7 @@ paths:
           example: "Rune Frantsen"
       - name: "player_position_id"   
         in: "path"
-        description: "Player position id"
+        description: "Player's position id"
         schema:
           type: "integer"
           example: 2
@@ -447,7 +447,43 @@ paths:
                   type: object
                   allOf:
                      - $ref: "#/components/schemas/PlayerPreview"
-                    
+
+  /players/search/{player_name}/team/{team_name}:
+    get:
+      tags:
+        - "Player"
+      description: "Used for the search page."
+      summary: "Get part of the player's information by using the player's fullname and team as filter.
+      All the players with that name and team name will return"
+      parameters:
+      - name: "player_name"
+        in: "path"
+        description: "Full name of player to return"
+        schema:
+          type: "String"
+          example: "Rune Frantsen"
+      - name: "team_name"   
+        in: "path"
+        description: "Player's team name"
+        schema:
+          type: "String"
+          example: "Horsens"
+
+      responses:
+        "404":
+          description: "URL not found"
+        "400":
+          description: "Invalid player name"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:
+                type: array
+                items:
+                  type: object
+                  allOf:
+                     - $ref: "#/components/schemas/PlayerPreview"        
                 
   /teams/id/{teamId}:
     get:
