@@ -310,8 +310,8 @@ paths:
     get:
       tags:
         - "League"
-      summary: "Get information about the superliga league "
-      operationId: "getLeagueByName"     
+      summary: "Get information about the superliga league"
+      description: "Return all the league information. If there is not current season running the season and stage will be null"
       responses:
         "404":
           description: "URL not found"

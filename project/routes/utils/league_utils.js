@@ -19,24 +19,34 @@ async function getLeagueDetails() {
     }
   );
 
+  if (league.data.data.current_stage_id != null && league.data.data.season != null){
+    const stage = await axios.get(
+      `https://soccer.sportmonks.com/api/v2.0/stages/${league.data.data.current_stage_id}`,
+      {
+        params: {
+          api_token: process.env.api_token,
+        },
+      }
+    );  
 
-  const stage = await axios.get(
-    `https://soccer.sportmonks.com/api/v2.0/stages/${league.data.data.current_stage_id}`,
-    {
-      params: {
-        api_token: process.env.api_token,
-      },
+    const next_game = await game_utils.getNextGame();
+  
+    return {
+      league_name: league.data.data.name,
+      current_season_name: league.data.data.season.data.name,
+      current_stage_name: stage.data.data.name,
+      stage_next_game: next_game
+    };
+  }
+  else{
+    // There is not stage that is corrently running by the league, meaning the season is over.
+    return {
+      league_name: league.data.data.name,
+      current_season_name: null,
+      current_stage_name: null,
+      stage_next_game: null
     }
-  );  
-
-  const next_game = await game_utils.getNextGame();
-
-  return {
-    league_name: league.data.data.name,
-    current_season_name: league.data.data.season.data.name,
-    current_stage_name: stage.data.data.name,
-    stage_next_game: next_game
-  };
+  }
 }
 
 
