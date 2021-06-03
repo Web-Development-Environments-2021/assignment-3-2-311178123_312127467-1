@@ -48,7 +48,7 @@ paths:
           "200":
             description: >
               Login succeeded.
-              The session ID is returned in a cookie named `JSESSIONID`. You need to include this cookie in subsequent requests.
+              The session ID is returned in a cookie named `sessionid`. You need to include this cookie in subsequent requests.
             headers: 
               Set-Cookie:
                 schema: 
