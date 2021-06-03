@@ -75,7 +75,7 @@ router.use(async function (req, res, next) {
         throw { status: 406, message: "Bad game input. Please check the date or teams" };
       // Check if the game's date already exists. If not send an error to the user
       else if (await games_utils.checkIfMathcExists(`${game_date} ${game_time}`, home_team_id, away_team_id))
-        throw { status: 405, message: "the teams already have a match in that date & time" };
+        throw { status: 405, message: "The teams already have a match in that date & time" };
 
       await games_utils.addFutureGame(game_date,game_time,home_team,home_team_id,away_team,
         away_team_id,stadium)
