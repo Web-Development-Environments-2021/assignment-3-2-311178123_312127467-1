@@ -47,7 +47,7 @@ paths:
             description: "Internal Server error"
           "200":
             description: >
-              Successfully authenticated.
+              Login succeeded.
               The session ID is returned in a cookie named `JSESSIONID`. You need to include this cookie in subsequent requests.
             headers: 
               Set-Cookie:
