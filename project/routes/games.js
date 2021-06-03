@@ -66,27 +66,17 @@ router.use(async function (req, res, next) {
       }
 
       // Check if the game's date match the current season. If not send an error to the user
-      if (!await season_utils.checkDateMatchCurrentSeason(new Date(game_date))){
-        let error = new Error()
-        error.message = "	Bad game input. Please check the date or team"
-        error.status = 406
-        throw error;
-      }
+      if (!await season_utils.checkDateMatchCurrentSeason(new Date(game_date)))
+        throw { status: 406, message: "Bad game input. Please check the date or team" };
+
       // Check if the game's match the Superliga's teams. If not send an error to the user
       const leagues_checks = await Promise.all([teams_utils.checkTeamLeagueByTeamId(home_team_id), teams_utils.checkTeamLeagueByTeamId(away_team_id)])
-      if (!leagues_checks[0] || !leagues_checks[1]){
-        let error = new Error()
-        error.message = "Bad game input. Please check the date or team"
-        error.status = 406
-        throw error;
-      }
+      if (!leagues_checks[0] || !leagues_checks[1])
+        throw { status: 406, message: "Bad game input. Please check the date or team" };
       // Check if the game's date already exists. If not send an error to the user
-      else if (await games_utils.checkIfMathcExists(`${game_date} ${game_time}`, home_team_id, away_team_id)){
-          let error = new Error()
-          error.message = "the teams already have a match in that date & time"
-          error.status = 405
-          throw error;
-      }
+      else if (await games_utils.checkIfMathcExists(`${game_date} ${game_time}`, home_team_id, away_team_id))
+        throw { status: 405, message: "the teams already have a match in that date & time" };
+
       await games_utils.addFutureGame(game_date,game_time,home_team,home_team_id,away_team,
         away_team_id,stadium)
 
