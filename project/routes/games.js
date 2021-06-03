@@ -22,7 +22,6 @@ router.get("/currentStageGames", async (req, res, next) => {
   });
 
 
-
   /**
  * Check if the user is a league representive by middleware
  */
@@ -47,7 +46,16 @@ router.use(async function (req, res, next) {
     res.status(401).send("Privilege Error: The following action is only permitted to league representives Or you have not Logged in first")
 });
 
-  router.post("/addGame", async (req, res, next) => {
+router.get("/all", async (req, res, next) => {
+  try {
+    const result = await games_utils.getAllGames()
+    res.send(result);
+  } catch (error) {
+    next(error);
+  }  
+});
+
+router.post("/addGame", async (req, res, next) => {
     try {
 
       const game_date = req.body.game_date;

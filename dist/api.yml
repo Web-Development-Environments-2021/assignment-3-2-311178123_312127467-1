@@ -7,7 +7,7 @@ paths:
         tags:
         - "Authenticaiton"
         summary: "Adds a new user"
-        description: "Save user in DB"
+        description: "The new user is saved in the system and can login."
         operationId: "UserRegister" 
         requestBody:
           content:
@@ -30,7 +30,8 @@ paths:
         tags:
         - "Authenticaiton"
         summary: "Logs user into the system"
-        description: ""
+        description: "Log in to the system. After login action a session cookie will return marking the user as logged in.
+        This needs to be done before doing anything related to one's favorite players / teams / games."
         operationId: "UserLogin" 
         requestBody:
           content:
@@ -61,7 +62,7 @@ paths:
       tags:
         - "Authenticaiton"
       summary: "Log the user from the system"
-      description: ""
+      description: "Logout the user from the system. The cookie session is reset and is no longer valid until relogin."
       operationId: "UserLogOut" 
           
       responses:
@@ -76,9 +77,9 @@ paths:
       tags:
         - "User"
       summary: "Retrieve the favorite games for the logged in user"
-      description: ""
+      description: "The favorite games are upcoming games and so they won't have an evenlog and a result (both will be null).
+      If the user does not have favorite games the array of games will be empty"
       operationId: "getFavGamesForUser" 
-  
       responses:
         "404":
           description: "URL not found"
@@ -95,8 +96,8 @@ paths:
       post:
         tags:
           - "User"
-        summary: "add the favorite game to the list of the user's favorite games"
-        description: "used in the user's personal page"
+        description: "add the favorite game to the list of the user's favorite games"
+        summary: "used in the user's personal page"
         operationId: "addFavGameForUser" 
         requestBody:
           content:
@@ -125,7 +126,7 @@ paths:
       tags:
         - "User"
       summary: "Retrieve the favorite teams for the logged in user"
-      description: ""
+      description: "Retrieve the favorite teams the user marked. If there are none, an empty array will return."
       operationId: "getFavTeamsForUser" 
           
       responses:
@@ -144,8 +145,8 @@ paths:
     post:
       tags:
         - "User"
-      summary: "add the favorite team to the list of the user's favorite teams"
-      description: "used in the user's personal page"
+      description: "add the favorite team to the list of the user's favorite teams."
+      summary: "used in the user's personal page"
       operationId: "addFavTeamForUser" 
       requestBody:
         content:
@@ -172,7 +173,7 @@ paths:
       tags:
         - "User"
       summary: "Retrieve the favorite players for the logged in user"
-      description: ""
+      description: "Retrive all the favorite players that the user marked. If there are none, an empty array will return."
       operationId: "getFavPlayersForUser" 
           
       responses:
@@ -191,8 +192,8 @@ paths:
     post:
       tags:
         - "User"
-      summary: "add the favorite player to the list of the user's favorite players"
-      description: "used in the user's personal page"
+      description: "add the favorite player to the list of the user's favorite players"
+      summary: "used in the user's personal page"
       operationId: "addFavPlayerForUser" 
       requestBody:
         content:
@@ -327,8 +328,8 @@ paths:
     get:
       tags:
         - "Player"
-      description: "used for player card in personal page"
-      summary: "Get the full information about the player by using the player id"
+      summary: "used for player card in personal page"
+      description: "Get the full information about the player by using the player id"
       operationId: "getPlayerByStageId" 
       parameters:
       - name: "playerId"
@@ -356,8 +357,8 @@ paths:
     get:
       tags:
         - "Player"
-      description: "used for player card in personal page"
-      summary: "Get the full information about the player by using the player fullname"
+      summary: "used for player card in personal page"
+      description: "Get the full information about the player by using the player fullname"
       operationId: "getPlayerByName" 
       parameters:
       - name: "player_name"
@@ -383,10 +384,10 @@ paths:
   /players/search/{player_name}:
     get:
       tags:
-        - "Player"
-      description: "Used for the search page."
-      summary: "Get part of the player's information by using the player's fullname. All the players with that
-      name will return"
+        - "Search"
+      summary: "Used for the search page."
+      description: "Get part of the player's information by using the player's fullname. All the players with that
+      name will return. If there are none, an empty array will return."
       parameters:
       - name: "player_name"
         in: "path"
@@ -410,14 +411,14 @@ paths:
                   type: object
                   allOf:
                      - $ref: "#/components/schemas/PlayerPreview"
-                    
+                 
   /players/search/{player_name}/positionId/{player_position_id}:
     get:
       tags:
-        - "Player"
-      description: "Used for the search page."
-      summary: "Get part of the player's information by using the player's fullname and position as filter.
-      All the players with that name and position id will return"
+        - "Search"
+      description: "Get part of the player's information by using the player's fullname and position as filter.
+      All the players with that name and position id will return. If there are none, an empty array will return."   
+      summary: "Used for the search page"
       parameters:
       - name: "player_name"
         in: "path"
@@ -452,9 +453,9 @@ paths:
     get:
       tags:
         - "Player"
-      description: "Used for the search page."
-      summary: "Get part of the player's information by using the player's fullname and team as filter.
-      All the players with that name and team name will return"
+      summary: "Used for the search page."
+      description: "Get part of the player's information by using the player's fullname and team as filter.
+      All the players with that name and team name will return. If there are none, an empty array will return."
       parameters:
       - name: "player_name"
         in: "path"
@@ -489,8 +490,8 @@ paths:
     get:
       tags:
         - "Team"
-      summary: "Get information about the team by using the team id"
-      description: "used in the team's personal page"
+      description: "Get information about the team by using the team id"
+      summary: "used in the team's personal page"
       operationId: "getTeamById" 
       parameters:
       - name: "teamId"
@@ -500,7 +501,7 @@ paths:
         schema:
           type: "integer"
           minimum: 1
-          example: 72
+          example: 211
             
       responses:
         "404":
@@ -518,8 +519,8 @@ paths:
     get:
       tags:
         - "Team"
-      summary: "Get information about the team by using the team name"
-      description: "used in the team's personal page"
+      description: "Get information about the team by using the team name"
+      summary: "used in the team's personal page"
       operationId: "getTeamByName" 
       parameters:
       - name: "team_name"
@@ -545,9 +546,9 @@ paths:
   /teams/search/{team_name}:
     get:
       tags:
-        - "Team"
-      description: "Used for the search page."
-      summary: "Get part of the team's information by using the team's name"
+        - "Search"
+      summary: "Used for the search page."
+      description: "Get part of the team's information by using the team's name. If there are none, an empty array will return."
       parameters:
       - name: "team_name"
         in: "path"
@@ -580,8 +581,8 @@ paths:
     get:
       tags:
         - "Games"
-      summary: "Get the latest games for the current stage"
-      description: "for the current stage page"
+      description: "Get the latest games for the current stage"
+      summary: "for the current stage page"
             
       responses:
         "404":
@@ -594,8 +595,25 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfGames"
 
-components:
+  /games/all:
+     get:
+      tags:
+        - "Games"
+      description: "Get a list of all the games that exists in the system, future and past games."
+      summary: "For the league representive page"
+            
+      responses:
+        "404":
+          description: "URL not found"
 
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                $ref: "#/components/schemas/ArrayOfGames"
+                
+components:
   schemas:
     User:    # Schema name
       type: object
@@ -638,14 +656,14 @@ components:
         id:
             type: "integer"
             format: "int64"
-            example: 939
+            example: 211
         name:
             type: "string"
-            example: "Barcelona"
+            example: "Horsens"
 
         logo_path:
             type: "string"
-            example: "https://cdn.sportmonks.com/images//soccer/teams/11/939.png"
+            example: "https://cdn.sportmonks.com/images//soccer/teams/11/211.png"
         season_name:
             type: "string"
             example: "2020/2021"
@@ -752,10 +770,10 @@ components:
       properties:
         game_date:
           type: "String"
-          example: "2021-10-28"
+          example: "2021-01-13"
         game_time:
           type: "String"
-          example: "17:00:00"
+          example: "19:00:00"
         home_team:
           type: "String"
           example: "Midtjylland"
@@ -804,7 +822,7 @@ components:
           example: 65  
         event:
           type: "String"
-          example: "Red card for Messi"
+          example: "Red card for Rune Frantsen"
 
     Player:
       type: object
@@ -812,15 +830,11 @@ components:
         id:
           type: "integer"
           format: "int64"
-          example: 172104  
+          example: 37522564  
         team_id:
           type: "integer"
           format: "int64"
-          example: 53  
-        country_id:
-          type: "integer"
-          format: "int64"
-          example: 1161  
+          example: 211  
         position:
           type: "string"
           example: "Midfielder" 

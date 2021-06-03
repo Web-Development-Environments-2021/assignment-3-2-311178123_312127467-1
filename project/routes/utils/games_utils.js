@@ -181,7 +181,14 @@ async function checkIfMathcExists(game_time,home_team_id, away_team_id){
   return false
 }
 
+/*
+The method will query the DB for all the games
+*/
+async function getAllGames(){
+  return await DButils.execQuery("SELECT * FROM Games");
+}
 
+exports.getAllGames = getAllGames
 exports.getTeamLatestGames = getTeamLatestGames;
 exports.getTeamUpcomingGames = getTeamUpcomingGames;
 exports.getNextGame = getNextGame;
