@@ -4,7 +4,6 @@ const app_utils = require("./app_utils");
 const DButils = require("./DButils");
 const teams_utils = require("./teams_utils");
 
-
 /*
 The method will query the games DB for the next scheduled game
 */
@@ -78,7 +77,6 @@ async function getAllPastGames(){
   }));
 }
 
-
 /*
   The method will query the games DB all the games that are not yet played with regard to now
 */
@@ -94,7 +92,6 @@ async function getAllUpcomingGames(){
   });
   return games
 }
-
 
 /*
   The method try to delete all games that are past games from the users favorite games.
@@ -197,7 +194,7 @@ async function getAllGames(){
   return await DButils.execQuery("SELECT * FROM Games");
 }
 
-exports.getAllGames = getAllGames
+exports.getAllGames = getAllGames;
 exports.getTeamLatestGames = getTeamLatestGames;
 exports.getTeamUpcomingGames = getTeamUpcomingGames;
 exports.getNextGame = getNextGame;
