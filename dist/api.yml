@@ -366,7 +366,7 @@ paths:
         description: "Full name of player to return"
         required: true
         schema:
-          type: "String"
+          type: "string"
           example: "James Morrison"
             
       responses:
@@ -392,8 +392,9 @@ paths:
       - name: "player_name"
         in: "path"
         description: "Full name of player to return"
+        required: true
         schema:
-          type: "String"
+          type: "string"
           example: "Rune Frantsen"
             
       responses:
@@ -423,12 +424,14 @@ paths:
       - name: "player_name"
         in: "path"
         description: "Full name of player to return"
+        required: true
         schema:
-          type: "String"
+          type: "string"
           example: "Rune Frantsen"
       - name: "player_position_id"   
         in: "path"
         description: "Player's position id"
+        required: true
         schema:
           type: "integer"
           example: 2
@@ -452,7 +455,7 @@ paths:
   /players/search/{player_name}/team/{team_name}:
     get:
       tags:
-        - "Player"
+        - "Search"
       summary: "Used for the search page."
       description: "Get part of the player's information by using the player's fullname and team as filter.
       All the players with that name and team name will return. If there are none, an empty array will return."
@@ -460,14 +463,16 @@ paths:
       - name: "player_name"
         in: "path"
         description: "Full name of player to return"
+        required: true
         schema:
-          type: "String"
+          type: "string"
           example: "Rune Frantsen"
       - name: "team_name"   
         in: "path"
         description: "Player's team name"
+        required: true
         schema:
-          type: "String"
+          type: "string"
           example: "Horsens"
 
       responses:
@@ -529,7 +534,7 @@ paths:
         required: true
         schema:
           type: "string"
-          example: "Celtic"
+          example: "Horsens"
             
       responses:
         "404":
@@ -553,8 +558,9 @@ paths:
       - name: "team_name"
         in: "path"
         description: "Team name of the team to return"
+        required: true
         schema:
-          type: "String"
+          type: "string"
           example: "Horsens"
             
       responses:
