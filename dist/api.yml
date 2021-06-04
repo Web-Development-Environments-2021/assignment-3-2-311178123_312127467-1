@@ -276,7 +276,7 @@ paths:
           description: "The game was updated"
         
   /games/addEvent:
-    put:
+    post:
       tags:
         - "Games"
       summary: "Add an event to a game"
@@ -292,9 +292,9 @@ paths:
                 game_id:
                   type: "integer"
                   example: 1
-                event:
+                eventlog:
                   type: object
-                  $ref: "#/components/schemas/GameEvent"
+                  $ref: "#/components/schemas/EventLog"
 
       responses:
         "500":
@@ -822,7 +822,7 @@ components:
           example: 65  
         event:
           type: "String"
-          example: "Red card for Rune Frantsen"
+          example: "Foul Anders Hoff"
 
     Player:
       type: object

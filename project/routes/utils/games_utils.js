@@ -63,10 +63,17 @@ async function getAllPastGames(){
     // Update the datetime to be in the correct format - YY:MM:DD HH:MM:SS.nnnn
     game['GameDateTime'] = app_utils.formatDateTime(game['GameDateTime'])
 
+    // Get all the events assign to the game
+    let events_ids = await DButils.execQuery(`SELECT eventid FROM GamesEvents WHERE gameid = ${game.gameid}`)
+    // Build the list of events ids for the where clause -> (1,2,3,...)
+    let query_ids = "("
+    events_ids.map(event => query_ids += `${event.eventid},`)
+    query_ids = query_ids.replace(/,\s*$/, ")");
+
     // Assign the event log for each game. The same as joining the two tables (Games and GamesEvents)
-    let events = await DButils.execQuery(`SELECT GamesEvents.EventDate, GamesEvents.EventTime,
-    GamesEvents.EventGameTime, GamesEvents.Event From GamesEvents 
-     WHERE gameid = ${game.gameid}`)
+    let events = await DButils.execQuery(`SELECT Events.EventDate, Events.EventTime,
+    Events.EventGameTime, Events.Event From Events 
+     WHERE eventid IN ${query_ids}`)
      Object.assign(game, {event_log: events});
      return game
   }));
@@ -147,25 +154,48 @@ The game should be a past game. The validtion is implemented in the client side.
 If the event exist it will be updated with the new value
 */
 async function addEventToGame(game_id,event){
-  await DButils.execQuery(`SELECT * FROM GamesEvents WHERE gameid = ${game_id} AND EventDate = '${event.event_date}' AND EventTime = '${event.event_time}' 
-  AND EventGameTime =  ${event.event_game_time}`)
+    let events_ids = await DButils.execQuery(`SELECT GamesEvents.gameid, Events.eventid FROM Events JOIN GamesEvents ON Events.eventid = GamesEvents.eventid
+    WHERE GamesEvents.gameid = ${game_id} AND Events.EventDate = '${event.event_date}'
+    AND Events.EventTime = '${event.event_time}' 
+    AND Events.EventGameTime =  ${event.event_game_time}`)
       /*
-        Check if the event already exist. Event is represented by Gameid, Date, Time, GameTime.
+        Check if the event already exist. Event is represented by Eventid.
         If Yes -> Update it
         Else -> Create a new event
       */
-      .then((game_ids) => {
-        if (game_ids.length > 0){
-           DButils.execQuery(`Update GamesEvents SET Event = '${event.event}' WHERE gameid = ${game_id}
-           AND EventDate = '${event.event_date}' AND EventTime = '${event.event_time}' 
-          AND EventGameTime =  ${event.event_game_time}`);
-        } else {
-          DButils.execQuery(`INSERT INTO GamesEvents 
-          ([gameid], [EventDate], [EventTime], [EventGameTime], [Event]) 
-          Values (${game_id}, '${event.event_date}', '${event.event_time}',
-          ${event.event_game_time},'${event.event}')`);
-        }
-        })
+    if (events_ids.length > 0) 
+      await DButils.execQuery(`Update Events SET Event = '${event.event}' WHERE eventid = ${events_ids[0].eventid}`);
+    else{
+      await DButils.execQuery(`INSERT INTO Events 
+          ([EventDate], [EventTime], [EventGameTime], [Event]) 
+          Values ('${event.event_date}', '${event.event_time}',
+          ${event.event_game_time},'${event.event}')`)
+      // Update the new event in the GamesEvents relationship table.
+      // The following command return the last isnerted item to a table
+      const last_event = await DButils.execQuery(`SELECT eventid FROM Events
+       WHERE EventDate = '${event.event_date}' AND EventTime = '${event.event_time}' AND EventGameTime =  ${event.event_game_time}`)
+      DButils.execQuery(`INSERT INTO GamesEvents ([gameid], [eventid]) VALUES (${game_id}, ${last_event[0].eventid})`)
+    }
+      // .then((event_ids) => {
+      //   if (event_ids.length > 0){
+      //      DButils.execQuery(`Update Events SET Event = '${event.event}' WHERE eventid = ${event_ids[0]}`);
+
+      //   } else {
+      //     DButils.execQuery(`INSERT INTO Events 
+      //     ([EventDate], [EventTime], [EventGameTime], [Event]) 
+      //     Values ('${event.event_date}', '${event.event_time}',
+      //     ${event.event_game_time},'${event.event}')`)
+      //     .then(res =>{
+      //         // Update the new event in the GamesEvents relationship table.
+      //         // The following command return the last isnerted item to a table
+      //         DButils.execQuery("SELECT IDENT_CURRENT('Events') as eventid")
+      //         .then(res => 
+      //           DButils.execQuery(`INSERT INTO GamesEvents ([gameid], [eventid]) VALUES (${game_id}, ${res[0].eventid})`)
+      //           );
+      //         }
+      //     );
+      //   }
+        // })
 }
 
 /*

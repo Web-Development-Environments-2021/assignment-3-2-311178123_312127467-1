@@ -107,12 +107,13 @@ router.post("/addGame", async (req, res, next) => {
     }
   });
 
-  router.put("/addEvent", async (req, res, next) => {
+  router.post("/addEvent", async (req, res, next) => {
     try {
 
       const game_id =  req.body.game_id
-      const event = req.body.event;
-      await games_utils.addEventToGame(game_id, event)
+      const eventlog = req.body.eventlog;
+      let promises = eventlog.map(async event => games_utils.addEventToGame(game_id, event))
+      await Promise.all(promises)
       res.status(201).send("The game was updated");
       } catch (error) {
       next(error);
