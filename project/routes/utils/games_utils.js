@@ -203,8 +203,8 @@ The method will query the DB to see if the teams have a game in the datetime tha
 */
 async function checkIfMathcExists(game_time,home_team_id, away_team_id){
   let result = await DButils.execQuery(`SELECT gameid FROM Games Where GameDateTime = '${game_time}' AND
-  (HomeTeamID = ${home_team_id} AND AwayTeamID = ${away_team_id}) OR
-  (HomeTeamID = ${away_team_id} AND AwayTeamID = ${home_team_id})`)
+  ((HomeTeamID = ${home_team_id} AND AwayTeamID = ${away_team_id}) OR
+  (HomeTeamID = ${away_team_id} AND AwayTeamID = ${home_team_id}))`)
   if(result.length > 0)
     return true
 
