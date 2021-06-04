@@ -4,7 +4,6 @@ const app_utils = require("./app_utils");
 const DButils = require("./DButils");
 const teams_utils = require("./teams_utils");
 
-// const TEAM_ID = "85";
 
 /*
 The method will query the games DB for the next scheduled game
@@ -176,26 +175,6 @@ async function addEventToGame(game_id,event){
        WHERE EventDate = '${event.event_date}' AND EventTime = '${event.event_time}' AND EventGameTime =  ${event.event_game_time}`)
       DButils.execQuery(`INSERT INTO GamesEvents ([gameid], [eventid]) VALUES (${game_id}, ${last_event[0].eventid})`)
     }
-      // .then((event_ids) => {
-      //   if (event_ids.length > 0){
-      //      DButils.execQuery(`Update Events SET Event = '${event.event}' WHERE eventid = ${event_ids[0]}`);
-
-      //   } else {
-      //     DButils.execQuery(`INSERT INTO Events 
-      //     ([EventDate], [EventTime], [EventGameTime], [Event]) 
-      //     Values ('${event.event_date}', '${event.event_time}',
-      //     ${event.event_game_time},'${event.event}')`)
-      //     .then(res =>{
-      //         // Update the new event in the GamesEvents relationship table.
-      //         // The following command return the last isnerted item to a table
-      //         DButils.execQuery("SELECT IDENT_CURRENT('Events') as eventid")
-      //         .then(res => 
-      //           DButils.execQuery(`INSERT INTO GamesEvents ([gameid], [eventid]) VALUES (${game_id}, ${res[0].eventid})`)
-      //           );
-      //         }
-      //     );
-      //   }
-        // })
 }
 
 /*
