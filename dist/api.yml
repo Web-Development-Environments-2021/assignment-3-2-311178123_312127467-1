@@ -57,7 +57,7 @@ paths:
             
   
   /logout:
-     get:
+     post:
       tags:
         - "Authenticaiton"
       summary: "Log the user from the system"
