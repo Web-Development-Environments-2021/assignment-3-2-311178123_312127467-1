@@ -467,14 +467,14 @@ paths:
         required: true
         schema:
           type: "string"
-          example: "Rune Frantsen"
+          example: "Esben Lange"
       - name: "team_name"   
         in: "path"
         description: "Player's team name"
         required: true
         schema:
           type: "string"
-          example: "Horsens"
+          example: "Silkeborg"
 
       responses:
         "404":
@@ -535,7 +535,7 @@ paths:
         required: true
         schema:
           type: "string"
-          example: "Horsens"
+          example: "Silkeborg"
             
       responses:
         "404":
@@ -562,7 +562,7 @@ paths:
         required: true
         schema:
           type: "string"
-          example: "Horsens"
+          example: "Silkeborg"
             
       responses:
         "404":
@@ -577,8 +577,8 @@ paths:
                 type: object
                 properties:            
                   team_name: 
-                    type: "Horsens"
-                    example: "Rune Frantsen"
+                    type: "Silkeborg"
+                    example: "Esben Lange"
                   logo_path:
                     type: "string"
                     example: "https://cdn.sportmonks.com/images//soccer/teams/19/211.png"
@@ -666,7 +666,7 @@ components:
             example: 211
         name:
             type: "string"
-            example: "Horsens"
+            example: "Silkeborg"
 
         logo_path:
             type: "string"
@@ -796,7 +796,7 @@ components:
           example: 939
         away_team:
           type: "String"
-          example: "Horsens"
+          example: "Silkeborg"
         away_team_id:
           type: "integer"
           example: 211
@@ -949,35 +949,6 @@ components:
         image_path:
           type: "string"
           example: "https://cdn.sportmonks.com/images/soccer/players/10/1467946.png"
-          
-    Stage:
-      type: object
-      properties:
-        id:
-          type: "integer"
-          format: "int64"
-          example: 77447500  
-        name:
-          type: "string"
-          example: "2nd Phase"
-        type:
-          type: "string"
-          example: "Group Stage"
-        league_id:
-          type: "integer"
-          format: "int64"
-          example: 501
-        season_id:
-          type: "integer"
-          format: "int64"
-          example: 17141
-        sort_order:
-          type: "integer"
-          format: "int64"
-          example: 1
-        has_standings:
-          type: "boolean"
-          example: false
 
     EventLog:
       description: "The Eventlog - contains array of all the events in the game. Used only in past games"

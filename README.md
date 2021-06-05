@@ -1,8 +1,14 @@
-#Assignment-3-2-template
+# Assignment-3-2-template
 
 ### Ids:
 1. 311178123
 2. 312127467
+
+### Link to API:
+
+
+### Bonus:
+We have added the functionality of adding events, results
 
 ### .env file:
 
