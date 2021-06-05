@@ -346,7 +346,7 @@ paths:
         "404":
           description: "URL not found"
         "400":
-          description: "Invalid player id"
+          description: "Player id not found"
         "200":
           description: "successful operation"
           content:  
@@ -374,7 +374,7 @@ paths:
         "404":
           description: "URL not found"
         "400":
-          description: "Invalid player name"
+          description: "Player name not found"
         "200":
           description: "successful operation"
           content:  
@@ -401,8 +401,6 @@ paths:
       responses:
         "404":
           description: "URL not found"
-        "400":
-          description: "Invalid player name"
         "200":
           description: "successful operation"
           content:  
@@ -440,8 +438,6 @@ paths:
       responses:
         "404":
           description: "URL not found"
-        "400":
-          description: "Invalid player name"
         "200":
           description: "successful operation"
           content:  
@@ -479,8 +475,6 @@ paths:
       responses:
         "404":
           description: "URL not found"
-        "400":
-          description: "Invalid player name"
         "200":
           description: "successful operation"
           content:  
@@ -511,9 +505,9 @@ paths:
             
       responses:
         "404":
-          description: "URL not found"
+          description: "URL not found - could be because of bad id"
         "400":
-          description: "Invalid team id"
+          description: "Team id not found"
         "200":
           description: "successful operation"
           content:  
@@ -539,9 +533,9 @@ paths:
             
       responses:
         "404":
-          description: "URL not found"
+          description: "URL not found - could be because of bad name"
         "400":
-          description: "Invalid team name"
+          description: "Team name not found"
         "200":
           description: "successful operation"
           content:  

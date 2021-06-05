@@ -31,9 +31,11 @@ async function getTeamData(team_id){
 router.get("/id/:teamId", async (req, res, next) => {
   try {
     const team_details = await getTeamData(req.params.teamId)
-
+  
     res.send(team_details);
   } catch (error) {
+    error.status = 400;
+    error.message = "Team id not found"
     next(error);
   }
 });
@@ -44,6 +46,8 @@ router.get("/name/:teamname", async (req, res, next) => {
     const team_details = await getTeamData(team_id)
     res.send(team_details);
   } catch (error) {
+    error.status = 400;
+    error.message = "Team name not found"
     next(error);
   }
 });

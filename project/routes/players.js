@@ -10,6 +10,8 @@ router.get("/id/:playerId", async (req, res, next) => {
 
     res.send(player_info[0]);
   } catch (error) {
+    error.status = 400;
+    error.message = "Player id not found"
     next(error);
   }
 });
@@ -20,6 +22,8 @@ router.get("/name/:player_name", async (req, res, next) => {
     const player_info = await players_utils.getPlayersInfo(players_id)
     res.send(player_info);
   } catch (error) {
+    error.status = 400;
+    error.message = "Player name not found"
     next(error);
   }
 });
