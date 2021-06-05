@@ -230,6 +230,7 @@ paths:
           application/json:  
             schema:
               type: object
+              required: true
               $ref: "#/components/schemas/FutureGame"
 
       responses:
@@ -737,9 +738,16 @@ components:
           $ref: "#/components/schemas/Game"
     
     FutureGame:
+      required:
+        - game_date
+        - game_time
+        - home_team
+        - away_team
+        - stadium
       type: object
       properties:
         game_date:
+          required: true
           type: "String"
           example: "2021-10-28"
         game_time:
@@ -753,10 +761,10 @@ components:
           example: 939
         away_team:
           type: "String"
-          example: "Horsens"
+          example: "Silkeborg"
         away_team_id:
           type: "integer"
-          example: 211
+          example: 86
         stadium:
           type: "String"
           example: "MCH Arena"
