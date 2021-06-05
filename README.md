@@ -8,7 +8,7 @@
 https://app.swaggerhub.com/apis-docs/BGU1/FOOTBALL_SERVER/1.0.0
 
 ### Bonus:
-We have added the functionality of adding events, results
+We have added the functionality of adding events, results and favorite players and teams
 
 ### .env file:
 
