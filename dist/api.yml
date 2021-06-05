@@ -272,7 +272,7 @@ paths:
         "404":
           description: "URL not found"
         "401":
-          description: ""Privilege Error: The following action is only permitted to league representives"
+          description: "Privilege Error: The following action is only permitted to league representives"
         "200":
           description: "The game was updated"
         
@@ -577,8 +577,8 @@ paths:
                 type: object
                 properties:            
                   team_name: 
-                    type: "Silkeborg"
-                    example: "Esben Lange"
+                    type: "string"
+                    example: "Silkeborg"
                   logo_path:
                     type: "string"
                     example: "https://cdn.sportmonks.com/images//soccer/teams/19/211.png"
@@ -725,13 +725,13 @@ components:
       type: object
       properties:
         league_name:
-          type: "String"
+          type: "string"
           example: "Superliga"
         current_season_name:
-          type: "String"
+          type: "string"
           example: "2020/2021"
         current_stage_name:
-          type: "String"
+          type: "string"
           example: "Europa League Play-offs - Final"
         next_game:
           type: object
@@ -747,26 +747,25 @@ components:
       type: object
       properties:
         game_date:
-          required: true
-          type: "String"
+          type: "string"
           example: "2021-10-28"
         game_time:
-          type: "String"
+          type: "string"
           example: "17:00:00"
         home_team:
-          type: "String"
+          type: "string"
           example: "Midtjylland"
         home_team_id:
           type: "integer"
           example: 939
         away_team:
-          type: "String"
+          type: "string"
           example: "Silkeborg"
         away_team_id:
           type: "integer"
           example: 86
         stadium:
-          type: "String"
+          type: "string"
           example: "MCH Arena"
         referee:
           type: object
@@ -783,31 +782,31 @@ components:
       type: object
       properties:
         game_date:
-          type: "String"
+          type: "string"
           example: "2021-01-13"
         game_time:
-          type: "String"
+          type: "string"
           example: "19:00:00"
         home_team:
-          type: "String"
+          type: "string"
           example: "Midtjylland"
         home_team_id:
           type: "integer"
           example: 939
         away_team:
-          type: "String"
+          type: "string"
           example: "Silkeborg"
         away_team_id:
           type: "integer"
           example: 211
         stadium:
-          type: "String"
+          type: "string"
           example: "MCH Arena"
         referee:
           type: object
           $ref: "#/components/schemas/Referee"
         results:
-          type: "String"
+          type: "string"
           example: "3-1"
         event_log:
           type: object
@@ -817,7 +816,7 @@ components:
       type: object
       properties:
         name:
-          type: "String"
+          type: "string"
           example: "Denis Shalayev"
 
     GameEvent:
@@ -825,17 +824,17 @@ components:
       type: object
       properties:
         event_date:
-          type: "String"
+          type: "string"
           example: "2021-01-13"
         event_time:
-          type: "String"
+          type: "string"
           example: "20:05:00"
         event_game_time:
           type: "integer"
           format: "int64"
           example: 65  
         event:
-          type: "String"
+          type: "string"
           example: "Foul Anders Hoff"
 
     Player:
