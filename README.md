@@ -1,6 +1,6 @@
-# Assignment-3-2-template
+# Assignment-3-2 Backend
 
-### Ids:
+### Names and ids:
 1. 311178123 - Eden Yavin
 2. 312127467 - Guy Shimony
 
