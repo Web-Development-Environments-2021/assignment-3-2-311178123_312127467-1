@@ -65,7 +65,7 @@ async function getAllPastGames(){
 
     // Assign the event log for each game. The same as joining the two tables (Games and GamesEvents)
     let events = await DButils.execQuery(`SELECT GamesEvents.EventDate, GamesEvents.EventTime,
-    GamesEvents.EventGameTime, GamesEvents.Event From GamesEvents 
+    GamesEvents.EventGameTime, GamesEvents.Event_Des From GamesEvents 
      WHERE gameid = ${game.gameid}`)
      Object.assign(game, {event_log: events});
      return game
@@ -156,12 +156,12 @@ async function addEventToGame(game_id,event){
       */
       .then((game_ids) => {
         if (game_ids.length > 0){
-           DButils.execQuery(`Update GamesEvents SET Event = '${event.event}' WHERE gameid = ${game_id}
+           DButils.execQuery(`Update GamesEvents SET Event_Des = '${event.event}' WHERE gameid = ${game_id}
            AND EventDate = '${event.event_date}' AND EventTime = '${event.event_time}' 
           AND EventGameTime =  ${event.event_game_time}`);
         } else {
           DButils.execQuery(`INSERT INTO GamesEvents 
-          ([gameid], [EventDate], [EventTime], [EventGameTime], [Event]) 
+          ([gameid], [EventDate], [EventTime], [EventGameTime], [Event_Des]) 
           Values (${game_id}, '${event.event_date}', '${event.event_time}',
           ${event.event_game_time},'${event.event}')`);
         }

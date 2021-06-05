@@ -3,6 +3,7 @@ const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 
 
 /*
+
 The method extract all the relevent info about the coach 
 */
 function extractCoachData(coach_info){
