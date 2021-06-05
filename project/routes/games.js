@@ -22,7 +22,6 @@ router.get("/currentStageGames", async (req, res, next) => {
   });
 
 
-
   /**
  * Check if the user is a league representive by middleware
  */
@@ -47,7 +46,16 @@ router.use(async function (req, res, next) {
     res.status(401).send("Privilege Error: The following action is only permitted to league representives Or you have not Logged in first")
 });
 
-  router.post("/addGame", async (req, res, next) => {
+router.get("/all", async (req, res, next) => {
+  try {
+    const result = await games_utils.getAllGames()
+    res.send(result);
+  } catch (error) {
+    next(error);
+  }  
+});
+
+router.post("/addGame", async (req, res, next) => {
     try {
 
       const game_date = req.body.game_date;
@@ -66,27 +74,17 @@ router.use(async function (req, res, next) {
       }
 
       // Check if the game's date match the current season. If not send an error to the user
-      if (!await season_utils.checkDateMatchCurrentSeason(new Date(game_date))){
-        let error = new Error()
-        error.message = "	Bad game input. Please check the date or team"
-        error.status = 406
-        throw error;
-      }
+      if (!await season_utils.checkDateMatchCurrentSeason(new Date(game_date)))
+        throw { status: 406, message: "Bad game input. Please check the date or teams" };
+
       // Check if the game's match the Superliga's teams. If not send an error to the user
       const leagues_checks = await Promise.all([teams_utils.checkTeamLeagueByTeamId(home_team_id), teams_utils.checkTeamLeagueByTeamId(away_team_id)])
-      if (!leagues_checks[0] || !leagues_checks[1]){
-        let error = new Error()
-        error.message = "Bad game input. Please check the date or team"
-        error.status = 406
-        throw error;
-      }
+      if (!leagues_checks[0] || !leagues_checks[1])
+        throw { status: 406, message: "Bad game input. Please check the date or teams" };
       // Check if the game's date already exists. If not send an error to the user
-      else if (await games_utils.checkIfMathcExists(`${game_date} ${game_time}`, home_team_id, away_team_id)){
-          let error = new Error()
-          error.message = "the teams already have a match in that date & time"
-          error.status = 405
-          throw error;
-      }
+      else if (await games_utils.checkIfMathcExists(`${game_date} ${game_time}`, home_team_id, away_team_id))
+        throw { status: 405, message: "The teams already have a match in that date & time" };
+
       await games_utils.addFutureGame(game_date,game_time,home_team,home_team_id,away_team,
         away_team_id,stadium)
 
@@ -109,12 +107,13 @@ router.use(async function (req, res, next) {
     }
   });
 
-  router.put("/addEvent", async (req, res, next) => {
+  router.post("/addEvent", async (req, res, next) => {
     try {
 
       const game_id =  req.body.game_id
-      const event = req.body.event;
-      await games_utils.addEventToGame(game_id, event)
+      const eventlog = req.body.eventlog;
+      let promises = eventlog.map(async event => games_utils.addEventToGame(game_id, event))
+      await Promise.all(promises)
       res.status(201).send("The game was updated");
       } catch (error) {
       next(error);

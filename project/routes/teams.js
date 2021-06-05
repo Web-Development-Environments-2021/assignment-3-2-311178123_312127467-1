@@ -5,7 +5,6 @@ const teams_utils = require("./utils/teams_utils");
 
 
 async function getTeamData(team_id){
-    let team_details = [];
 
     const team_players = await players_utils.getPlayersByTeam(
       team_id
@@ -18,22 +17,25 @@ async function getTeamData(team_id){
     const name = team_info[0]['name']
     const team_coach = team_info[0]['coach']
 
-    team_details.push(name);
-    team_details.push(team_coach);
-    team_details.push(team_players);
-    team_details.push(past_games);
-    team_details.push(future_games);
 
-    return team_details
+    return {
+      name: name,
+      coach: team_coach,
+      squad: team_players,
+      past_games: past_games,
+      upcoming_games: future_games
+    }
 }
 
 
 router.get("/id/:teamId", async (req, res, next) => {
   try {
     const team_details = await getTeamData(req.params.teamId)
-
+  
     res.send(team_details);
   } catch (error) {
+    error.status = 400;
+    error.message = "Team id not found"
     next(error);
   }
 });
@@ -44,6 +46,8 @@ router.get("/name/:teamname", async (req, res, next) => {
     const team_details = await getTeamData(team_id)
     res.send(team_details);
   } catch (error) {
+    error.status = 400;
+    error.message = "Team name not found"
     next(error);
   }
 });

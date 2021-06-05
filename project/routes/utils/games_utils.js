@@ -4,8 +4,6 @@ const app_utils = require("./app_utils");
 const DButils = require("./DButils");
 const teams_utils = require("./teams_utils");
 
-// const TEAM_ID = "85";
-
 /*
 The method will query the games DB for the next scheduled game
 */
@@ -63,15 +61,21 @@ async function getAllPastGames(){
     // Update the datetime to be in the correct format - YY:MM:DD HH:MM:SS.nnnn
     game['GameDateTime'] = app_utils.formatDateTime(game['GameDateTime'])
 
+    // Get all the events assign to the game
+    let events_ids = await DButils.execQuery(`SELECT eventid FROM GamesEvents WHERE gameid = ${game.gameid}`)
+    // Build the list of events ids for the where clause -> (1,2,3,...)
+    let query_ids = "("
+    events_ids.map(event => query_ids += `${event.eventid},`)
+    query_ids = query_ids.replace(/,\s*$/, ")");
+
     // Assign the event log for each game. The same as joining the two tables (Games and GamesEvents)
-    let events = await DButils.execQuery(`SELECT GamesEvents.EventDate, GamesEvents.EventTime,
-    GamesEvents.EventGameTime, GamesEvents.Event_Des From GamesEvents 
-     WHERE gameid = ${game.gameid}`)
+    let events = await DButils.execQuery(`SELECT Events.EventDate, Events.EventTime,
+    Events.EventGameTime, Events.Event_Des From Events 
+     WHERE eventid IN ${query_ids}`)
      Object.assign(game, {event_log: events});
      return game
   }));
 }
-
 
 /*
   The method will query the games DB all the games that are not yet played with regard to now
@@ -88,7 +92,6 @@ async function getAllUpcomingGames(){
   });
   return games
 }
-
 
 /*
   The method try to delete all games that are past games from the users favorite games.
@@ -147,25 +150,28 @@ The game should be a past game. The validtion is implemented in the client side.
 If the event exist it will be updated with the new value
 */
 async function addEventToGame(game_id,event){
-  await DButils.execQuery(`SELECT * FROM GamesEvents WHERE gameid = ${game_id} AND EventDate = '${event.event_date}' AND EventTime = '${event.event_time}' 
-  AND EventGameTime =  ${event.event_game_time}`)
+    let events_ids = await DButils.execQuery(`SELECT GamesEvents.gameid, Events.eventid FROM Events JOIN GamesEvents ON Events.eventid = GamesEvents.eventid
+    WHERE GamesEvents.gameid = ${game_id} AND Events.EventDate = '${event.event_date}'
+    AND Events.EventTime = '${event.event_time}' 
+    AND Events.EventGameTime =  ${event.event_game_time}`)
       /*
-        Check if the event already exist. Event is represented by Gameid, Date, Time, GameTime.
+        Check if the event already exist. Event is represented by Eventid.
         If Yes -> Update it
         Else -> Create a new event
       */
-      .then((game_ids) => {
-        if (game_ids.length > 0){
-           DButils.execQuery(`Update GamesEvents SET Event_Des = '${event.event}' WHERE gameid = ${game_id}
-           AND EventDate = '${event.event_date}' AND EventTime = '${event.event_time}' 
-          AND EventGameTime =  ${event.event_game_time}`);
-        } else {
-          DButils.execQuery(`INSERT INTO GamesEvents 
-          ([gameid], [EventDate], [EventTime], [EventGameTime], [Event_Des]) 
-          Values (${game_id}, '${event.event_date}', '${event.event_time}',
-          ${event.event_game_time},'${event.event}')`);
-        }
-        })
+    if (events_ids.length > 0) 
+      await DButils.execQuery(`Update Events SET Event_Des = '${event.event}' WHERE eventid = ${events_ids[0].eventid}`);
+    else{
+      await DButils.execQuery(`INSERT INTO Events 
+          ([EventDate], [EventTime], [EventGameTime], [Event_Des]) 
+          Values ('${event.event_date}', '${event.event_time}',
+          ${event.event_game_time},'${event.event}')`)
+      // Update the new event in the GamesEvents relationship table.
+      // The following command return the last isnerted item to a table
+      const last_event = await DButils.execQuery(`SELECT eventid FROM Events
+       WHERE EventDate = '${event.event_date}' AND EventTime = '${event.event_time}' AND EventGameTime =  ${event.event_game_time}`)
+      DButils.execQuery(`INSERT INTO GamesEvents ([gameid], [eventid]) VALUES (${game_id}, ${last_event[0].eventid})`)
+    }
 }
 
 /*
@@ -173,15 +179,22 @@ The method will query the DB to see if the teams have a game in the datetime tha
 */
 async function checkIfMathcExists(game_time,home_team_id, away_team_id){
   let result = await DButils.execQuery(`SELECT gameid FROM Games Where GameDateTime = '${game_time}' AND
-  (HomeTeamID = ${home_team_id} AND AwayTeamID = ${away_team_id}) OR
-  (HomeTeamID = ${away_team_id} AND AwayTeamID = ${home_team_id})`)
+  ((HomeTeamID = ${home_team_id} AND AwayTeamID = ${away_team_id}) OR
+  (HomeTeamID = ${away_team_id} AND AwayTeamID = ${home_team_id}))`)
   if(result.length > 0)
     return true
 
   return false
 }
 
+/*
+The method will query the DB for all the games
+*/
+async function getAllGames(){
+  return await DButils.execQuery("SELECT * FROM Games");
+}
 
+exports.getAllGames = getAllGames;
 exports.getTeamLatestGames = getTeamLatestGames;
 exports.getTeamUpcomingGames = getTeamUpcomingGames;
 exports.getNextGame = getNextGame;

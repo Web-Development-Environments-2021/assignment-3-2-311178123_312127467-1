@@ -7,7 +7,7 @@ paths:
         tags:
         - "Authenticaiton"
         summary: "Adds a new user"
-        description: "Save user in DB"
+        description: "The new user is saved in the system and can login."
         operationId: "UserRegister" 
         requestBody:
           content:
@@ -30,7 +30,8 @@ paths:
         tags:
         - "Authenticaiton"
         summary: "Logs user into the system"
-        description: ""
+        description: "Log in to the system. After login action a session cookie will return marking the user as logged in.
+        This needs to be done before doing anything related to one's favorite players / teams / games."
         operationId: "UserLogin" 
         requestBody:
           content:
@@ -47,8 +48,8 @@ paths:
             description: "Internal Server error"
           "200":
             description: >
-              Successfully authenticated.
-              The session ID is returned in a cookie named `JSESSIONID`. You need to include this cookie in subsequent requests.
+              Login succeeded.
+              The session ID is returned in a cookie named `sessionid`. You need to include this cookie in subsequent requests.
             headers: 
               Set-Cookie:
                 schema: 
@@ -61,7 +62,7 @@ paths:
       tags:
         - "Authenticaiton"
       summary: "Log the user from the system"
-      description: ""
+      description: "Logout the user from the system. The cookie session is reset and is no longer valid until relogin."
       operationId: "UserLogOut" 
           
       responses:
@@ -76,9 +77,9 @@ paths:
       tags:
         - "User"
       summary: "Retrieve the favorite games for the logged in user"
-      description: ""
+      description: "The favorite games are upcoming games and so they won't have an evenlog and a result (both will be null).
+      If the user does not have favorite games the array of games will be empty"
       operationId: "getFavGamesForUser" 
-  
       responses:
         "404":
           description: "URL not found"
@@ -95,8 +96,8 @@ paths:
       post:
         tags:
           - "User"
-        summary: "add the favorite game to the list of the user's favorite games"
-        description: "used in the user's personal page"
+        description: "add the favorite game to the list of the user's favorite games"
+        summary: "used in the user's personal page"
         operationId: "addFavGameForUser" 
         requestBody:
           content:
@@ -125,7 +126,7 @@ paths:
       tags:
         - "User"
       summary: "Retrieve the favorite teams for the logged in user"
-      description: ""
+      description: "Retrieve the favorite teams the user marked. If there are none, an empty array will return."
       operationId: "getFavTeamsForUser" 
           
       responses:
@@ -144,8 +145,8 @@ paths:
     post:
       tags:
         - "User"
-      summary: "add the favorite team to the list of the user's favorite teams"
-      description: "used in the user's personal page"
+      description: "add the favorite team to the list of the user's favorite teams."
+      summary: "used in the user's personal page"
       operationId: "addFavTeamForUser" 
       requestBody:
         content:
@@ -172,7 +173,7 @@ paths:
       tags:
         - "User"
       summary: "Retrieve the favorite players for the logged in user"
-      description: ""
+      description: "Retrive all the favorite players that the user marked. If there are none, an empty array will return."
       operationId: "getFavPlayersForUser" 
           
       responses:
@@ -191,8 +192,8 @@ paths:
     post:
       tags:
         - "User"
-      summary: "add the favorite player to the list of the user's favorite players"
-      description: "used in the user's personal page"
+      description: "add the favorite player to the list of the user's favorite players"
+      summary: "used in the user's personal page"
       operationId: "addFavPlayerForUser" 
       requestBody:
         content:
@@ -229,6 +230,7 @@ paths:
           application/json:  
             schema:
               type: object
+              required: true
               $ref: "#/components/schemas/FutureGame"
 
       responses:
@@ -270,12 +272,12 @@ paths:
         "404":
           description: "URL not found"
         "401":
-          description: ""Privilege Error: The following action is only permitted to league representives"
+          description: "Privilege Error: The following action is only permitted to league representives"
         "200":
           description: "The game was updated"
         
   /games/addEvent:
-    put:
+    post:
       tags:
         - "Games"
       summary: "Add an event to a game"
@@ -291,9 +293,9 @@ paths:
                 game_id:
                   type: "integer"
                   example: 1
-                event:
+                eventlog:
                   type: object
-                  $ref: "#/components/schemas/GameEvent"
+                  $ref: "#/components/schemas/EventLog"
 
       responses:
         "500":
@@ -310,8 +312,8 @@ paths:
     get:
       tags:
         - "League"
-      summary: "Get information about the superliga league "
-      operationId: "getLeagueByName"     
+      summary: "Get information about the superliga league"
+      description: "Return all the league information. If there is not current season running the season and stage will be null"
       responses:
         "404":
           description: "URL not found"
@@ -327,8 +329,8 @@ paths:
     get:
       tags:
         - "Player"
-      description: "used for player card in personal page"
-      summary: "Get the full information about the player by using the player id"
+      summary: "used for player card in personal page"
+      description: "Get the full information about the player by using the player id"
       operationId: "getPlayerByStageId" 
       parameters:
       - name: "playerId"
@@ -344,7 +346,7 @@ paths:
         "404":
           description: "URL not found"
         "400":
-          description: "Invalid player id"
+          description: "Player id not found"
         "200":
           description: "successful operation"
           content:  
@@ -356,8 +358,8 @@ paths:
     get:
       tags:
         - "Player"
-      description: "used for player card in personal page"
-      summary: "Get the full information about the player by using the player fullname"
+      summary: "used for player card in personal page"
+      description: "Get the full information about the player by using the player fullname"
       operationId: "getPlayerByName" 
       parameters:
       - name: "player_name"
@@ -365,14 +367,14 @@ paths:
         description: "Full name of player to return"
         required: true
         schema:
-          type: "String"
+          type: "string"
           example: "James Morrison"
             
       responses:
         "404":
           description: "URL not found"
         "400":
-          description: "Invalid player name"
+          description: "Player name not found"
         "200":
           description: "successful operation"
           content:  
@@ -383,23 +385,22 @@ paths:
   /players/search/{player_name}:
     get:
       tags:
-        - "Player"
-      description: "Used for the search page."
-      summary: "Get part of the player's information by using the player's fullname. All the players with that
-      name will return"
+        - "Search"
+      summary: "Used for the search page."
+      description: "Get part of the player's information by using the player's fullname. All the players with that
+      name will return. If there are none, an empty array will return."
       parameters:
       - name: "player_name"
         in: "path"
         description: "Full name of player to return"
+        required: true
         schema:
-          type: "String"
+          type: "string"
           example: "Rune Frantsen"
             
       responses:
         "404":
           description: "URL not found"
-        "400":
-          description: "Invalid player name"
         "200":
           description: "successful operation"
           content:  
@@ -410,24 +411,26 @@ paths:
                   type: object
                   allOf:
                      - $ref: "#/components/schemas/PlayerPreview"
-                    
-  /players/search/{player_name}/{player_position_id}:
+                 
+  /players/search/{player_name}/positionId/{player_position_id}:
     get:
       tags:
-        - "Player"
-      description: "Used for the search page."
-      summary: "Get part of the player's information by using the player's fullname and position as filter.
-      All the players with that name and position id will return"
+        - "Search"
+      description: "Get part of the player's information by using the player's fullname and position as filter.
+      All the players with that name and position id will return. If there are none, an empty array will return."   
+      summary: "Used for the search page"
       parameters:
       - name: "player_name"
         in: "path"
         description: "Full name of player to return"
+        required: true
         schema:
-          type: "String"
+          type: "string"
           example: "Rune Frantsen"
       - name: "player_position_id"   
         in: "path"
-        description: "Player position id"
+        description: "Player's position id"
+        required: true
         schema:
           type: "integer"
           example: 2
@@ -435,8 +438,6 @@ paths:
       responses:
         "404":
           description: "URL not found"
-        "400":
-          description: "Invalid player name"
         "200":
           description: "successful operation"
           content:  
@@ -447,14 +448,50 @@ paths:
                   type: object
                   allOf:
                      - $ref: "#/components/schemas/PlayerPreview"
-                    
+
+  /players/search/{player_name}/team/{team_name}:
+    get:
+      tags:
+        - "Search"
+      summary: "Used for the search page."
+      description: "Get part of the player's information by using the player's fullname and team as filter.
+      All the players with that name and team name will return. If there are none, an empty array will return."
+      parameters:
+      - name: "player_name"
+        in: "path"
+        description: "Full name of player to return"
+        required: true
+        schema:
+          type: "string"
+          example: "Esben Lange"
+      - name: "team_name"   
+        in: "path"
+        description: "Player's team name"
+        required: true
+        schema:
+          type: "string"
+          example: "Silkeborg"
+
+      responses:
+        "404":
+          description: "URL not found"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:
+                type: array
+                items:
+                  type: object
+                  allOf:
+                     - $ref: "#/components/schemas/PlayerPreview"        
                 
   /teams/id/{teamId}:
     get:
       tags:
         - "Team"
-      summary: "Get information about the team by using the team id"
-      description: "used in the team's personal page"
+      description: "Get information about the team by using the team id"
+      summary: "used in the team's personal page"
       operationId: "getTeamById" 
       parameters:
       - name: "teamId"
@@ -464,13 +501,13 @@ paths:
         schema:
           type: "integer"
           minimum: 1
-          example: 72
+          example: 211
             
       responses:
         "404":
-          description: "URL not found"
+          description: "URL not found - could be because of bad id"
         "400":
-          description: "Invalid team id"
+          description: "Team id not found"
         "200":
           description: "successful operation"
           content:  
@@ -482,8 +519,8 @@ paths:
     get:
       tags:
         - "Team"
-      summary: "Get information about the team by using the team name"
-      description: "used in the team's personal page"
+      description: "Get information about the team by using the team name"
+      summary: "used in the team's personal page"
       operationId: "getTeamByName" 
       parameters:
       - name: "team_name"
@@ -492,13 +529,13 @@ paths:
         required: true
         schema:
           type: "string"
-          example: "Celtic"
+          example: "Silkeborg"
             
       responses:
         "404":
-          description: "URL not found"
+          description: "URL not found - could be because of bad name"
         "400":
-          description: "Invalid team name"
+          description: "Team name not found"
         "200":
           description: "successful operation"
           content:  
@@ -509,16 +546,17 @@ paths:
   /teams/search/{team_name}:
     get:
       tags:
-        - "Team"
-      description: "Used for the search page."
-      summary: "Get part of the team's information by using the team's name"
+        - "Search"
+      summary: "Used for the search page."
+      description: "Get part of the team's information by using the team's name. If there are none, an empty array will return."
       parameters:
       - name: "team_name"
         in: "path"
         description: "Team name of the team to return"
+        required: true
         schema:
-          type: "String"
-          example: "Horsens"
+          type: "string"
+          example: "Silkeborg"
             
       responses:
         "404":
@@ -533,8 +571,8 @@ paths:
                 type: object
                 properties:            
                   team_name: 
-                    type: "Horsens"
-                    example: "Rune Frantsen"
+                    type: "string"
+                    example: "Silkeborg"
                   logo_path:
                     type: "string"
                     example: "https://cdn.sportmonks.com/images//soccer/teams/19/211.png"
@@ -544,8 +582,8 @@ paths:
     get:
       tags:
         - "Games"
-      summary: "Get the latest games for the current stage"
-      description: "for the current stage page"
+      description: "Get the latest games for the current stage"
+      summary: "for the current stage page"
             
       responses:
         "404":
@@ -558,8 +596,25 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfGames"
 
-components:
+  /games/all:
+     get:
+      tags:
+        - "Games"
+      description: "Get a list of all the games that exists in the system, future and past games."
+      summary: "For the league representive page"
+            
+      responses:
+        "404":
+          description: "URL not found"
 
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                $ref: "#/components/schemas/ArrayOfGames"
+                
+components:
   schemas:
     User:    # Schema name
       type: object
@@ -602,14 +657,14 @@ components:
         id:
             type: "integer"
             format: "int64"
-            example: 939
+            example: 211
         name:
             type: "string"
-            example: "Barcelona"
+            example: "Silkeborg"
 
         logo_path:
             type: "string"
-            example: "https://cdn.sportmonks.com/images//soccer/teams/11/939.png"
+            example: "https://cdn.sportmonks.com/images//soccer/teams/11/211.png"
         season_name:
             type: "string"
             example: "2020/2021"
@@ -664,41 +719,47 @@ components:
       type: object
       properties:
         league_name:
-          type: "String"
+          type: "string"
           example: "Superliga"
         current_season_name:
-          type: "String"
+          type: "string"
           example: "2020/2021"
         current_stage_name:
-          type: "String"
+          type: "string"
           example: "Europa League Play-offs - Final"
         next_game:
           type: object
           $ref: "#/components/schemas/Game"
     
     FutureGame:
+      required:
+        - game_date
+        - game_time
+        - home_team
+        - away_team
+        - stadium
       type: object
       properties:
         game_date:
-          type: "String"
+          type: "string"
           example: "2021-10-28"
         game_time:
-          type: "String"
+          type: "string"
           example: "17:00:00"
         home_team:
-          type: "String"
+          type: "string"
           example: "Midtjylland"
         home_team_id:
           type: "integer"
           example: 939
         away_team:
-          type: "String"
-          example: "Horsens"
+          type: "string"
+          example: "Silkeborg"
         away_team_id:
           type: "integer"
-          example: 211
+          example: 86
         stadium:
-          type: "String"
+          type: "string"
           example: "MCH Arena"
         referee:
           type: object
@@ -715,31 +776,31 @@ components:
       type: object
       properties:
         game_date:
-          type: "String"
-          example: "2021-10-28"
+          type: "string"
+          example: "2021-01-13"
         game_time:
-          type: "String"
-          example: "17:00:00"
+          type: "string"
+          example: "19:00:00"
         home_team:
-          type: "String"
+          type: "string"
           example: "Midtjylland"
         home_team_id:
           type: "integer"
           example: 939
         away_team:
-          type: "String"
-          example: "Horsens"
+          type: "string"
+          example: "Silkeborg"
         away_team_id:
           type: "integer"
           example: 211
         stadium:
-          type: "String"
+          type: "string"
           example: "MCH Arena"
         referee:
           type: object
           $ref: "#/components/schemas/Referee"
         results:
-          type: "String"
+          type: "string"
           example: "3-1"
         event_log:
           type: object
@@ -749,7 +810,7 @@ components:
       type: object
       properties:
         name:
-          type: "String"
+          type: "string"
           example: "Denis Shalayev"
 
     GameEvent:
@@ -757,18 +818,18 @@ components:
       type: object
       properties:
         event_date:
-          type: "String"
+          type: "string"
           example: "2021-01-13"
         event_time:
-          type: "String"
+          type: "string"
           example: "20:05:00"
         event_game_time:
           type: "integer"
           format: "int64"
           example: 65  
         event:
-          type: "String"
-          example: "Red card for Messi"
+          type: "string"
+          example: "Foul Anders Hoff"
 
     Player:
       type: object
@@ -776,15 +837,11 @@ components:
         id:
           type: "integer"
           format: "int64"
-          example: 172104  
+          example: 37522564  
         team_id:
           type: "integer"
           format: "int64"
-          example: 53  
-        country_id:
-          type: "integer"
-          format: "int64"
-          example: 1161  
+          example: 211  
         position:
           type: "string"
           example: "Midfielder" 
@@ -885,35 +942,6 @@ components:
         image_path:
           type: "string"
           example: "https://cdn.sportmonks.com/images/soccer/players/10/1467946.png"
-          
-    Stage:
-      type: object
-      properties:
-        id:
-          type: "integer"
-          format: "int64"
-          example: 77447500  
-        name:
-          type: "string"
-          example: "2nd Phase"
-        type:
-          type: "string"
-          example: "Group Stage"
-        league_id:
-          type: "integer"
-          format: "int64"
-          example: 501
-        season_id:
-          type: "integer"
-          format: "int64"
-          example: 17141
-        sort_order:
-          type: "integer"
-          format: "int64"
-          example: 1
-        has_standings:
-          type: "boolean"
-          example: false
 
     EventLog:
       description: "The Eventlog - contains array of all the events in the game. Used only in past games"
