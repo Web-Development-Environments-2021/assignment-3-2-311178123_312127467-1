@@ -10,5 +10,5 @@ CREATE TABLE dbo.Events
     EventDate [NVARCHAR](50) NOT NULL,
     EventTime [NVARCHAR](50) NOT NULL,
     EventGameTime [INT] NOT NULL,
-    Event [NVARCHAR](50) NOT NULL,
+    EventDesc [NVARCHAR](50) NOT NULL,
 );

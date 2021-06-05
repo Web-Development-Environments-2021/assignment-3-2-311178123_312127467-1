@@ -1,6 +1,6 @@
 
 INSERT INTO Events
-   ([EventDate], [EventTime], [EventGameTime],[Event])
+   ([EventDate], [EventTime], [EventGameTime],[EventDesc])
    
 VALUES
    ('2021-01-03', '19:10:00', 10, 'Goal Jesper Hansen'),
