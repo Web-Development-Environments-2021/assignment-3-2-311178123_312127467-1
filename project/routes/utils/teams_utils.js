@@ -13,7 +13,8 @@ async function getTeamIdByName(team_name){
       api_token: process.env.api_token,
     },
   })
-
+  if (team_data.data.data.length == 0)
+    return [];
   return team_data.data.data[0].id;
 }
 
