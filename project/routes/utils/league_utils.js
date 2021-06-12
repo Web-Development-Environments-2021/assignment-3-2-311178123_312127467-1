@@ -34,7 +34,8 @@ async function getLeagueDetails() {
       league_name: league.data.data.name,
       current_season_name: league.data.data.season.data.name,
       current_stage_name: stage.data.data.name,
-      stage_next_game: next_game
+      stage_next_game: next_game,
+      league_logo: league.data.data.logo_path
     };
   }
   else{
@@ -53,7 +54,9 @@ async function getLeagueDetails() {
       league_name: league.data.data.name,
       current_season_name: stage_data.data.data[0].season.data.name,
       current_stage_name: stage_data.data.data[0].name,
-      stage_next_game: next_game
+      stage_next_game: next_game,
+      league_logo: league.data.data.logo_path
+
     }
   }
 }

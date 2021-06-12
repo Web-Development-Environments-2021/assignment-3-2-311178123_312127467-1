@@ -51,7 +51,7 @@ async function getTeamUpcomingGames(team_id){
 async function getAllPastGames(){
   const now = app_utils.formatDateTime(new Date())
   const past_games = await DButils.execQuery(`SELECT Games.gameid, Games.GameDateTime, Games.HomeTeam, Games.AwayTeam, 
-  Games.Stadium, Games.Result, Games.Referee
+  Games.Stadium, Games.Result, Games.Referee, Games.HomeTeamID, Games.AwayTeamID
   FROM Games WHERE GameDateTime <'${now}' ORDER BY GameDateTime `);
 
   return Promise.all(past_games.map(async (game) => {
@@ -81,7 +81,7 @@ async function getAllUpcomingGames(){
   const games = []
   const now = app_utils.formatDateTime(new Date())
   const future_games = await DButils.execQuery(`SELECT Games.gameid, Games.GameDateTime, Games.HomeTeam, Games.AwayTeam, 
-  Games.Stadium, Games.Referee From Games WHERE GameDateTime >'${now}' ORDER BY GameDateTime `);
+  Games.Stadium, Games.Referee, Games.HomeTeamID, Games.AwayTeamID From Games WHERE GameDateTime >'${now}' ORDER BY GameDateTime `);
   future_games.map((game) =>{
       // Update the datetime to be in the correct format - YY:MM:DD HH:MM:SS.nnnn
       game['GameDateTime'] = app_utils.formatDateTime(game['GameDateTime'])
