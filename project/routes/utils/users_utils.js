@@ -1,5 +1,5 @@
 const DButils = require("./DButils");
-
+const app_utils = require("./app_utils");
 /*
 Add the favorite players to the users DB
 */
