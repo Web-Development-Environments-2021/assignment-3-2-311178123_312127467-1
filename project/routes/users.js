@@ -46,7 +46,12 @@ router.post("/addFavoritePlayers", async (req, res, next) => {
   try {
     const user_id = req.session.userid;
     const team_id = req.body.team_id;
+    try{
     await users_utils.markTeamAsFavorite(user_id, team_id);
+    }
+    catch (RequestError){
+      throw { status: 402, message: "Team already exists in the favorites" };
+    }
     res.status(201).send("The team successfully saved as favorite");
   } catch (error) {
     next(error);
@@ -61,8 +66,15 @@ router.post("/addFavoritePlayers", async (req, res, next) => {
     const user_id = req.session.userid;
     const game_id = req.body.game_id;
     if(users_utils.isGameInFuture(game_id)){
+      try{
       await users_utils.markGameAsFavorite(user_id, game_id);
-      res.status(201).send("The game successfully saved as favorite");}
+      res.status(201).send("The game successfully saved as favorite");
+     } catch(RequestError){
+        throw { status: 402, message: "Game already exists in the favorites" };
+      }
+    }
+
+  
     else
       res.status(403).send("Can only add future games to favorite games list");
 
