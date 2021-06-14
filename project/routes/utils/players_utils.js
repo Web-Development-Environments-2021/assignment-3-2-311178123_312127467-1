@@ -74,18 +74,19 @@ Return: list of players objects
 function extractFullPlayerData(players_info) {
   return players_info.map((player_info) => {
     const { fullname, image_path, position_id, common_name, nationality,
-      birthdate, birthcountry, height, weight} = player_info.data.data;
+      birthdate, birthcountry, height, weight, player_id} = player_info.data.data;
     const { name, id } = player_info.data.data.team.data;
     return {
-      name: fullname,
-      image: image_path,
+      id: player_id,
+      fullname: fullname,
+      image_path: image_path,
       position_id: position_id,
       position: player_info.data.data.position.data.name,
-      team_name: name,
+      team: name,
       team_id: id,
       nationality: nationality,
       birthdate: birthdate,
-      birthcountry: birthcountry,
+      birthplace: birthcountry,
       common_name: common_name,
       weight: weight,
       height: height

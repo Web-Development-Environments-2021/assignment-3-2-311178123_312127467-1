@@ -8,7 +8,7 @@ router.get("/getDetails", async (req, res, next) => {
     const test_data = {
       league_name: "Superliga",
       current_season_name: "2021/2022",
-      current_stage_name: "Conference League",
+      current_stage_name: "Conference League Play-offs - Final",
       stage_next_game: {
         gameid: 7,
         GameDateTime: "2021-08-01 22:0:0",
@@ -22,9 +22,7 @@ router.get("/getDetails", async (req, res, next) => {
       },
       league_logo: "https://cdn.sportmonks.com/images/soccer/leagues/271.png",
     }
-    // res.send(league_details);
     res.send(test_data);
-
   } catch (error) {
     next(error);
   }
