@@ -62,8 +62,10 @@ async function extractRelevantTeamData(teams_info) {
         let upcoming_games = await game_utils.getTeamUpcomingGames(team_info.data.data.id);
         let latest_games = await game_utils.getTeamLatestGames(team_info.data.data.id);
         const name = team_info.data.data.name;
+        const logo = team_info.data.data.logo_path
         return {
         name: name,
+        logo: logo,
         coach: coach,
         Latest_Games: latest_games,
         Upcoming_Games: upcoming_games
