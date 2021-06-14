@@ -3,7 +3,7 @@ const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 const coach_utils = require("./coach_utils");
 const game_utils = require("./games_utils");
 const league_utils = require("./league_utils");
-
+const season_utils = require("./season_utils")
 /*
 The method will query the sports api for the team's name and return the id
 */
@@ -86,8 +86,14 @@ async function checkTeamLeagueByTeamId(team_id){
   return  league_utils.checkIfLeagueIsSuperLiga(team_info.data.data.league.data.id)
 }
 
+/*
+The method will query the API for all the teams in the current season - season 18834
+*/
+async function getAllTeams(){
+  return await season_utils.getTeamsBySeasonId(18334);
+}
 
-
+exports.getAllTeams = getAllTeams
 exports.getTeamsInfo = getTeamsInfo;
 exports.getTeamIdByName = getTeamIdByName;
 exports.getPreviwTeamData = getPreviwTeamData

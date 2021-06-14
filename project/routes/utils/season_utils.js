@@ -34,7 +34,7 @@ async function checkDateMatchCurrentSeason(datetimeObj){
  All the teams will return as an array of {team_id, team_name}
 */
 async function getTeamsBySeasonId(seasonId){
-  const temas = await axios.get(
+  const teams = await axios.get(
     `https://soccer.sportmonks.com/api/v2.0/teams/season/${seasonId}`,
     {
       params: {
@@ -42,7 +42,7 @@ async function getTeamsBySeasonId(seasonId){
       },
     }
   );
-  return teams.map(team => {return {team_id: team.id, team_name: team.name}})
+  return teams.data.data.map(team => {return {team_id: team.id, team_name: team.name}})
 }
 
 exports.checkDateMatchCurrentSeason = checkDateMatchCurrentSeason
