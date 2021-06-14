@@ -901,6 +901,9 @@ components:
         lastname:
           type: "string"
           example: "Forest"
+        common_name:
+          type: "string"
+          example: "James Forest"
         nationality:
           type: "string"
           example: "Scotland"  
