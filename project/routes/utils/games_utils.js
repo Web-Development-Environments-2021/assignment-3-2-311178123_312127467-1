@@ -17,15 +17,8 @@ async function getNextGame(){
 The method will query the games DB for the team's past games (If there are some).
 */
 async function getTeamLatestGames(team_id){
-  let games = []
-  const now = app_utils.formatDateTime(new Date())
-  const latest_games = await DButils.execQuery(`SELECT * From Games WHERE (AwayTeamID = '${team_id}' OR
-  HomeTeamID = '${team_id}') AND GameDateTime <  '${now}' ORDER BY GameDateTime`)
-  latest_games.map((game) =>{
-      // Update the datetime to be in the correct format - YY:MM:DD HH:MM:SS.nnnn
-      game['GameDateTime'] = app_utils.formatDateTime(game['GameDateTime'])
-      games.push(game)
-  });
+  let games = await getAllPastGames()
+  games = games.filter((game) => game.AwayTeamID == team_id || game.HomeTeamID == team_id)
   return games
 }
 

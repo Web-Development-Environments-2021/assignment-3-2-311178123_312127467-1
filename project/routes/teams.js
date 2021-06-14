@@ -21,8 +21,8 @@ async function getTeamData(team_id){
       name: name,
       coach: team_coach,
       squad: team_players,
-      past_games: past_games,
-      upcoming_games: future_games
+      latest: past_games,
+      upcoming: future_games
     }
 }
 
@@ -40,7 +40,7 @@ router.get("/getAllTeams", async (req, res, next) => {
 router.get("/id/:teamId", async (req, res, next) => {
   try {
     const team_details = await getTeamData(req.params.teamId)
-  
+
     res.send(team_details);
   } catch (error) {
     error.status = 400;
