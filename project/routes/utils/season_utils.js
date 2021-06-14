@@ -29,4 +29,21 @@ async function checkDateMatchCurrentSeason(datetimeObj){
     return current_season_date[0] == datetimeObj.getFullYear() ||  datetimeObj.getFullYear() == current_season_date[1] 
 }
 
+/*
+ Extract all the teams in the seasonId given.
+ All the teams will return as an array of {team_id, team_name}
+*/
+async function getTeamsBySeasonId(seasonId){
+  const temas = await axios.get(
+    `https://soccer.sportmonks.com/api/v2.0/teams/season/${seasonId}`,
+    {
+      params: {
+        api_token: process.env.api_token,
+      },
+    }
+  );
+  return teams.map(team => {return {team_id: team.id, team_name: team.name}})
+}
+
 exports.checkDateMatchCurrentSeason = checkDateMatchCurrentSeason
+exports.getTeamsBySeasonId = getTeamsBySeasonId

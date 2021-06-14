@@ -485,7 +485,28 @@ paths:
                   type: object
                   allOf:
                      - $ref: "#/components/schemas/PlayerPreview"        
-                
+  /teams/getAllTeams:
+    get:
+      tags:
+        - "Team"
+      description: "Get an array of all the teams in the league"
+      summary: "Used to find teams to add to favorite"
+
+            
+      responses:
+        "404":
+          description: "URL not found - could be because of bad id"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:            
+                type: array
+                items:
+                  type: object
+                  allOf:
+                    -  $ref: "#/components/schemas/TeamSummary"
+                    
   /teams/id/{teamId}:
     get:
       tags:
@@ -657,7 +678,17 @@ components:
         password:
           type: "string"
           example: "1234John"
-          
+
+    TeamSummary:
+      type: object
+      properties:
+        team_id:
+          type: integer
+          example: 211
+        team_name:
+          type: "string"
+          example: "Renders"     
+
     Team:
       type: object
       properties:

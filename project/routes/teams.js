@@ -3,6 +3,15 @@ var router = express.Router();
 const players_utils = require("./utils/players_utils");
 const teams_utils = require("./utils/teams_utils");
 
+router.get("getAllTeams", async (req, res, next) => {
+  try{
+    const league_teams = teams_utils.getAllTeams()
+    res.send(league_teams);
+
+  } catch (err) {
+    next(error);
+  }
+})
 
 async function getTeamData(team_id){
 
