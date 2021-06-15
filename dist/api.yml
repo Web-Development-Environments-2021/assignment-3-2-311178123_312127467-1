@@ -71,7 +71,24 @@ paths:
         "200":
            description: "Logout Successfull"
 
-            
+  /authenticateLeagueRep:
+    get:
+      tags:
+        - "Authentication"
+      summary: "Check if user connected is league representitive"
+      description: "Return all the a booelan if the user connected is a league representitve"
+      responses:
+        "404":
+          description: "URL not found"
+        "401":
+          description: "Unauthorized, please login first"
+        "200":
+          description: "successful operation"
+          content:  
+            schema:
+              type: "boolean"
+              example: true
+
   /users/favoriteGames:
      get:
       tags:
@@ -323,8 +340,7 @@ paths:
             application/json:    
               schema:            
                 $ref: "#/components/schemas/League"
-
-  
+        
   /players/id/{playerId}:
     get:
       tags:

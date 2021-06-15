@@ -35,7 +35,7 @@ router.post("/register", async (req, res, next) => {
 
 router.post("/login", async (req, res, next) => {
   try {
-    const user = (
+    const user =(
       await DButils.execQuery(
         `SELECT * FROM Users WHERE username = '${req.body.username}'`
       )
@@ -61,6 +61,23 @@ router.post("/login", async (req, res, next) => {
 router.post("/logout", function (req, res) {
   req.session.reset(); // reset the session info --> send cookie when  req.session == undefined!!
   res.send({ success: true, message: "logout succeeded" });
+});
+
+
+router.get("/authenticateLeagueRep", async (req, res, next) => {
+  try {
+    const userid = req.session.userid;
+    if (!userid)
+      throw { status: 401, message: "Username not given" };
+
+    const league_user = await DButils.execQuery(
+      `SELECT * FROM LeagueRepsUsers WHERE userid = '${userid}'`
+    )
+  
+    res.send(league_user.length > 0);
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;

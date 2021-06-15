@@ -3,7 +3,11 @@
 -- GameEvents From GamesEvents GROUP BY gameid) as Events 
 -- ON Games.gameid = Events.gameid
 
-SELECT * FROM GamesEvents
+SELECT * FROM Users
+DELETE FROM Users WHERE username  = 'mrawesome' 
+DELETE FROM Users WHERE username  = 'aliceLoveBob' 
+SELECT * FROM Users
+
 
 -- SELECT Games.GameDateTime, Games.HomeTeam, Games.AwayTeam, 
 -- Games.Stadium, Games.Result , Events.GameEvents, Games.Referee 
