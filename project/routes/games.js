@@ -65,6 +65,7 @@ router.post("/addGame", async (req, res, next) => {
       const away_team = req.body.away_team
       const away_team_id = req.body.away_team_id
       const stadium = req.body.stadium
+      const referee = req.body.referee
       
       // If the user only gave the team names without the id
       if (home_team_id == undefined || away_team_id == undefined){
@@ -86,7 +87,7 @@ router.post("/addGame", async (req, res, next) => {
         throw { status: 405, message: "The teams already have a match in that date & time" };
 
       await games_utils.addFutureGame(game_date,game_time,home_team,home_team_id,away_team,
-        away_team_id,stadium)
+        away_team_id,stadium,referee)
 
       res.status(201).send("The game was successfully added");
       } catch (error) {
@@ -116,6 +117,15 @@ router.post("/addGame", async (req, res, next) => {
       await Promise.all(promises)
       res.status(201).send("The game was updated");
       } catch (error) {
+      next(error);
+    }
+  });
+  router.get("/getAvailableReferees/:game_time", async (req, res, next) => {
+    try {
+      const game_time =  req.params.game_time
+      const available_referees = await games_utils.getAvailableReferees(game_time);
+      res.send(available_referees);
+    } catch (error) {
       next(error);
     }
   });

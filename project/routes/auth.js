@@ -69,7 +69,7 @@ router.get("/authenticateLeagueRep", async (req, res, next) => {
     const userid = req.session.userid;
     if (!userid)
       throw { status: 401, message: "Username not given" };
-
+    console.log(req.session)
     const league_user = await DButils.execQuery(
       `SELECT * FROM LeagueRepsUsers WHERE userid = '${userid}'`
     )

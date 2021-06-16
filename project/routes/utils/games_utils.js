@@ -118,12 +118,12 @@ The method will get all the data of a game and will add it to the games DB
 The Game should be a past game
 */
 async function addFutureGame(game_date,game_time, HomeTeam, HomeTeamID,AwayTeam,
-  AwayTeamID,stadium){
+  AwayTeamID,stadium,referee){
     await DButils.execQuery(`INSERT INTO Games
     ([GameDateTime],[HomeTeam],[HomeTeamID],[AwayTeam],
-      [AwayTeamID], [Stadium])
+      [AwayTeamID], [Stadium], [Referee])
     VALUES ('${game_date} ${game_time}', '${HomeTeam}',${HomeTeamID},'${AwayTeam}',${AwayTeamID}
-    ,'${stadium}')`);
+    ,'${stadium}','${referee}')`);
 }
 
 /*
@@ -184,6 +184,17 @@ async function getAllGames(){
   return await DButils.execQuery("SELECT * FROM Games");
 }
 
+/*
+The method will return the list of referees available in this time of game
+*/
+async function getAvailableReferees(game_time){
+  let refs =  await DButils.execQuery(`SELECT DISTINCT Name FROM Referees FULL OUTER JOIN (SELECT Referee, GameDateTime FROM Games
+    WHERE Games.GameDateTime = '${game_time}') AS Unavailable
+    ON Referees.Name = Unavailable.Referee WHERE 
+    Unavailable.Referee is NULL`);
+  return refs
+}
+
 exports.getAllGames = getAllGames;
 exports.getTeamLatestGames = getTeamLatestGames;
 exports.getTeamUpcomingGames = getTeamUpcomingGames;
@@ -196,3 +207,4 @@ exports.addFutureGame = addFutureGame;
 exports.addScoreToGame = addScoreToGame
 exports.addEventToGame = addEventToGame
 exports.checkIfMathcExists = checkIfMathcExists
+exports.getAvailableReferees = getAvailableReferees
