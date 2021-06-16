@@ -29,7 +29,7 @@ router.post("/register", async (req, res, next) => {
     );
     res.status(201).send("user created");
   } catch (error) {
-    res.status(500).send(error.message);
+    next(error)
   }
 });
 
