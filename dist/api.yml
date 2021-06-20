@@ -632,7 +632,10 @@ paths:
             application/json:    
               schema:
                 type: object
-                properties:            
+                properties:
+                  id:
+                    type: "integer"
+                    example: 86            
                   team_name: 
                     type: "string"
                     example: "Silkeborg"
