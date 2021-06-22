@@ -84,11 +84,15 @@ paths:
           description: "Unauthorized, please login first"
         "200":
           description: "successful operation"
-          content:  
-            schema:
-              type: "boolean"
-              example: true
-
+          content:
+            application/json:  
+              schema:
+                type: object
+                properties:
+                  isLeagueRep:          
+                    type: "boolean"
+                    example: true  
+                    
   /users/favoriteGames:
      get:
       tags:
