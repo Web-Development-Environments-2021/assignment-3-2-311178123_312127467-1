@@ -531,7 +531,7 @@ paths:
                   type: object
                   allOf:
                      - $ref: "#/components/schemas/PlayerPreview"        
-  /teams/getAllTeams:
+  /teams/:
     get:
       tags:
         - "Team"
