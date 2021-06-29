@@ -609,7 +609,37 @@ paths:
             application/json:    
               schema:            
                 $ref: "#/components/schemas/Team"
-  
+
+   /teams/teamID/{team_name}:
+    get:
+      tags:
+        - "Team"
+      description: "Get ID of the team by using the team name"
+      summary: "used in the add games page"
+      operationId: "getTeamIDByName" 
+      parameters:
+      - name: "team_name"
+        in: "path"
+        description: "Name of team id to return"
+        required: true
+        schema:
+          type: "string"
+          example: "Silkeborg"
+            
+      responses:
+        "404":
+          description: "URL not found - could be because of bad name"
+        "400":
+          description: "Team name not found"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:
+                type: "integer"
+                minimum: 1
+                example: 939
+
   /teams/search/{team_name}:
     get:
       tags:

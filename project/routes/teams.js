@@ -617,4 +617,16 @@ router.get("/search/:teamname", async (req, res, next) => {
   }
 });
 
+router.get("/teamID/:teamname", async (req, res, next) => {
+  try {
+    const teams_data = await teams_utils.searchTeamsByName(req.params.teamname)
+    const team_id = await teams_utils.extractTeamId(teams_data[0])
+    res.send(team_id);
+  } catch (error) {
+    error.status = 400;
+    error.message = "Team name not found"
+    next(error);
+  }
+});
+
 module.exports = router;
