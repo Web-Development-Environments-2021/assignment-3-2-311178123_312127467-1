@@ -30,7 +30,7 @@ async function getTeamData(team_id){
 }
 
 
-router.get("/getAllTeams", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try{
     const league_teams = await teams_utils.getAllTeams()
     res.send(league_teams);
