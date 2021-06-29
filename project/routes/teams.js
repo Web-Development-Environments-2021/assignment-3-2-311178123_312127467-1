@@ -595,7 +595,8 @@ router.get("/id/:teamId", async (req, res, next) => {
 
 router.get("/name/:teamname", async (req, res, next) => {
   try {
-    const team_id = await teams_utils.getTeamIdByName(req.params.teamname)
+    const teams_data = await teams_utils.searchTeamsByName(req.params.teamname)
+    const team_id = await teams_utils.extractTeamId(teams_data[0])
     const team_details = await getTeamData(team_id)
     res.send(team_details);
   } catch (error) {
@@ -607,12 +608,10 @@ router.get("/name/:teamname", async (req, res, next) => {
 
 router.get("/search/:teamname", async (req, res, next) => {
   try { 
-    const team_id = await teams_utils.getTeamIdByName(req.params.teamname)
-    if (team_id.length == 0)
+    const teams_data = await teams_utils.searchTeamsByName(req.params.teamname)
+    if (teams_data.length == 0)
       throw {status: 400, message: "Invalid team name"}
-    const team_details = await teams_utils.getPreviwTeamData(team_id)
-    team_details.id = team_id
-    res.send(team_details);
+    res.send(teams_data);
   } catch (error) {
     next(error);
   }

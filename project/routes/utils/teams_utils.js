@@ -5,9 +5,9 @@ const game_utils = require("./games_utils");
 const league_utils = require("./league_utils");
 const season_utils = require("./season_utils")
 /*
-The method will query the sports api for the team's name and return the id
+The method will query the sports api for the all the teams with the team_name and return the list of teams
 */
-async function getTeamIdByName(team_name){
+async function searchTeamsByName(team_name){
   const team_data = await axios.get(`${api_domain}/teams/search/${team_name}`, {
     params: {
       api_token: process.env.api_token,
@@ -15,7 +15,11 @@ async function getTeamIdByName(team_name){
   })
   if (team_data.data.data.length == 0)
     return [];
-  return team_data.data.data[0].id;
+  return team_data.data.data;
+}
+
+function extractTeamId(team_data){
+  return team_data.id
 }
 
 /*
@@ -99,6 +103,7 @@ async function getAllTeams(){
 
 exports.getAllTeams = getAllTeams
 exports.getTeamsInfo = getTeamsInfo;
-exports.getTeamIdByName = getTeamIdByName;
+exports.searchTeamsByName = searchTeamsByName;
+exports.extractTeamId = extractTeamId;
 exports.getPreviwTeamData = getPreviwTeamData
 exports.checkTeamLeagueByTeamId = checkTeamLeagueByTeamId
