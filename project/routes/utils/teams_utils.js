@@ -18,6 +18,9 @@ async function searchTeamsByName(team_name){
   return team_data.data.data;
 }
 
+/*
+The function will get all the data about the team and wil return a int -> the team id
+*/
 function extractTeamId(team_data){
   return team_data.id
 }
