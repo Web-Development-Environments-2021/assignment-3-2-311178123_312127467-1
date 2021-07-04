@@ -47,7 +47,8 @@ router.get("/name/:player_name", async (req, res, next) => {
 
 router.get("/search/:player_name", async (req, res, next) => {
   try {
-    const players_info = await players_utils.searchPlayerByName(req.params.player_name)
+   //const players_info = await players_utils.searchPlayerByName(req.params.player_name)
+    const players_info = players_utils.test()
     res.send(players_info);
   } catch (error) {
     next(error);
