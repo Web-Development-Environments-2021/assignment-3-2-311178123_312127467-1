@@ -3,21 +3,27 @@ const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 // const TEAM_ID = "85";
 
 /*
-The method will query the sports api for the player's name and return the id
+The method will query the sports api for the player's name and return all the players matching the name
+given as input
 */
-async function getPlayerIdByName(player_name){
+async function searchPlayerByName(player_name){
   const player_data = await axios.get(`${api_domain}/players/search/${player_name}`, {
     params: {
+      include: "position, team",
       api_token: process.env.api_token,
     },
   })
-  let players_ids = []
-  player_data.data.data.map(player => {
-    if (player.fullname == player_name)
-      players_ids.push(player.player_id)})
-  return players_ids;
+  if (player_data.data.data.length == 0)
+    return [];
+  return player_data.data.data;
 }
 
+/*
+The function will get all the data about the player and wil return a int -> the player id
+*/
+function exctractPlayerId(team_data){
+  return team_data.id
+}
 /*
 The method will query the sports api for the all the players of a team by using include: squad
 */
@@ -98,5 +104,6 @@ function extractFullPlayerData(players_info) {
 
 exports.getPlayersByTeam = getPlayersByTeam;
 exports.getPlayersInfo = getPlayersInfo;
-exports.getPlayerIdByName = getPlayerIdByName;
+exports.searchPlayerByName = searchPlayerByName;
+exports.exctractPlayerId = exctractPlayerId
 

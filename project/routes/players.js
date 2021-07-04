@@ -35,8 +35,8 @@ router.get("/id/:playerId", async (req, res, next) => {
 
 router.get("/name/:player_name", async (req, res, next) => {
   try {
-    const players_id = await players_utils.getPlayerIdByName(req.params.player_name)
-    const player_info = await players_utils.getPlayersInfo(players_id)
+    const players_id = await players_utils.searchPlayerByName(req.params.player_name)
+    const player_info = await players_utils.exctractPlayerId(players_id)
     res.send(player_info);
   } catch (error) {
     error.status = 400;
@@ -47,8 +47,8 @@ router.get("/name/:player_name", async (req, res, next) => {
 
 router.get("/search/:player_name", async (req, res, next) => {
   try {
-    const players_ids = await players_utils.getPlayerIdByName(req.params.player_name)
-    let players_info = await players_utils.getPlayersInfo(players_ids)
+    const players_ids = await players_utils.searchPlayerByName(req.params.player_name)
+    //let players_info = await players_utils.getPlayersInfo(players_ids)
     // Filter for players whos full name match the player_name
     players_info = players_info.map( player_info => {
         return {
@@ -68,8 +68,8 @@ router.get("/search/:player_name", async (req, res, next) => {
 
 router.get("/search/:player_name/positionId/:player_position_id", async (req, res, next) => {
   try {
-    const players_ids = await players_utils.getPlayerIdByName(req.params.player_name)
-    let players_info = await players_utils.getPlayersInfo(players_ids)
+    const players_ids = await players_utils.searchPlayerByName(req.params.player_name)
+    //let players_info = await players_utils.getPlayersInfo(players_ids)
     // Filter for players whos full name match the player_name and position is position_id
     players_info = players_info.map( player_info => {
       return {
@@ -92,8 +92,8 @@ router.get("/search/:player_name/positionId/:player_position_id", async (req, re
 
 router.get("/search/:player_name/team/:team_name", async (req, res, next) => {
   try {
-    const players_ids = await players_utils.getPlayerIdByName(req.params.player_name)
-    let players_info = await players_utils.getPlayersInfo(players_ids)
+    const players_ids = await players_utils.searchPlayerByName(req.params.player_name)
+    //let players_info = await players_utils.getPlayersInfo(players_ids)
     // Filter for players whos full name match the player_name and position is position_id
     players_info = players_info.map( player_info => {
       return {
