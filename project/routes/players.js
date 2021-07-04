@@ -47,19 +47,7 @@ router.get("/name/:player_name", async (req, res, next) => {
 
 router.get("/search/:player_name", async (req, res, next) => {
   try {
-    const players_ids = await players_utils.searchPlayerByName(req.params.player_name)
-    //let players_info = await players_utils.getPlayersInfo(players_ids)
-    // Filter for players whos full name match the player_name
-    players_info = players_info.map( player_info => {
-        return {
-          id: player_info.id,
-          fullname: player_info.fullname,
-          team_name: player_info.team,
-          team_id: player_info.team_id,
-          image_path: player_info.image_path,
-          position_id: player_info.position_id,
-          position: player_info.position
-    }})
+    const players_info = await players_utils.searchPlayerByName(req.params.player_name)
     res.send(players_info);
   } catch (error) {
     next(error);
@@ -68,21 +56,10 @@ router.get("/search/:player_name", async (req, res, next) => {
 
 router.get("/search/:player_name/positionId/:player_position_id", async (req, res, next) => {
   try {
-    const players_ids = await players_utils.searchPlayerByName(req.params.player_name)
-    //let players_info = await players_utils.getPlayersInfo(players_ids)
-    // Filter for players whos full name match the player_name and position is position_id
-    players_info = players_info.map( player_info => {
-      return {
-        fullname: player_info.name,
-        team_name: player_info.team_name,
-        team_id: player_info.team_id,
-        image_path: player_info.image,
-        position_id: player_info.position_id,
-        position: player_info.position
-  }})
-  // Filter player with position id not equal to the one the user gave
-  players_info = players_info.filter( player_info => {
-    return player_info.position_id == req.params.player_position_id 
+    let players_info = await players_utils.searchPlayerByName(req.params.player_name)
+    // Filter player with position id not equal to the one the user gave  
+    players_info = players_info.filter( player_info => {
+    return player_info.position.data.id == req.params.player_position_id 
 })
     res.send(players_info);
   } catch (error) {
@@ -92,21 +69,10 @@ router.get("/search/:player_name/positionId/:player_position_id", async (req, re
 
 router.get("/search/:player_name/team/:team_name", async (req, res, next) => {
   try {
-    const players_ids = await players_utils.searchPlayerByName(req.params.player_name)
-    //let players_info = await players_utils.getPlayersInfo(players_ids)
-    // Filter for players whos full name match the player_name and position is position_id
-    players_info = players_info.map( player_info => {
-      return {
-        fullname: player_info.name,
-        team_name: player_info.team_name,
-        team_id: player_info.team_id,
-        image_path: player_info.image,
-        position_id: player_info.position_id,
-        position: player_info.position
-  }})
-  // Filter player with team name not equal to the one the user gave
-  players_info = players_info.filter( player_info => {
-    return player_info.team_name == req.params.team_name 
+    let players_info = await players_utils.searchPlayerByName(req.params.player_name)
+    // Filter player with team name not equal to the one the user gave
+    players_info = players_info.filter( player_info => {
+      return player_info.team.data.name == req.params.team_name 
 })
     res.send(players_info);
   } catch (error) {
