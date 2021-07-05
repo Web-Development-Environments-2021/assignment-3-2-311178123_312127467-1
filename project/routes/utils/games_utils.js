@@ -195,6 +195,19 @@ async function getAvailableReferees(game_time){
   return refs
 }
 
+/*
+The method will query the DB to return the gameID of the given team ids
+*/
+async function getGameID(game_time,home_team_id, away_team_id){
+  let result = await DButils.execQuery(`SELECT gameid FROM Games Where GameDateTime = '${game_time}' AND
+  ((HomeTeamID = ${home_team_id} AND AwayTeamID = ${away_team_id}) OR
+  (HomeTeamID = ${away_team_id} AND AwayTeamID = ${home_team_id}))`)
+  if(result.length > 0)
+    return result[0]['gameid'];
+  return false
+}
+
+
 exports.getAllGames = getAllGames;
 exports.getTeamLatestGames = getTeamLatestGames;
 exports.getTeamUpcomingGames = getTeamUpcomingGames;
@@ -208,3 +221,4 @@ exports.addScoreToGame = addScoreToGame
 exports.addEventToGame = addEventToGame
 exports.checkIfMathcExists = checkIfMathcExists
 exports.getAvailableReferees = getAvailableReferees
+exports.getGameID = getGameID

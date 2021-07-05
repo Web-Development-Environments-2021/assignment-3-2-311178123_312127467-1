@@ -262,6 +262,48 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfReferees"
 
+  /games/gameid:
+    get:
+      tags:
+        - "Games"
+      summary: "Get game id of given game time and team ids"
+      description: "Get game id of given game time and team ids"
+      operationId: "getgameid" 
+      parameters:
+      - name: "game_time"
+        in: "body"
+        description: "String of game time"
+        required: true
+        schema:
+          type: "string"
+          example: "2021-11-05 21:05:00"
+      - name: "home_team_id"
+        in: "body"
+        description: "integer of home team id"
+        required: true
+        schema:
+          type: "integer"
+          example: 940
+      - name: "away_team_id"
+        in: "body"
+        description: "integer of away team id"
+        required: true
+        schema:
+          type: "integer"
+          example: 939
+
+      responses:
+        "405":
+          description: "There is no game with the specified input"
+        "200":
+          description: "successful operation"
+          content:  
+            application/json:    
+              schema:
+                type: "integer"
+                minimum: 1
+                example: 939
+
   /games/addGame:
     post:
       tags:

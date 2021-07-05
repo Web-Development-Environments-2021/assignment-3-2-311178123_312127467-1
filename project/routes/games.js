@@ -55,6 +55,21 @@ router.get("/all", async (req, res, next) => {
   }  
 });
 
+router.get("/gameid", async (req, res, next) => {
+  try {
+    const game_time = req.body.game_time
+    const home_team_id = req.body.home_team_id
+    const away_team_id = req.body.away_team_id
+    const result = await games_utils.getGameID(game_time,home_team_id,away_team_id)
+    if(result)
+      res.status(200).send(result);
+    else
+      throw { status: 405, message: "There is no game with the specified input" };
+  } catch (error) {
+    next(error);
+  }  
+});
+
 router.post("/addGame", async (req, res, next) => {
     try {
 
