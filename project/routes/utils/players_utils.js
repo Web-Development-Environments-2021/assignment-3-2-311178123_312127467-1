@@ -3587,7 +3587,9 @@ function extractFullPlayerData(players_info) {
   return players_info.map((player_info) => {
     const { fullname, image_path, position_id, common_name, nationality,
       birthdate, birthcountry, height, weight, player_id} = player_info;
-    let {name, id} = ["No Team",0];
+    // Default values 
+    let name = "No Team"
+    let id = 0
     let position = ""
     if(player_info.team){
       name =  player_info.team.data.name;
