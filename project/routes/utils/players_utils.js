@@ -3590,7 +3590,9 @@ function extractFullPlayerData(players_info) {
     // Default values 
     let name = "No Team"
     let id = 0
-    let position = ""
+    let position = "No Positionn"
+    // Replace the defualt values if the values
+    // Are set in the data. Otherwise keep them 
     if(player_info.team){
       name =  player_info.team.data.name;
       id = player_info.team.data.id
