@@ -7,6 +7,6 @@ CREATE TABLE dbo.LeagueRepsUsers
 );
 
 INSERT INTO LeagueRepsUsers
-VALUES (2)
+VALUES (1)
 
 
