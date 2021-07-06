@@ -2,7 +2,7 @@ INSERT INTO UsersFavoriteGames
    ([userid],[gameid])
    
 VALUES
-    (3,7),(3,8)
+    (1,7),(1,8)
 
 GO 
 
