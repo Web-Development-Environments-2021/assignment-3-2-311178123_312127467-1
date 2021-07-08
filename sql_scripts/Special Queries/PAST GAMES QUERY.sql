@@ -3,8 +3,8 @@
 -- GameEvents From GamesEvents GROUP BY gameid) as Events 
 -- ON Games.gameid = Events.gameid
 
-Select * FROM Referees;
-Select * FROM Games;
+-- Select * FROM Referees;
+-- Select * FROM Games;
 
 
 

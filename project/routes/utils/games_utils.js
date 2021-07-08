@@ -1,5 +1,6 @@
 const app_utils = require("./app_utils");
 const DButils = require("./DButils");
+const { getAllTeams } = require("./teams_utils");
 
 /*
 The method will query the games DB for the next scheduled game
@@ -207,6 +208,21 @@ async function getGameID(game_time,home_team_id, away_team_id){
   return false
 }
 
+/*
+The method will return the list of teams available in this time of game
+*/
+async function getAvailableTeams(game_time){
+  let allTeams = getAllTeams();
+  let Unavailables =  await DButils.execQuery(`SELECT GameDateTime, HomeTeam, AwayTeam
+    FROM Games WHERE Games.GameDateTime = '${game_time}'`);
+  Unavailables.map((Unavailable) => {
+    // remove teams that are not available
+    console.log(allTeams["name"])
+    allTeams.pop(allTeams["name"] == Unavailable['HomeTeam'])
+    allTeams.pop(allTeams["name"] == Unavailable['HomeTeam'])
+  })
+  return allTeams
+}
 
 exports.getAllGames = getAllGames;
 exports.getTeamLatestGames = getTeamLatestGames;
@@ -222,3 +238,4 @@ exports.addEventToGame = addEventToGame
 exports.checkIfMathcExists = checkIfMathcExists
 exports.getAvailableReferees = getAvailableReferees
 exports.getGameID = getGameID
+exports.getAvailableTeams = getAvailableTeams

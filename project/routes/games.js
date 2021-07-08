@@ -138,10 +138,19 @@ router.post("/addGame", async (req, res, next) => {
   router.post("/getAvailableReferees", async (req, res, next) => {
     try {
 
-      // const game_time =  req.params.game_time
       const game_time = req.body.game_time
       const available_referees = await games_utils.getAvailableReferees(game_time);
       res.send(available_referees);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  router.get("/getAvailableTeams", async (req, res, next) => {
+    try {
+      const game_time = req.body.game_time
+      const available_teams = await games_utils.getAvailableTeams(game_time);
+      res.send(available_teams);
     } catch (error) {
       next(error);
     }
