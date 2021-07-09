@@ -113,13 +113,12 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfGames"
 
-  /users/addFavoriteGames:
+  /users/favoriteGames:
       post:
         tags:
           - "User"
         description: "add the favorite game to the list of the user's favorite games"
         summary: "used in the user's personal page"
-        operationId: "addFavGameForUser" 
         requestBody:
           content:
             application/json:  
@@ -162,7 +161,7 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfTeams"
                 
-  /users/addFavoriteTeams:
+  /users/favoriteTeams:
     post:
       tags:
         - "User"
@@ -209,13 +208,12 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfPlayers"
        
-  /users/addFavoritePlayers:
+  /users/favoritePlayers:
     post:
       tags:
         - "User"
       description: "add the favorite player to the list of the user's favorite players"
       summary: "used in the user's personal page"
-      operationId: "addFavPlayerForUser" 
       requestBody:
         content:
           application/json:  
