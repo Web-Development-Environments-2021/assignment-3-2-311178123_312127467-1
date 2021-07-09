@@ -20,6 +20,6 @@
 -- WHERE Games.GameDateTime = '2021-11-05 21:05:00') AS Unavailable
 -- ON Referees.Name = Unavailable.Referee WHERE 
 -- Unavailable.Referee is NULL
-SELECT * FROM Users
+SELECT * FROM LeagueRepsUsers
 -- Referees.Name <> Unavailable.Referee
 -- '${game_time}'

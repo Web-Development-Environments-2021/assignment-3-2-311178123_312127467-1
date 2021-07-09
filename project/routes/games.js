@@ -146,7 +146,7 @@ router.post("/addGame", async (req, res, next) => {
     }
   });
 
-  router.get("/getAvailableTeams", async (req, res, next) => {
+  router.post("/getAvailableTeams", async (req, res, next) => {
     try {
       const game_time = req.body.game_time
       const available_teams = await games_utils.getAvailableTeams(game_time);

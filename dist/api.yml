@@ -236,21 +236,22 @@ paths:
         "200":
           description: "player was added succesfully"
 
-  /games/getAvailableReferees/{game_time}:
-    get:
+  /games/getAvailableReferees:
+    post:
       tags:
         - "Games"
       summary: "Get all available referees at the time given"
       description: "Get all available referees at the time given"
       operationId: "getAvailableReferees" 
-      parameters:
-      - name: "game_time"
-        in: "path"
-        description: "String of game time"
-        required: true
-        schema:
-          type: "string"
-          example: "2021-11-05 21:05:00"
+      requestBody:
+        content:
+          application/json:  
+            schema:
+              type: object
+              properties:
+                game_time:
+                  type: "string"
+                  example: "2021-11-05 21:05:00"
 
       responses:
         "404":
@@ -262,21 +263,22 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfReferees"
 
-  /games/getAvailableTeams/{game_time}:
-    get:
+  /games/getAvailableTeams:
+    post:
       tags:
         - "Games"
       summary: "Get all available teams at the time given"
       description: "Get all available teams at the time given"
       operationId: "getAvailableTeams" 
-      parameters:
-      - name: "game_time"
-        in: "path"
-        description: "String of game time"
-        required: true
-        schema:
-          type: "string"
-          example: "2021-11-05 21:05:00"
+      requestBody:
+        content:
+          application/json:  
+            schema:
+              type: object
+              properties:
+                game_time:
+                  type: "string"
+                  example: "2021-11-05 21:05:00"
 
       responses:
         "404":
