@@ -71,7 +71,9 @@ async function extractRelevantTeamData(teams_info) {
         const name = team_info.data.data.name;
         const logo = team_info.data.data.logo_path
         const venue = team_info.data.data.venue.data
+        const id = team_info.data.data.id
         return {
+        id: id,
         name: name,
         logo: logo,
         coach: coach,
