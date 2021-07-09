@@ -6,26 +6,8 @@ const players_utils = require("./utils/players_utils");
 
 router.get("/id/:playerId", async (req, res, next) => {
   try {
-   // const player_info = await players_utils.getPlayersInfo([req.params.playerId])
-    const test = [
-      {
-        id: 5740,
-        fullname: "Lawrence Thomas",
-        image_path: "https://cdn.sportmonks.com/images/soccer/players/12/5740.png",
-        position_id: 1,
-        position: "Goalkeeper",
-        team: "SønderjyskE",
-        team_id: 390,
-        nationality: "Australia",
-        birthdate: "09/05/1992",
-        birthplace: "Australia",
-        common_name: "L. Thomas",
-        weight: "91 kg",
-        height: "191 cm",
-      },
-    ]
-    //res.send(player_info[0]);
-    res.send(test[0])
+    const player_info = await players_utils.getPlayersInfo([req.params.playerId])
+    res.send(player_info[0]);
   } catch (error) {
     error.status = 400;
     error.message = "Player id not found"
@@ -35,9 +17,8 @@ router.get("/id/:playerId", async (req, res, next) => {
 
 router.get("/name/:player_name", async (req, res, next) => {
   try {
-    const players_id = await players_utils.searchPlayerByName(req.params.player_name)
-    const player_info = await players_utils.exctractPlayerId(players_id)
-    res.send(player_info);
+    const players_info = await players_utils.searchPlayerByName(req.params.player_name)
+    res.send(players_info[0]);
   } catch (error) {
     error.status = 400;
     error.message = "Player name not found"

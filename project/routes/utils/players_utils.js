@@ -21,8 +21,8 @@ async function searchPlayerByName(player_name){
 /*
 The function will get all the data about the player and wil return a int -> the player id
 */
-function exctractPlayerId(team_data){
-  return team_data.id
+function exctractPlayerId(data){
+  return data.id
 }
 /*
 The method will query the sports api for the all the players of a team by using include: squad
