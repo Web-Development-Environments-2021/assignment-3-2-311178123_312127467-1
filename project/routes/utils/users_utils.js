@@ -64,9 +64,9 @@ Returns True if the game is not yet played (future game) and False otherwise (pa
 */
 async function isGameInFuture(game_id) {
   const now = app_utils.formatDateTime(new Date())
-  const game_date = await DButils.execQuery(
+  let game_date = await DButils.execQuery(
     `select GameDateTime from Games where gameid='${game_id}'`);
-  game_date = app_utils.formatDateTime(game_date)
+  game_date = app_utils.formatDateTime(game_date[0]['GameDateTime'])
   if(game_date>now)
     return true
   return false
