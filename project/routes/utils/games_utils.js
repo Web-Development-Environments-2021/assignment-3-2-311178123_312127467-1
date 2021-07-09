@@ -217,9 +217,13 @@ async function getAvailableTeams(game_time){
     FROM Games WHERE Games.GameDateTime = '${game_time}'`);
   Unavailables.map((Unavailable) => {
     // remove teams that are not available
-    console.log(allTeams["name"])
-    allTeams.pop(allTeams["name"] == Unavailable['HomeTeam'])
-    allTeams.pop(allTeams["name"] == Unavailable['HomeTeam'])
+    allTeams.map((teamObj) => {
+      // remove teams that are not available
+      let toDelete = teamObj["team_name"] == Unavailable['HomeTeam'] | teamObj["team_name"] == Unavailable['AwayTeam']
+      if(toDelete){
+        let index = allTeams.indexOf(teamObj)
+        allTeams.splice(index,1)}
+    })
   })
   return allTeams
 }
