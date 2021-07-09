@@ -422,7 +422,7 @@ paths:
           description: "The game was updated"
 
 
-  /league/getDetails:
+  /league:
     get:
       tags:
         - "League"
