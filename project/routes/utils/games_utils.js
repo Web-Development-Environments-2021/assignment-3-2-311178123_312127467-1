@@ -215,18 +215,19 @@ async function getAvailableTeams(game_time){
   let allTeams = await teams_utils.getAllTeams();
   let Unavailables =  await DButils.execQuery(`SELECT GameDateTime, HomeTeam, AwayTeam
     FROM Games WHERE Games.GameDateTime = '${game_time}'`);
-  let allTeamsAfterDelete = allTeams;
+  let indexesToDelete = [];
   Unavailables.map((Unavailable) => {
     // remove teams that are not available
     allTeams.map((teamObj) => {
-      // remove teams that are not available
       let toDelete = teamObj["team_name"] == Unavailable['HomeTeam'] || teamObj["team_name"] == Unavailable['AwayTeam']
-      if(toDelete){
-        let index = allTeamsAfterDelete.indexOf(teamObj)
-        allTeamsAfterDelete.splice(index,1)}
+      if(toDelete)
+        indexesToDelete.push(allTeams.indexOf(teamObj))
     })
   })
-  return allTeamsAfterDelete
+  indexesToDelete.sort(function(a, b){return a-b});
+  for (var i = indexesToDelete.length -1; i >= 0; i--)
+    allTeams.splice(indexesToDelete[i], 1);
+  return allTeams
 }
 
 exports.getAllGames = getAllGames;
