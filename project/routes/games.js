@@ -135,10 +135,10 @@ router.post("/addGame", async (req, res, next) => {
       next(error);
     }
   });
-  router.post("/getAvailableReferees", async (req, res, next) => {
+  router.get("/AvailableReferees/:gameTime", async (req, res, next) => {
     try {
 
-      const game_time = req.body.game_time
+      const game_time = req.params.gameTime
       const available_referees = await games_utils.getAvailableReferees(game_time);
       res.send(available_referees);
     } catch (error) {
@@ -146,9 +146,9 @@ router.post("/addGame", async (req, res, next) => {
     }
   });
 
-  router.post("/getAvailableTeams", async (req, res, next) => {
+  router.get("/AvailableTeams/:gameTime", async (req, res, next) => {
     try {
-      const game_time = req.body.game_time
+      const game_time = req.params.gameTime
       const available_teams = await games_utils.getAvailableTeams(game_time);
       res.send(available_teams);
     } catch (error) {
