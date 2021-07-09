@@ -19,7 +19,7 @@ VALUES
    '1-2','Zainiddin Alimov'),
     ('2021-08-01 19:00:00', 'SønderjyskE', 390, 'Midtjylland',939, 'Sydbank Park', NULL,'Denis Shalayev'),
     ('2021-08-03 19:00:00', 'Silkeborg', 86, 'Midtjylland',939, 'JYSK park', NULL,'Denis Shalayev'),
-     ('2021-08-10 19:00:00', 'Silkeborg', 28611, 'Randers',2356, 'JYSK park', NULL,'Denis Shalayev'),
+     ('2021-08-10 19:00:00', 'Silkeborg', 86, 'Randers',2356, 'JYSK park', NULL,'Denis Shalayev'),
     ('2021-10-01 14:30:00', 'SønderjyskE', 390, 'Silkeborg',86, 'Sydbank Park', NULL,'Zainiddin Alimov'),
     ('2021-10-03 21:05:00', 'Randers', 2356, 'Midtjylland',939, 'Cepheus Park Randers', NULL,'Zainiddin Alimov'),
    ('2021-11-05 21:05:00', 'Randers', 2356, 'SønderjyskE',390, 'Cepheus Park Randers ', NULL,'Daiyrbek Abdyldayev')
