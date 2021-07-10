@@ -28,7 +28,7 @@ router.use(async function (req, res, next) {
 /**
  * This path gets body with playerId and save this player in the favorites list of the logged-in user
  */
-router.post("/favoritePlayers", async (req, res, next) => {
+router.post("/addFavoritePlayers", async (req, res, next) => {
   try {
     const user_id = req.session.userid;
     const player_id = req.body.player_id;
@@ -42,7 +42,7 @@ router.post("/favoritePlayers", async (req, res, next) => {
 /**
  * This path gets body with teamId and save this team in the favorites list of the logged-in user
  */
- router.post("/favoriteTeams", async (req, res, next) => {
+ router.post("/addFavoriteTeams", async (req, res, next) => {
   try {
     const user_id = req.session.userid;
     const team_id = req.body.team_id;
@@ -61,7 +61,7 @@ router.post("/favoritePlayers", async (req, res, next) => {
 /**
  * This path gets body with game data and save this game in the favorites list of the logged-in user
  */
- router.post("/favoriteGames", async (req, res, next) => {
+ router.post("/addFavoriteGames", async (req, res, next) => {
   try {
     const user_id = req.session.userid;
     const game_id = req.body.game_id;
