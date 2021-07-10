@@ -46,7 +46,7 @@ router.use(async function (req, res, next) {
     res.status(401).send("Privilege Error: The following action is only permitted to league representives Or you have not Logged in first")
 });
 
-router.get("/all", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     const result = await games_utils.getAllGames()
     res.send(result);
