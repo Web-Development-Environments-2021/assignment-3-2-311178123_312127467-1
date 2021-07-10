@@ -19,13 +19,14 @@ async function getTeamData(team_id){
     const venue = team_info[0]['stadium']
 
     return {
+      id: team_id,
       name: name,
       logo: logo,
       coach: team_coach,
+      stadium: venue,
       squad: team_players,
       latest: past_games,
-      upcoming: future_games,
-      stadium: venue
+      upcoming: future_games
     }
 }
 
@@ -42,8 +43,7 @@ router.get("/", async (req, res, next) => {
 
 router.get("/id/:teamId", async (req, res, next) => {
   try {
-    // const team_details = await getTeamData(req.params.teamId)
-    const team_details = teams_utils.test_data
+    const team_details = await getTeamData(req.params.teamId)
     res.send(team_details);
   } catch (error) {
     error.status = 400;

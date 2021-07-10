@@ -60,9 +60,9 @@ router.get("/gameid/:game_time/:home_team_id/:away_team_id", async (req, res, ne
     const game_time = req.params.game_time
     const home_team_id = req.params.home_team_id
     const away_team_id = req.params.away_team_id
-    const result = await games_utils.getGameID(game_time,home_team_id,away_team_id)
-    if(result)
-      res.status(200).send({result});
+    const game_id = await games_utils.getGameID(game_time,home_team_id,away_team_id)
+    if(game_id)
+      res.status(200).send({game_id});
     else
       throw { status: 405, message: "There is no game with the specified input" };
   } catch (error) {

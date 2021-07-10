@@ -3602,18 +3602,18 @@ function extractFullPlayerData(players_info) {
 
     return {
       id: player_id,
-      fullname: fullname,
-      image_path: image_path,
-      position_id: position_id,
-      position: position,
-      team: name,
       team_id: id,
-      nationality: nationality,
-      birthdate: birthdate,
-      birthplace: birthcountry,
+      position: position,
+      position_id: position_id,
+      fullname: fullname,
       common_name: common_name,
+      nationality: nationality,
+      birthplace: birthcountry,
+      birthdate: birthdate,
+      height: height,
       weight: weight,
-      height: height
+      team: name,
+      image_path: image_path
     };
   });
 }

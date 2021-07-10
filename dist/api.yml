@@ -109,7 +109,7 @@ paths:
           content:  
             application/json:    
               schema:            
-                $ref: "#/components/schemas/ArrayOfGames"
+                $ref: "#/components/schemas/ArrayOfFutureGames"
 
   /users/addFavoriteGames:
       post:
@@ -157,7 +157,7 @@ paths:
           content:  
             application/json:    
               schema:            
-                $ref: "#/components/schemas/ArrayOfTeams"
+                $ref: "#/components/schemas/ArrayOfFavoriteTeams"
                 
   /users/addFavoriteTeams:
     post:
@@ -280,7 +280,11 @@ paths:
           content:  
             application/json:    
               schema:            
-                $ref: "#/components/schemas/ArrayOfTeams"
+                type: array
+                items:
+                  type: object
+                  allOf:
+                    -  $ref: "#/components/schemas/TeamSummary"
 
   /games/gameid/{game_time}/{home_team_id}/{away_team_id}:
     get:
@@ -317,12 +321,15 @@ paths:
           description: "There is no game with the specified input"
         "200":
           description: "successful operation"
-          content:  
-            application/json:    
+          content:
+            application/json:  
               schema:
-                type: "integer"
-                minimum: 1
-                example: 939
+                type: object
+                properties:
+                  game_id:          
+                    type: "integer"
+                    minimum: 1
+                    example: 6
 
   /games/addGame:
     post:
@@ -695,9 +702,11 @@ paths:
           content:  
             application/json:    
               schema:
-                type: "integer"
-                minimum: 1
-                example: 939
+                type: object
+                properties:
+                  team_id:
+                    type: "integer"
+                    example: 939
 
   /teams/search/{team_name}:
     get:
@@ -728,14 +737,40 @@ paths:
                 properties:
                   id:
                     type: "integer"
-                    example: 86            
-                  team_name: 
+                    example: 86
+                  legacy_id:
+                    type: "integer"
+                    example: 522
+                  name: 
                     type: "string"
                     example: "Silkeborg"
+                  short_code:
+                    type: "string"
+                    example: "SIL"
+                  twitter: 
+                    type: "string"
+                    example: "https://twitter.com/SilkeborgTeam.com"
+                  country_id: 
+                    type: "integer"
+                    example: 320
+                  national_team:
+                    type: "boolean"
+                    example: false                    
+                  founded: 
+                    type: "integer"
+                    example: 1917
                   logo_path:
                     type: "string"
-                    example: "https://cdn.sportmonks.com/images//soccer/teams/19/211.png"
-                        
+                    example: "https://cdn.sportmonks.com/images//soccer/teams/22/86.png"
+                  venue_id:
+                    type: "integer"
+                    example: 85371
+                  current_season_id:
+                    type: "integer"                    
+                    example: 18334
+                  is_placeholder:
+                    type: "boolean"
+                    example: false
             
   /games/currentStageGames:
     get:
@@ -776,7 +811,7 @@ paths:
           content:  
             application/json:    
               schema:            
-                $ref: "#/components/schemas/ArrayOfGames"
+                $ref: "#/components/schemas/ArrayOfFutureGames"
                 
 components:
   schemas:
@@ -835,10 +870,11 @@ components:
         name:
             type: "string"
             example: "Silkeborg"
-
-        logo_path:
+        logo:
             type: "string"
             example: "https://cdn.sportmonks.com/images//soccer/teams/11/211.png"
+        coach:
+            $ref: "#/components/schemas/Coach"
         stadium:
             $ref: "#/components/schemas/Stadium"
         squad:
@@ -847,8 +883,6 @@ components:
             type: object
             allOf:
               - $ref: "#/components/schemas/Player"
-        coach:
-            $ref: "#/components/schemas/Coach"
         latest:
           type: array
           items:
@@ -861,6 +895,37 @@ components:
             type: object
             allOf:
               - $ref: "#/components/schemas/Game"
+
+    FavoriteTeam:
+      type: object
+      properties:
+        id:
+            type: "integer"
+            format: "int64"
+            example: 211
+        name:
+            type: "string"
+            example: "Silkeborg"
+        logo:
+            type: "string"
+            example: "https://cdn.sportmonks.com/images//soccer/teams/11/211.png"
+        coach:
+            $ref: "#/components/schemas/Coach"
+        stadium:
+            $ref: "#/components/schemas/Stadium"
+        latest:
+          type: array
+          items:
+            type: object
+            allOf:
+              - $ref: "#/components/schemas/Game"
+        upcoming:
+          type: array
+          items:
+            type: object
+            allOf:
+              - $ref: "#/components/schemas/Game"
+
     Stadium:
       type: object
       properties:
@@ -877,15 +942,16 @@ components:
         address:
           type: "string"
           example: "Stadionvej 7"
+        city: 
+          type: "string"
+          example: "Herning"
         capacity:
           type: "integer"
           format: "int64"
           example: "Haderslev"
-
         image_path:
           type: "string"
           example: "https://cdn.sportmonks.com/images/soccer/venues/21/5653.png"
-
         coordinates:
           type: "string"
           example: "55.261402,9.487573"
@@ -902,8 +968,11 @@ components:
         current_stage_name:
           type: "string"
           example: "Europa League Play-offs - Final"
-        next_game:
-          $ref: "#/components/schemas/Game"
+        stage_next_game:
+          $ref: "#/components/schemas/FutureGame"
+        league_logo:
+          type: "string"
+          example: "https://cdn.sportmonks.com/images/soccer/leagues/271.png"
     
     FutureGame:
       required:
@@ -936,7 +1005,8 @@ components:
           type: "string"
           example: "MCH Arena"
         Referee:
-          $ref: "#/components/schemas/Referee"
+          type: "string"
+          example: "Denis Shalayev"
 
     Game:
       required:
@@ -970,7 +1040,8 @@ components:
           type: "string"
           example: "MCH Arena"
         Referee:
-          $ref: "#/components/schemas/Referee"
+          type: "string"
+          example: "Denis Shalayev"
         Result:
           type: "string"
           example: "3-1"
@@ -1022,12 +1093,6 @@ components:
         fullname:
           type: "string"
           example: "James Forest"
-        firstname:
-          type: "string"
-          example: "James"
-        lastname:
-          type: "string"
-          example: "Forest"
         common_name:
           type: "string"
           example: "James Forest"
@@ -1064,9 +1129,6 @@ components:
           type: "integer"
           format: "int64"
           example: 53  
-        team:
-          type: "string"
-          example: "Celtic"
         position:
           type: "string"
           example: "Midfielder" 
@@ -1076,6 +1138,27 @@ components:
         fullname:
           type: "string"
           example: "James Forest"
+        common_name: 
+          type: "string"
+          example: "R. Almenning Jarstein"
+        nationality: 
+          type: "string"
+          example: "Norway"
+        birthplace:
+          type: "string"
+          example: "Norway"
+        birthdate: 
+          type: "string"
+          example: "29/09/1984"
+        height:
+          type: "string"
+          example: "192 cm"
+        weight:
+          type: "string"
+          example: "88 kg"
+        team:
+          type: "string"
+          example: "Celtic"
         image_path:
           type: "string"
           example: "https://cdn.sportmonks.com/images/soccer/players/8/172104.png"
@@ -1131,6 +1214,13 @@ components:
         type: object
         allOf:
           - $ref: "#/components/schemas/Team"
+    
+    ArrayOfFavoriteTeams:
+      type: array
+      items:
+        type: object
+        allOf:
+          - $ref: "#/components/schemas/FavoriteTeam"
 
     ArrayOfReferees:
       type: array

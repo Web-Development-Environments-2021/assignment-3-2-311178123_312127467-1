@@ -7,11 +7,19 @@ const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 The method extract all the relevent info about the coach 
 */
 function extractCoachData(coach_info){
-  const { fullname, image_path, nationality } = coach_info;
+  const { coach_id, team_id, country_id, fullname, firstname, lastname,
+  image_path, nationality, birthcountry, birthdate } = coach_info;
   return {
-    name: fullname,
-    image: image_path,
+    id: coach_id,
+    team_id: team_id,
+    country_id: country_id,
+    fullname: fullname,
+    firstname: firstname,
+    lastname: lastname,
     nationality: nationality,
+    birthplace: birthcountry,
+    birthdate: birthdate,
+    image_path: image_path
   };
 }
 

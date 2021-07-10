@@ -4,7 +4,7 @@
 -- ON Games.gameid = Events.gameid
 
 -- Select * FROM Referees;
--- Select * FROM Games;
+Select * FROM Games;
 
 
 
@@ -20,7 +20,7 @@
 -- WHERE Games.GameDateTime = '2021-11-05 21:05:00') AS Unavailable
 -- ON Referees.Name = Unavailable.Referee WHERE 
 -- Unavailable.Referee is NULL
-SELECT * FROM Games 
-    -- DELETE FROM Games WHERE gameid = 14
+-- SELECT * FROM Games 
+    -- DELETE FROM Games WHERE gameid = 12
 -- Referees.Name <> Unavailable.Referee
 -- '${game_time}'
