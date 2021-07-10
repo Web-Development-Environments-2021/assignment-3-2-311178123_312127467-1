@@ -846,9 +846,9 @@ components:
         logo_path:
             type: "string"
             example: "https://cdn.sportmonks.com/images//soccer/teams/11/211.png"
-        season_name:
-            type: "string"
-            example: "2020/2021"
+        stadium:
+            type: "object"
+            $ref: "#/components/schemas/Stadium"
         squad:
           type: array
           items:
@@ -869,7 +869,36 @@ components:
             type: object
             allOf:
               - $ref: "#/components/schemas/Game"
-              
+    Stadium:
+      type: object
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+          example: 5653  
+        name:
+          type: "string"
+          example: "Sydbank Park"
+        surface:
+          type: "string"
+          example: "grass"
+        address:
+          type: "string"
+          example: "Stadionvej 7"
+        capacity:
+          type: "integer"
+          format: "int64"
+          example: "Haderslev"
+
+        image_path:
+          type: "string"
+          example: "https://cdn.sportmonks.com/images/soccer/venues/21/5653.png"
+
+        coordinates:
+          type: "string"
+          example: "55.261402,9.487573"
+
+
     Season:
       type: object
       properties:
@@ -924,28 +953,25 @@ components:
         gameid:
           type: "integer"
           example: 1
-        game_date:
+        GameDateTime:
           type: "string"
-          example: "2021-10-28"
-        game_time:
-          type: "string"
-          example: "17:00:00"
-        home_team:
+          example: "2021-10-28 17:00:00"
+        HomeTeam:
           type: "string"
           example: "Midtjylland"
-        home_team_id:
+        HomeTeamID:
           type: "integer"
           example: 939
-        away_team:
+        AwayTeam:
           type: "string"
           example: "Silkeborg"
-        away_team_id:
+        AwayTeamID:
           type: "integer"
           example: 86
-        stadium:
+        Stadium:
           type: "string"
           example: "MCH Arena"
-        referee:
+        Referee:
           type: object
           $ref: "#/components/schemas/Referee"
 
@@ -962,31 +988,28 @@ components:
         gameid:
           type: "integer"
           example: 1
-        game_date:
+        GameDateTime:
           type: "string"
-          example: "2021-01-13"
-        game_time:
-          type: "string"
-          example: "19:00:00"
-        home_team:
+          example: "2021-01-13 19:00:00"
+        HomeTeam:
           type: "string"
           example: "Midtjylland"
-        home_team_id:
+        HomeTeamID:
           type: "integer"
           example: 939
-        away_team:
+        AwayTeam:
           type: "string"
           example: "Silkeborg"
-        away_team_id:
+        AwayTeamID:
           type: "integer"
           example: 211
-        stadium:
+        Stadium:
           type: "string"
           example: "MCH Arena"
-        referee:
+        Referee:
           type: object
           $ref: "#/components/schemas/Referee"
-        results:
+        Result:
           type: "string"
           example: "3-1"
         event_log:
@@ -1004,17 +1027,17 @@ components:
       description: "An Event in a game. Options are: Red Card, Yellow Card, Foul, Offside, Goal, Injury, Subsitution"
       type: object
       properties:
-        event_date:
+        EventData:
           type: "string"
           example: "2021-01-13"
-        event_time:
+        EventTime:
           type: "string"
           example: "20:05:00"
-        event_game_time:
+        EventGameTime:
           type: "integer"
           format: "int64"
           example: 65  
-        event:
+        EventDesc:
           type: "string"
           example: "Foul Anders Hoff"
 
