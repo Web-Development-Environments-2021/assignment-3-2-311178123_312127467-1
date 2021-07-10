@@ -9,6 +9,8 @@ async function getNextGame(){
   const now = app_utils.formatDateTime(new Date())
   const next_games = await DButils.execQuery(`SELECT * From Games WHERE GameDateTime >  '${now}' ORDER BY GameDateTime`)
   const next_game = next_games[0]
+  // Add the GMT with the time the server returns
+  next_game['GameDateTime'].setTime(next_game['GameDateTime'].getTime() + next_game['GameDateTime'].getTimezoneOffset()*60*1000);;
   // Update the datetime to be in the correct format - YY:MM:DD HH:MM:SS.nnnn
   next_game['GameDateTime'] = app_utils.formatDateTime(next_game['GameDateTime'])
   return next_game;
@@ -32,6 +34,8 @@ async function getTeamUpcomingGames(team_id){
   const upcoming_games = await DButils.execQuery(`SELECT * From Games WHERE (AwayTeamID = ${team_id} OR
   HomeTeamID = ${team_id}) AND GameDateTime >  '${now}' ORDER BY GameDateTime`);
   upcoming_games.map((game) =>{
+      // Add the GMT with the time the server returns
+      game['GameDateTime'].setTime(game['GameDateTime'].getTime() + game['GameDateTime'].getTimezoneOffset()*60*1000);;
       // Update the datetime to be in the correct format - YY:MM:DD HH:MM:SS.nnnn
       game['GameDateTime'] = app_utils.formatDateTime(game['GameDateTime'])
       games.push(game)
@@ -49,6 +53,8 @@ async function getAllPastGames(){
   FROM Games WHERE GameDateTime <'${now}' ORDER BY GameDateTime `);
 
   return Promise.all(past_games.map(async (game) => {
+    // Add the GMT with the time the server returns
+    game['GameDateTime'].setTime(game['GameDateTime'].getTime() + game['GameDateTime'].getTimezoneOffset()*60*1000);;
     // Update the datetime to be in the correct format - YY:MM:DD HH:MM:SS.nnnn
     game['GameDateTime'] = app_utils.formatDateTime(game['GameDateTime'])
 
@@ -77,6 +83,8 @@ async function getAllUpcomingGames(){
   const future_games = await DButils.execQuery(`SELECT Games.gameid, Games.GameDateTime, Games.HomeTeam, Games.AwayTeam, 
   Games.Stadium, Games.Referee, Games.HomeTeamID, Games.AwayTeamID From Games WHERE GameDateTime >'${now}' ORDER BY GameDateTime `);
   future_games.map((game) =>{
+      // Add the GMT with the time the server returns
+      game['GameDateTime'].setTime(game['GameDateTime'].getTime() + game['GameDateTime'].getTimezoneOffset()*60*1000);;
       // Update the datetime to be in the correct format - YY:MM:DD HH:MM:SS.nnnn
       game['GameDateTime'] = app_utils.formatDateTime(game['GameDateTime'])
       games.push(game)
