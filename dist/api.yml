@@ -13,7 +13,6 @@ paths:
           content:
             application/json:  
               schema:
-                type: object
                 $ref: "#/components/schemas/User"
         responses:
           "405":
@@ -37,7 +36,6 @@ paths:
           content:
             application/json:  
               schema:
-                type: object
                 $ref: "#/components/schemas/UserLogin"
         responses:
           "401":
@@ -284,7 +282,7 @@ paths:
               schema:            
                 $ref: "#/components/schemas/ArrayOfTeams"
 
-  /games/gameid:
+  /games/gameid/{game_time}/{home_team_id}/{away_team_id}:
     get:
       tags:
         - "Games"
@@ -293,21 +291,21 @@ paths:
       operationId: "getgameid" 
       parameters:
       - name: "game_time"
-        in: "body"
+        in: "path"
         description: "String of game time"
         required: true
         schema:
           type: "string"
           example: "2021-11-05 21:05:00"
       - name: "home_team_id"
-        in: "body"
+        in: "path"
         description: "integer of home team id"
         required: true
         schema:
           type: "integer"
           example: 940
       - name: "away_team_id"
-        in: "body"
+        in: "path"
         description: "integer of away team id"
         required: true
         schema:
@@ -340,8 +338,6 @@ paths:
         content:
           application/json:  
             schema:
-              type: object
-              required: true
               $ref: "#/components/schemas/FutureGame"
 
       responses:
@@ -405,7 +401,6 @@ paths:
                   type: "integer"
                   example: 1
                 eventlog:
-                  type: object
                   $ref: "#/components/schemas/EventLog"
 
       responses:
@@ -761,10 +756,8 @@ paths:
                 type: object
                 properties:   
                   latest:
-                    type: object            
                     $ref: "#/components/schemas/ArrayOfGames"
                   upcoming:
-                    type: object            
                     $ref: "#/components/schemas/ArrayOfFutureGames"
 
   /games:
@@ -847,7 +840,6 @@ components:
             type: "string"
             example: "https://cdn.sportmonks.com/images//soccer/teams/11/211.png"
         stadium:
-            type: "object"
             $ref: "#/components/schemas/Stadium"
         squad:
           type: array
@@ -897,33 +889,6 @@ components:
         coordinates:
           type: "string"
           example: "55.261402,9.487573"
-
-
-    Season:
-      type: object
-      properties:
-        id:
-          type: "integer"
-          format: "int64"
-          example: 17141  
-        name:
-          type: "string"
-          example: "2020/2021"
-        league_id:
-          type: "integer"
-          format: "int64"
-          example: 2021  
-        is_current_season:
-          type: "boolean"
-          example: true
-        current_round_id:
-          type: "integer"
-          format: "int64"
-          example: 194969  
-        current_stage_id:
-          type: "integer"
-          format: "int64"
-          example: 77447501  
           
     League:
       type: object
@@ -938,7 +903,6 @@ components:
           type: "string"
           example: "Europa League Play-offs - Final"
         next_game:
-          type: object
           $ref: "#/components/schemas/Game"
     
     FutureGame:
@@ -972,7 +936,6 @@ components:
           type: "string"
           example: "MCH Arena"
         Referee:
-          type: object
           $ref: "#/components/schemas/Referee"
 
     Game:
@@ -1007,13 +970,11 @@ components:
           type: "string"
           example: "MCH Arena"
         Referee:
-          type: object
           $ref: "#/components/schemas/Referee"
         Result:
           type: "string"
           example: "3-1"
         event_log:
-          type: object
           $ref: "#/components/schemas/EventLog"
     
     Referee:
