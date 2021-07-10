@@ -767,7 +767,7 @@ paths:
                     type: object            
                     $ref: "#/components/schemas/ArrayOfFutureGames"
 
-  /games/all:
+  /games:
      get:
       tags:
         - "Games"
