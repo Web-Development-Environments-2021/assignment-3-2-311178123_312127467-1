@@ -102,6 +102,8 @@ async function checkTeamLeagueByTeamId(team_id){
 /*
 The method will query the API for all the teams in the current season - season 18834
 */
+
+//**********TODO CHECK FOR SEASON ID that matches current season and league as well ************
 async function getAllTeams(){
   return await season_utils.getTeamsBySeasonId(18334);
 }
